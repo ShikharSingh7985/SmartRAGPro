@@ -12,13 +12,25 @@ Local milestone identifier: `v0.1.0-mvp` on branch `main`, with commit message
 `feat: establish SmartRAG Pro MVP`. Resolve the exact baseline with
 `git rev-parse v0.1.0-mvp^{commit}`. Both automated modes pass 35 tests; see validation.
 
-GitHub destination: **not supplied** (no remote existed at audit). Baseline push and
-remote tag verification: **pending**, not claimed. Live Gemini acceptance: **pending**
-the locally configured `GEMINI_API_KEY`. Local JWT/database/S3 credentials have been
-generated in ignored `.env`; the local Compose application runs and readiness correctly
-reports missing Gemini configuration. After the user supplies the repository URL and
-local GitHub authentication, preserve remote history, push without force, verify branch
-and tag hashes with `git ls-remote`, and record remote verification here on resume.
+GitHub milestone verified on 2026-11-04:
+
+- Repository: https://github.com/ShikharSingh7985/SmartRAGPro
+- Remote: `origin`; branch: `main`.
+- Baseline commit: `82f41c6098fe14e20ee5a3109665e9edec719890`.
+- Annotated tag: `v0.1.0-mvp`, resolving to that baseline commit.
+- The supplied repository had no branches/tags. The baseline and tag were pushed
+  atomically without force. Direct `git ls-remote` confirmed the branch hash and
+  the annotated tag's dereferenced commit against the local baseline.
+- This documentation update follows the tagged baseline; the tag remains unchanged.
+
+Local JWT/database/S3 credentials remain in ignored `.env`. The user configured
+`GEMINI_API_KEY` locally. A real document embedding call succeeded; Gemini generation
+returned HTTP **503** from the provider. No invalid-key, quota or missing-model
+indication was found in the sanitized diagnostic. Live generation and a full live
+PDF/chat acceptance workflow remain **pending provider availability**, not mocked or
+claimed successful. Retry the explicit provider probe when service availability
+recovers. All 35 automated tests in each previously executed mode remain recorded
+separately from this live check. Phase 2 has not started.
 
 ## Phase 2 — Rich document ingestion
 

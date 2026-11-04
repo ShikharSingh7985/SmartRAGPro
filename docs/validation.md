@@ -48,15 +48,23 @@ failure behavior; Streamlit auth/navigation; Gemini text/content-block response 
   The Gemini adapter response-format tests mock transport. No runtime mock-provider
   switch exists. The isolated suite additionally doubles Redis/S3 and uses SQLite
   and in-process Qdrant; the Linux integration run uses real datastore services.
-- **Live Gemini generation, live Google/OpenAI embeddings and account/model quota are
-  unverified** because `GEMINI_API_KEY` is not configured. Nothing was silently
-  substituted for those live checks. Run `scripts.live_providers` and the UI PDF/chat
-  acceptance flow after securely configuring the key (setup guide).
+- Initial validation had no Gemini key. On 2026-11-04, after the user configured it
+  locally, a real Google document embedding call **passed**. Gemini generation
+  returned HTTP **503**; the sanitized diagnostic found no invalid-key, quota or
+  missing-model indication. **Live Gemini answer generation, the combined provider
+  probe, and the full live PDF/chat acceptance flow have not passed.** Live query
+  embeddings and optional OpenAI embeddings are also not claimed verified. Nothing
+  was silently substituted for these checks. Retry `scripts.live_providers` and the
+  UI acceptance flow when the configured provider is available.
 - Streamlit was tested through AppTest and server health; no manual browser acceptance,
   live model quality evaluation, concurrency/load benchmark or public TLS deployment
   is claimed.
-- GitHub push and hosted CI execution are **unverified/pending** until the intended
-  repository URL and local authentication are supplied. CI configuration exists.
+- GitHub baseline push and tag are **verified** at
+  https://github.com/ShikharSingh7985/SmartRAGPro. Baseline commit
+  `82f41c6098fe14e20ee5a3109665e9edec719890` and dereferenced tag `v0.1.0-mvp`
+  matched direct remote inspection on 2026-11-04. Hosted CI execution remains
+  unverified; CI configuration exists. Follow-up documentation commits do not move
+  the baseline tag.
 
 ## Resolved issues and remaining gates
 
@@ -67,6 +75,7 @@ Streamlit test script-path/title ordering assumptions. A clean dependency reinst
 was performed after an initial lint command touched the dependency cache; subsequent
 checks explicitly exclude dependency directories.
 
-Phase 1 local implementation is verified. Completion still requires credentialed live
-acceptance and a verified GitHub push. Phase 2 has not started. Public deployment
+Phase 1 local implementation and initial GitHub push are verified. Completion still
+requires successful live generation and full credentialed acceptance after the provider
+503 resolves. Phase 2 has not started. Public deployment
 hardening and later-phase features are listed in the system design and roadmap.
