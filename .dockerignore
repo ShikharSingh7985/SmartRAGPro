@@ -1,0 +1,10 @@
+*
+!pyproject.toml
+!uv.lock
+!backend/**
+!frontend/**
+!scripts/**
+!tests/**
+!alembic.ini
+**/__pycache__
+**/*.pyc
