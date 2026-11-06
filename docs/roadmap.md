@@ -79,8 +79,10 @@ also not claimed live-validated. No production-readiness or unlimited-context cl
 Git milestone uses the existing origin/main and plain English message
 `Add persistent document conversations`. Final checks: 63 native tests passed with
 3 expected host/service skips; all 66 real-service tests passed. Formatting, lint,
-type checks and staged secret/artifact scanning passed. Push verification is pending
-the Git operation; record its exact hash after remote verification. Do not start Phase 4 automatically.
+type checks and staged secret/artifact scanning passed. Implementation commit
+`6434b2c87175e3ff74324c579daaef8ac12d90bd` was pushed to origin/main and independently
+verified with `git ls-remote` on 2026-11-06. The following documentation-only commit
+records that verified milestone. Do not start Phase 4 automatically.
 
 ## Phase 4 — Security, tenancy and reliability
 
