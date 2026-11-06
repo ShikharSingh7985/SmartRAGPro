@@ -2,8 +2,10 @@ import math
 import os
 from collections.abc import Iterator
 from io import BytesIO
+from pathlib import Path
 from typing import Any
 from unittest.mock import Mock
+from uuid import uuid4
 
 import pytest
 from alembic import command
@@ -21,6 +23,8 @@ os.environ["S3_SECRET_KEY"] = "isolated-test-only"
 os.environ["GEMINI_API_KEY"] = ""
 os.environ["LANGCHAIN_TRACING_V2"] = "false"
 os.environ["LANGSMITH_TRACING"] = "false"
+if "TIKTOKEN_CACHE_DIR" not in os.environ:
+    os.environ["TIKTOKEN_CACHE_DIR"] = str(Path(".uv-cache/tiktoken").resolve())
 
 from backend.app.core.config import get_settings  # noqa: E402
 from backend.app.db.session import get_db  # noqa: E402
@@ -39,8 +43,17 @@ class TestEmbeddings(Embeddings):
 
     def embed_query(self, text: str) -> list[float]:
         vector = [
-            float(text.casefold().count(word))
-            for word in ["alpha", "beta", "revenue", "million", "policy", "leave", "days", "secret"]
+            float(sum(text.casefold().count(word) for word in group))
+            for group in [
+                ("alpha", "accuracy", "model a"),
+                ("beta", "model b"),
+                ("revenue",),
+                ("million",),
+                ("policy",),
+                ("leave",),
+                ("days",),
+                ("secret",),
+            ]
         ]
         length = math.sqrt(sum(value * value for value in vector)) or 1
         return [value / length for value in vector]
@@ -84,7 +97,8 @@ def stack(tmp_path) -> Iterator[tuple[TestClient, sessionmaker[Session], Resourc
     settings = get_settings().model_copy(
         update={
             "embedding_dimensions": 8,
-            "qdrant_collection": "smartrag_test",
+            "qdrant_collection": "smartrag_test_" + uuid4().hex[:12],
+            "parser_engine": "pymupdf",
         }
     )
     config = Config("alembic.ini")
@@ -103,7 +117,7 @@ def stack(tmp_path) -> Iterator[tuple[TestClient, sessionmaker[Session], Resourc
     resources.settings = settings
     resources.store = MemoryStore()
     resources.qdrant = (
-        QdrantClient(url=os.environ["TEST_QDRANT_URL"])
+        QdrantClient(url=os.environ["TEST_QDRANT_URL"], timeout=60)
         if "TEST_QDRANT_URL" in os.environ
         else QdrantClient(":memory:")
     )

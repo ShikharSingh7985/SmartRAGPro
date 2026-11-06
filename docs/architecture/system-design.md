@@ -1,6 +1,11 @@
 # System design
 
 SmartRAG Pro is a modular monolith with an independently running ingestion worker.
+Phase 2 extends ingestion as described in [ADR 0005](adr/0005-multimodal-ingestion.md)
+and the [operation guide](../setup/phase2-ingestion.md). Phase 1 details below are
+historical where superseded by that ADR: polling delivery is now Redis/Dramatiq plus
+a SQL outbox dispatcher, digital-only parsing is now page-bounded multimodal parsing,
+and retries, progress, previews and reindex control have versioned API endpoints.
 FastAPI owns authorization and business transactions. Streamlit is an HTTP client;
 its session state never determines access rights. Both API and worker reuse typed
 configuration, models and RAG adapters.
@@ -13,6 +18,10 @@ flowchart LR
     API --> Redis[(Redis rate limits)]
     API --> S3[(S3 / SeaweedFS)]
     Worker -->|claim durable jobs| Postgres
+    Dispatcher -->|SQL outbox + expired lease recovery| Postgres
+    Dispatcher --> Redis
+    Redis -->|Dramatiq UUID messages| Worker
+    Worker --> Docling[Docling / PyMuPDF / selective Tesseract]
     Worker --> S3
     Worker --> Embeddings[Configured embeddings]
     Worker --> Qdrant[(Qdrant)]

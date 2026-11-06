@@ -161,9 +161,13 @@ def test_worker_failure_and_retry(stack, pdf):
     response = client.post(
         "/api/v1/documents",
         headers=headers,
-        files={"file": ("bad.pdf", b"%PDF-broken", "application/pdf")},
+        files={"file": ("report.pdf", pdf, "application/pdf")},
     )
     document_id = response.json()["id"]
+    from unittest.mock import Mock
+
+    resources.store = Mock(wraps=resources.store)
+    resources.store.get.side_effect = RuntimeError("Temporary storage outage")
     for _ in range(3):
         with factory() as db:
             job = db.scalar(select(IngestionJob))

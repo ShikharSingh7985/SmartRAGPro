@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
 
 
 class Schema(BaseModel):
@@ -31,6 +31,37 @@ class DocumentOut(Schema):
     page_count: int
     error: str | None
     created_at: datetime
+    extraction_mode: str
+    chunk_count: int
+    table_count: int
+    figure_count: int
+
+
+class JobOut(Schema):
+    id: UUID
+    document_id: UUID
+    status: str
+    stage: str
+    pages_processed: int
+    total_pages: int
+    attempts: int
+    error: str | None
+    retryable: bool
+    cancel_requested: bool
+    updated_at: datetime
+
+    @field_serializer("status")
+    def public_status(self, value: str) -> str:
+        return {"running": "processing", "succeeded": "completed"}.get(value, value)
+
+
+class AssetOut(Schema):
+    id: UUID
+    document_id: UUID
+    page: int
+    kind: str
+    caption: str
+    model_derived: bool
 
 
 class ConversationIn(Schema):
@@ -55,6 +86,10 @@ class Citation(Schema):
     filename: str
     page: int
     excerpt: str
+    page_end: int | None = None
+    content_type: str = "text"
+    asset_id: UUID | None = None
+    model_derived: bool = False
 
 
 class MessageOut(Schema):

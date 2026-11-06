@@ -98,12 +98,18 @@ run `uv run alembic upgrade head`, initialize the bucket/collection using
 
 ```powershell
 uv run uvicorn backend.app.main:app --reload --no-access-log --no-proxy-headers
-uv run python -m backend.app.workers.ingestion
+uv run dramatiq backend.app.workers.tasks --processes 1 --threads 1
+uv run python -m backend.app.workers.dispatcher
 $env:API_BASE_URL='http://localhost:8000'
 uv run streamlit run frontend/app.py
 ```
 
 ## GitHub milestone
+
+For Phase 2 OCR/model installation, modes, limits and reindexing, follow the
+[Phase 2 guide](phase2-ingestion.md). Native Docling workers need the `parsing` extra;
+the regular Compose worker installs it and Tesseract automatically. The worker,
+dispatcher, API and frontend commands above each run in a separate terminal.
 
 Provide your intended user-owned HTTPS or SSH repository URL. Create an empty private
 repository in GitHub (no generated README/license) if necessary; basic repositories

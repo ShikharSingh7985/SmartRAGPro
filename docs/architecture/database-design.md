@@ -3,6 +3,11 @@
 PostgreSQL 17 is the production target. SQLAlchemy 2 UUIDs map to native PostgreSQL
 UUID. Timezone-aware timestamps store UTC. SQLite is confined to isolated tests.
 The baseline Alembic revision is `3f9e7d07d878`; runtime never calls `create_all`.
+Phase 2 adds revision `20261106_multimodal`: owner/hash/mode uniqueness, document
+counts/index identity/active run, job stage/progress/lease delivery/cancellation fields,
+`page_extractions` and `document_assets`. Existing rows receive safe migration defaults.
+Both new tables reference documents with ON DELETE CASCADE; asset cleanup runs before
+metadata deletion so physical content is never hidden from the cleanup worker.
 
 ```mermaid
 erDiagram

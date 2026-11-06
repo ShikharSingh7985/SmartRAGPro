@@ -1,5 +1,36 @@
 # Data flow and state transitions
 
+Phase 2 current ingestion flow:
+
+```mermaid
+flowchart TD
+    Upload --> Hash[Stream, validate signature, hash and owner deduplicate]
+    Hash --> S3[Private original + SQL ingestion outbox]
+    S3 --> Dispatcher[SQL dispatcher]
+    Dispatcher --> Redis[Redis / Dramatiq]
+    Redis --> Inspect[Claim + advisory lock + inspect]
+    Inspect --> Page[One page at a time]
+    Page --> Docling[Docling structure and selective OCR]
+    Docling --> Fallback[PyMuPDF/Tesseract fallback with explicit warnings]
+    Fallback --> Normalize[Table cells, text, figures, quality and provenance]
+    Normalize --> Chunk[Header-preserving chunks / parent context]
+    Chunk --> Cache[Reuse unchanged vectors or embed bounded batch]
+    Cache --> Progress[Commit progress / heartbeat / cancellation check]
+    Progress --> Page
+    Progress --> Publish[Atomic ready run publication]
+```
+
+Job stages include queued, inspecting, extracting, normalizing, chunking, embedding,
+publishing, completed, retry-wait, failed and cancelled. A run token scopes searchable
+vectors; failed, cancelled and partially indexed documents never become ready. The
+worker serializes deletion with in-flight extraction using a document advisory lock.
+API deletion revokes access and removes derived chats immediately; its cleanup actor
+removes originals, assets, page metadata and all known index content. SQL outbox rows
+survive broker loss and worker restart. See ADR 0005 for current behavior.
+
+The following numbered flow/state diagram records the original Phase 1 implementation;
+its digital-only and polling limitations are superseded by the Phase 2 flow above.
+
 1. Register: validate credentials → normalize email → hash → unique user insert.
 2. Login: constant-work unknown-user password check → signed expiring JWT.
 3. Upload: verify identity → bound bytes/type/signature → pending metadata and delayed

@@ -52,15 +52,25 @@ services:
       retries: 3
     restart: unless-stopped
   worker:
-    build: .
+    build:
+      context: .
+      target: worker
     env_file: .env
-    command: [python, -m, backend.app.workers.ingestion]
+    command: [dramatiq, backend.app.workers.tasks, --processes, "1", --threads, "1"]
     depends_on:
       bootstrap: {condition: service_completed_successfully}
     restart: unless-stopped
-    mem_limit: 1g
+    mem_limit: 4g
     cpus: 1.0
     stop_grace_period: 120s
+    volumes: [model_cache:/tmp/model-cache]
+  dispatcher:
+    build: .
+    env_file: .env
+    command: [python, -m, backend.app.workers.dispatcher]
+    depends_on:
+      bootstrap: {condition: service_completed_successfully}
+    restart: unless-stopped
   frontend:
     build: .
     environment:
@@ -75,3 +85,4 @@ volumes:
   qdrant_data:
   redis_data:
   objectstore_data:
+  model_cache:

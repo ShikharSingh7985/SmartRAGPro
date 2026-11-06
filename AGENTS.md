@@ -53,6 +53,17 @@ can only be supplied by the user:
 
 ## Roadmap and continuity
 
+- Use plain English commit messages; the user explicitly requested no `feat` prefix.
+- Phase 2 ingestion uses Docling primary structure, PyMuPDF fallback and selective
+  Tesseract. Keep extraction page-bounded and warnings/provenance honest. Vision
+  requires explicit configuration and model-derived labels; OCR is not image understanding.
+- Redis/Dramatiq carries UUID messages; PostgreSQL outbox/leases remain authoritative.
+  Preserve advisory-lock cleanup serialization, run fencing, progress and cancellation.
+- Keep table rows, spans and repeated header context. Never mix embedding spaces.
+  Reindex into a fresh collection when model/dimensions/version changes.
+- Benchmark evidence must identify synthetic fixtures, measured scope and actual
+  resource samples. Keep optional live/provider/model checks separate from deterministic tests.
+
 Phase 1: architecture, secure digital-PDF RAG MVP, tests and verified initial GitHub push.
 Phase 2: OCR, tables/images and richer ingestion. Phase 3: LangGraph conversations.
 Phase 4: security/tenant reliability. Phase 5: retrieval evaluation and optimization.

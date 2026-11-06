@@ -1,6 +1,6 @@
 # Six-phase roadmap
 
-## Phase 1 — Foundation and working MVP (current)
+## Phase 1 — Foundation and working MVP (delivered baseline)
 
 Implemented: empty-workspace audit, modular API/worker, secure multi-user auth,
 digital-PDF upload/ingestion, configurable embeddings, tenant-scoped Qdrant retrieval,
@@ -32,10 +32,30 @@ claimed successful. Retry the explicit provider probe when service availability
 recovers. All 35 automated tests in each previously executed mode remain recorded
 separately from this live check. Phase 2 has not started.
 
-## Phase 2 — Rich document ingestion
+## Phase 2 — Rich document ingestion (implemented)
 
-OCR, image/table extraction, extraction quality tests, parsing isolation and ingestion
-observability. Start only after Phase 1 acceptance and explicit user direction.
+Implemented after explicit user direction on 2026-11-06: Docling structure, selective
+Tesseract OCR, PyMuPDF fallback, table JSON/header context, private figure assets and
+previews, quality metadata, configurable modes, token-aware chunks, embedding index
+identity/vector reuse, content-hash deduplication, Redis/Dramatiq delivery with SQL
+outbox recovery, progress/cancel/retry/reindex, frontend controls, additive migrations
+and synthetic representative fixtures. See [actual Phase 2 evidence](phase2-validation.md).
+
+Validation: 49 native tests passed (2 expected OCR skips), 51 real-service tests passed,
+real Docling digital/rasterized table probes passed, and all four synthetic document
+types reached ready through the real application and Google embedding provider.
+The 520-page synthetic extraction benchmark measured 3.625 s / 171.30 MiB sampled RSS;
+its scope excludes embeddings, vision and Docling inference.
+
+Git destination remains `origin` / `main` at the supplied SmartRAGPro repository.
+Phase 2 commit message: `Improve PDF processing and background ingestion` (plain English,
+as requested). The Phase 1 milestone tag is preserved. Resolve the phase commit by
+that message in Git history; the completion report records the remote-verified hash.
+
+Optional live Gemini vision and local-embedding acceptance remain unverified; no chart
+understanding accuracy is claimed. Live Gemini answer generation's earlier 503 is not
+silently considered repaired by successful embedding calls. Core ingestion is ready
+for review/Phase 3 planning. Phase 3 requires a new explicit user instruction.
 
 ## Phase 3 — Conversational orchestration
 

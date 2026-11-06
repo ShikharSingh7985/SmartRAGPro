@@ -1,8 +1,10 @@
+import hashlib
 import re
 from datetime import timedelta
+from typing import Literal
 from uuid import UUID, uuid4
 
-from fastapi import APIRouter, Depends, HTTPException, Response, UploadFile
+from fastapi import APIRouter, Depends, Form, HTTPException, Response, UploadFile
 from sqlalchemy import delete, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
@@ -36,7 +38,7 @@ from backend.app.schemas.api import (
     UserOut,
 )
 from backend.app.services.chat import answer, owned_conversation
-from backend.app.services.resources import Resources, get_resources
+from backend.app.services.resources import Resources, get_resources, upload_stream
 
 router = APIRouter(prefix="/api/v1")
 
@@ -92,20 +94,45 @@ def upload(
     db: Session = Depends(get_db),
     user: User = Depends(current_user),
     resources: Resources = Depends(get_resources),
+    extraction_mode: Literal["auto", "text-first", "ocr-enabled", "enhanced-multimodal"]
+    | None = Form(None),
 ) -> Document:
+    extraction_mode = extraction_mode or resources.settings.extraction_mode
     name = (file.filename or "document.pdf").replace("\\", "/").split("/")[-1]
     name = re.sub(r"[\x00-\x1f\x7f]", "", name)[:255]
     if not name.lower().endswith(".pdf") or file.content_type != "application/pdf":
         raise HTTPException(415, "Only PDF uploads are supported")
-    # Read a bounded amount; multipart parser also spools larger input to disk.
-    data = file.file.read(resources.settings.max_upload_bytes + 1)
-    if len(data) > resources.settings.max_upload_bytes:
-        raise HTTPException(413, "PDF exceeds upload size limit")
-    if not data.startswith(b"%PDF-"):
+    if file.file.read(5) != b"%PDF-":
         raise HTTPException(422, "Upload must be a valid PDF")
+    file.file.seek(0)
+    digest = hashlib.sha256()
+    size = 0
+    while block := file.file.read(1024 * 1024):
+        size += len(block)
+        if size > resources.settings.max_upload_bytes:
+            raise HTTPException(413, "PDF exceeds upload size limit")
+        digest.update(block)
+    file.file.seek(0)
+    db.scalar(select(User).where(User.id == user.id).with_for_update())
+    existing = db.scalar(
+        select(Document).where(
+            Document.user_id == user.id,
+            Document.content_hash == digest.hexdigest(),
+            Document.extraction_mode == extraction_mode,
+        )
+    )
+    if existing:
+        return existing
     document_id = uuid4()
     key = f"{user.id}/{document_id}.pdf"
-    doc = Document(id=document_id, user_id=user.id, filename=name, object_key=key)
+    doc = Document(
+        id=document_id,
+        user_id=user.id,
+        filename=name,
+        object_key=key,
+        content_hash=digest.hexdigest(),
+        extraction_mode=extraction_mode,
+    )
     # Persist pending metadata before external I/O so a failed commit cannot orphan an object.
     doc.status = "uploading"
     db.add(doc)
@@ -123,7 +150,7 @@ def upload(
         locked = db.scalar(select(Document).where(Document.id == document_id).with_for_update())
         if locked is None or locked.status != "uploading":
             raise HTTPException(409, "Upload expired; please retry")
-        resources.store.put(key, data)
+        upload_stream(resources.store, key, file.file)
         locked.status = "queued"
         db.execute(delete(IngestionJob).where(IngestionJob.document_id == document_id))
         db.add(IngestionJob(document_id=document_id))

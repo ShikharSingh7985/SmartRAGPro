@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     access_token_minutes: int = Field(default=30, ge=1, le=1440)
     gemini_api_key: SecretStr = SecretStr("")
     gemini_model: str = "gemini-3.8-flash"
-    embedding_provider: Literal["google", "openai"] = "google"
+    embedding_provider: Literal["google", "openai", "local"] = "google"
     embedding_model: str = "models/gemini-embedding-001"
     embedding_dimensions: int = Field(default=768, ge=1, le=4096)
     openai_api_key: SecretStr = SecretStr("")
@@ -28,7 +28,29 @@ class Settings(BaseSettings):
     s3_bucket: str = "smartrag-documents"
     s3_region: str = "us-east-1"
     max_upload_bytes: int = Field(default=20 * 1024 * 1024, ge=1024, le=100 * 1024 * 1024)
-    max_pdf_pages: int = Field(default=300, ge=1, le=1000)
+    max_pdf_pages: int = Field(default=1000, ge=1, le=5000)
+    parser_engine: Literal["docling", "pymupdf"] = "docling"
+    docling_artifacts_path: str | None = None
+    extraction_mode: Literal["auto", "text-first", "ocr-enabled", "enhanced-multimodal"] = "auto"
+    ocr_backend: Literal["tesseract", "disabled"] = "tesseract"
+    ocr_language: str = "eng"
+    tesseract_cmd: str = "tesseract"
+    ocr_timeout_seconds: int = Field(default=60, ge=1, le=300)
+    render_max_dimension: int = Field(default=1800, ge=256, le=3000)
+    render_dpi: int = Field(default=150, ge=72, le=300)
+    max_figures_per_page: int = Field(default=8, ge=0, le=30)
+    vision_enabled: bool = False
+    vision_model: str = "gemini-3.8-flash"
+    max_vision_calls: int = Field(default=6, ge=0, le=50)
+    chunk_tokens: int = Field(default=450, ge=100, le=2000)
+    chunk_overlap_tokens: int = Field(default=50, ge=0, le=99)
+    embedding_batch_size: int = Field(default=16, ge=1, le=64)
+    embedding_version: str = "v1"
+    local_embedding_model: str = "sentence-transformers/all-MiniLM-L6-v2"
+    ingestion_timeout_seconds: int = Field(default=3600, ge=30, le=14400)
+    ingestion_max_attempts: int = Field(default=3, ge=1, le=10)
+    page_timeout_seconds: int = Field(default=180, ge=10, le=600)
+    max_extracted_characters: int = Field(default=20_000_000, ge=1000)
 
     @model_validator(mode="after")
     def secure_configuration(self) -> "Settings":

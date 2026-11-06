@@ -7,6 +7,7 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from starlette.concurrency import run_in_threadpool
 
+from backend.app.api.v1.ingestion import router as ingestion_router
 from backend.app.api.v1.routes import router
 from backend.app.core.config import get_settings
 from backend.app.db.session import close_database, get_db
@@ -25,6 +26,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
 
 app = FastAPI(title="SmartRAG Pro", version="0.1.0", lifespan=lifespan)
 app.include_router(router)
+app.include_router(ingestion_router)
 
 
 @app.middleware("http")

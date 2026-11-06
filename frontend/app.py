@@ -27,6 +27,8 @@ def api(method: str, path: str, **kwargs: Any) -> Any:
             detail = response.json().get("detail", "Request failed")
             st.error(detail if isinstance(detail, str) else "Please check the form values.")
             st.stop()
+        if response.headers.get("content-type", "").startswith("image/"):
+            return response.content
         return response.json() if response.content else None
     except (httpx.HTTPError, ValueError):
         st.error("The service is unavailable. Please retry shortly.")
@@ -81,16 +83,22 @@ def main() -> None:
     docs = all_items("/documents")
     if page == "Documents":
         st.title("Your documents")
-        st.caption("Upload digital-text PDFs up to 20 MB. Scanned PDFs need OCR in a later phase.")
+        st.caption("Text, scanned and mixed PDFs. OCR runs in the worker; vision is optional.")
         with st.form("upload", clear_on_submit=True):
             upload = st.file_uploader("Choose PDF", type=["pdf"])
+            mode = st.selectbox(
+                "Extraction mode", ["auto", "text-first", "ocr-enabled", "enhanced-multimodal"]
+            )
             if st.form_submit_button("Upload PDF", type="primary") and upload:
                 with st.spinner("Uploading securely…"):
+                    progress = st.progress(0, text="Uploading PDF")
                     api(
                         "POST",
                         "/documents",
-                        files={"file": (upload.name, upload.getvalue(), "application/pdf")},
+                        files={"file": (upload.name, upload, "application/pdf")},
+                        data={"extraction_mode": mode},
                     )
+                    progress.progress(1.0, text="Upload stored; background ingestion queued")
                 st.rerun()
         if not docs:
             st.info("Upload your first PDF to start a conversation.")
@@ -99,12 +107,59 @@ def main() -> None:
                 left, right = st.columns([5, 1])
                 left.write(doc["filename"])
                 left.caption(f"{doc['status'].capitalize()} · {doc['page_count']} pages")
+                left.caption(
+                    f"{doc['extraction_mode']} · {doc['chunk_count']} chunks · "
+                    f"{doc['table_count']} tables · {doc['figure_count']} figures"
+                )
+                if doc["status"] in {"queued", "failed"}:
+                    job_history = api("GET", f"/documents/{doc['id']}/jobs")
+                    if job_history:
+                        job = job_history[0]
+                        left.progress(
+                            min(1.0, job["pages_processed"] / max(1, job["total_pages"])),
+                            text=f"{job['stage']} · attempt {job['attempts']} · "
+                            f"{job['pages_processed']}/{job['total_pages']} pages",
+                        )
+                    if doc["status"] == "failed" and left.button(
+                        "Retry ingestion", key="retry-" + doc["id"]
+                    ):
+                        api("POST", f"/documents/{doc['id']}/retry")
+                        st.rerun()
+                    if doc["status"] == "queued" and left.button(
+                        "Cancel ingestion", key="cancel-" + doc["id"]
+                    ):
+                        api("POST", f"/documents/{doc['id']}/cancel")
+                        st.rerun()
                 if doc["error"]:
                     left.warning(doc["error"])
+                if doc["status"] == "ready" and left.button(
+                    "Reindex document", key="reindex-" + doc["id"]
+                ):
+                    api("POST", f"/documents/{doc['id']}/reindex")
+                    st.rerun()
                 if doc["status"] != "deleting" and right.button("Delete", key=doc["id"]):
                     api("DELETE", f"/documents/{doc['id']}")
                     st.session_state.pop("conversation_id", None)
                     st.rerun()
+                if doc["page_count"] and doc["status"] != "deleting":
+                    with st.expander("Page preview and extracted knowledge"):
+                        number = st.number_input(
+                            "Page",
+                            min_value=1,
+                            max_value=doc["page_count"],
+                            key="page-" + doc["id"],
+                        )
+                        if st.button("Load page", key="preview-" + doc["id"]):
+                            st.image(api("GET", f"/documents/{doc['id']}/preview/{number}"))
+                            details = api("GET", f"/documents/{doc['id']}/pages/{number}")
+                            st.caption(f"Extraction: {details['strategy']}")
+                            st.json(details["quality"])
+                            for warning in details["warnings"]:
+                                st.warning(warning)
+                            for element in details["elements"]:
+                                if element["kind"] == "table":
+                                    st.text(element["text"])
+                                    st.json(element["data"])
         st.caption(
             "Deletion also removes conversations based on the document. "
             "Refresh to see job progress."
@@ -146,6 +201,17 @@ def main() -> None:
                             f"· page {citation['page']}"
                         )
                         st.text(citation["excerpt"])
+                        if citation.get("model_derived"):
+                            st.caption(
+                                "Model-derived visual description; verify against the source image."
+                            )
+                        if citation.get("asset_id"):
+                            st.image(
+                                api(
+                                    "GET",
+                                    f"/documents/{citation['document_id']}/assets/{citation['asset_id']}",
+                                )
+                            )
     prompt = st.chat_input("Ask a question grounded in your selected PDFs")
     if prompt:
         st.session_state["pending"] = {"content": prompt, "request_id": str(uuid4())}

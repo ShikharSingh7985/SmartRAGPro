@@ -1,7 +1,7 @@
 # SmartRAG Pro
 
-A multi-user digital-PDF assistant with page citations, private object storage,
-durable background ingestion, and persistent chat. Phase 1 MVP.
+A multi-user PDF assistant with page citations, private object storage,
+durable background ingestion, and persistent chat. Phase 2 ingestion platform.
 
 FastAPI + Streamlit · PostgreSQL / SQLAlchemy / Alembic · Qdrant · Redis · S3
 (SeaweedFS locally) · Gemini generation · configurable Google/OpenAI embeddings.
@@ -53,7 +53,12 @@ The local S3 server uses SeaweedFS because the attempted MinIO image is unavaila
 and upstream is archived; [ADR 0004](docs/architecture/adr/0004-local-object-storage.md)
 records the evidence. The adapter also supports existing MinIO/S3 endpoints.
 
-This phase supports digital text, not OCR, images or advanced tables. Citation metadata
+Phase 2 adds Docling structure, selective Tesseract OCR, table JSON, secure figure
+assets/previews, optional Gemini vision, progress/cancel/retry, deduplication and
+versioned reindexing. See [Phase 2 operation](docs/setup/phase2-ingestion.md) and
+[Phase 2 evidence and limitations](docs/phase2-validation.md).
+
+Citation metadata
 validates provenance, not factual entailment. Chat history is stored/displayed; contextual
 follow-up rewriting is deferred. Public hosting requires the hardening listed in the
-system design. Phase 2 does not start automatically.
+system design. Phase 3 does not start automatically.
