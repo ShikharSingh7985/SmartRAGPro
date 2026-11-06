@@ -1,5 +1,10 @@
 # System design
 
+The user-revised Phase 4 introduces [measured retrieval alternatives](adr/0007-measured-retrieval.md):
+Qdrant dense candidates plus a PostgreSQL inverted BM25 index, optional rank fusion/
+reranking and a bounded tenant/model-keyed query-vector cache. Dense remains default
+based on validation; protected query and citation boundaries are preserved.
+
 Phase 3 adds the [persistent conversation graph](conversations.md) and
 [ADR 0006](adr/0006-persistent-conversations.md). Chat reconstructs finite context
 from durable SQL messages, scoped summaries and recalled older turns. The official

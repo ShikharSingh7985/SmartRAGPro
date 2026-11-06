@@ -1,6 +1,7 @@
 from uuid import NAMESPACE_URL, UUID, uuid5
 
 from qdrant_client import models as qm
+from sqlalchemy.orm import Session
 
 from backend.app.rag.pdf import Chunk
 from backend.app.rag.types import KnowledgeChunk, embedding_fingerprint
@@ -93,6 +94,7 @@ def index_knowledge(
     filename: str,
     run_token: str,
     chunks: list[KnowledgeChunk],
+    db: Session | None = None,
 ) -> None:
     from backend.app.models.entities import now
 
@@ -146,3 +148,8 @@ def index_knowledge(
             }
             points.append(qm.PointStruct(id=identifiers[index], vector=vector, payload=payload))
         resources.qdrant.upsert(settings.qdrant_collection, points=points, wait=True)
+        if db is not None:
+            from backend.app.rag.lexical import store_chunk
+
+            for point in points:
+                store_chunk(db, str(point.id), point.payload or {})

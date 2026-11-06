@@ -1,5 +1,13 @@
 # Database design
 
+Migration `20261106_retrieval` adds search_chunks (UUID point identity, owner/document
+cascading foreign keys, active run, page/text/length/provenance) and search_terms
+(chunk/term composite primary key, term frequency and inverted lookup index).
+Statistics are computed only within owned ready selected active-run chunks. Row counts
+must match published Document.chunk_count before a lexical index is considered complete.
+Failed runs stay unavailable, and stale rows are removed at publication/deletion.
+See ADR 0007 for backfill and storage/performance tradeoffs.
+
 Phase 3 migration `20261106_conversations` adds conversation scope_version,
 active_topic, bounded answer references and source_warning; messages gain JSON
 turn_metadata containing scope version and content-free timing/budget flags.

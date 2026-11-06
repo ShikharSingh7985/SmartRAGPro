@@ -172,3 +172,26 @@ class ConversationSummary(Base):
     content: Mapped[str] = mapped_column(Text, default="")
     provenance: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
     updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, onupdate=now)
+
+
+class SearchChunk(Base):
+    __tablename__ = "search_chunks"
+    id: Mapped[uuid.UUID] = mapped_column(Uuid, primary_key=True)
+    user_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"))
+    document_id: Mapped[uuid.UUID] = mapped_column(ForeignKey("documents.id", ondelete="CASCADE"))
+    run_token: Mapped[str] = mapped_column(String(36))
+    page: Mapped[int] = mapped_column()
+    length: Mapped[int] = mapped_column()
+    text: Mapped[str] = mapped_column(Text)
+    details: Mapped[dict[str, Any]] = mapped_column(JSON)
+    __table_args__ = (Index("ix_search_scope", "user_id", "document_id", "run_token"),)
+
+
+class SearchTerm(Base):
+    __tablename__ = "search_terms"
+    chunk_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("search_chunks.id", ondelete="CASCADE"), primary_key=True
+    )
+    term: Mapped[str] = mapped_column(String(80), primary_key=True)
+    frequency: Mapped[int] = mapped_column()
+    __table_args__ = (Index("ix_search_term", "term", "chunk_id"),)

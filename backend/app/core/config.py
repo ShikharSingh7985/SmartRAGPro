@@ -62,6 +62,14 @@ class Settings(BaseSettings):
     chat_llm_rewrite: bool = False
     chat_trace_queries: bool = False
     environment: Literal["production", "development"] = "production"
+    retrieval_mode: Literal["dense", "bm25", "hybrid", "hybrid_rerank"] = "dense"
+    retrieval_candidates: int = Field(default=24, ge=10, le=100)
+    retrieval_lexical_weight: float = Field(default=0.5, ge=0, le=1)
+    retrieval_rrf_k: int = Field(default=60, ge=1, le=100)
+    retrieval_rerank_candidates: int = Field(default=24, ge=1, le=100)
+    retrieval_deduplicate: bool = False
+    query_embedding_cache_size: int = Field(default=128, ge=0, le=1000)
+    query_embedding_cache_ttl: int = Field(default=300, ge=1, le=3600)
 
     @model_validator(mode="after")
     def secure_configuration(self) -> "Settings":

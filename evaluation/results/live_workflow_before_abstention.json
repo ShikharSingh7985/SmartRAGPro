@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "last_stage": "Gemini conversational turn 4",
+  "synthetic": true,
+  "observations": [
+    {
+      "stage": "full_ingestion",
+      "seconds": 57.421999999991385,
+      "pages": 4,
+      "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication"
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 1,
+      "seconds": 2.0,
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 2,
+      "seconds": 1.3280000000086147,
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 3,
+      "seconds": 1.3439999999827705,
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 4,
+      "seconds": 1.5940000000118744,
+      "source_pages": [
+        3
+      ]
+    }
+  ]
+}

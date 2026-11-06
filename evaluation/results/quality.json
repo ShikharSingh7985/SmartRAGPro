@@ -1,0 +1,944 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "temperature_requested": 0,
+  "sampling_behavior": "provider-fixed defaults; SDK reports temperature ignored for this model",
+  "output_limit": 2048,
+  "rubric": "Deterministic substring/numeric/citation-label proxies only; semantic correctness and faithfulness require manual review.",
+  "dataset_sha256": "b28675f4974f2179a9c4ff91c8ef00d4aea6be4b9d191c0356cb1a7aead0ba08",
+  "price_input_per_million": null,
+  "price_output_per_million": null,
+  "results": [
+    {
+      "query_id": "q04-0",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided document, principal components are defined as projecting onto high variance directions [1].",
+      "evidence_ids": [
+        "book-04-p1",
+        "book-04-p5",
+        "book-04-p4",
+        "book-04-p3",
+        "book-04-p2"
+      ],
+      "category": "factual",
+      "answerable": true,
+      "generation_ms": 4315.7013000163715,
+      "usage": {
+        "input_tokens": 367,
+        "output_tokens": 19,
+        "total_tokens": 386,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-0",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document, principal components are defined as projecting onto high variance directions [1].",
+      "evidence_ids": [
+        "book-04-p1",
+        "book-04-p5",
+        "book-04-p4",
+        "book-04-p3",
+        "book-04-p6"
+      ],
+      "category": "factual",
+      "answerable": true,
+      "generation_ms": 3256.455199996708,
+      "usage": {
+        "input_tokens": 350,
+        "output_tokens": 19,
+        "total_tokens": 369,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-1",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided documents, the recommended intervention for principal components is standardizing features [1, 3, 5].",
+      "evidence_ids": [
+        "book-04-p1",
+        "book-04-p5",
+        "book-04-p4",
+        "book-04-p3",
+        "book-04-p2"
+      ],
+      "category": "explanatory",
+      "answerable": true,
+      "generation_ms": 1316.39140000334,
+      "usage": {
+        "input_tokens": 371,
+        "output_tokens": 25,
+        "total_tokens": 396,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": null,
+      "citation_index_validity": null,
+      "citation_sentence_coverage_proxy": 0.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-1",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided documents, the recommended intervention for principal components is standardizing features [1].",
+      "evidence_ids": [
+        "book-04-p1",
+        "book-04-p5",
+        "book-04-p4",
+        "book-06-p1",
+        "book-05-p1"
+      ],
+      "category": "explanatory",
+      "answerable": true,
+      "generation_ms": 1232.954900013283,
+      "usage": {
+        "input_tokens": 294,
+        "output_tokens": 19,
+        "total_tokens": 313,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-2",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on Table 3 for the principal components benchmark, Model B achieves an accuracy of 85 percent and requires 7 training hours [1].",
+      "evidence_ids": [
+        "book-04-p2",
+        "book-06-p2",
+        "book-05-p2",
+        "book-04-p3",
+        "book-04-p4"
+      ],
+      "category": "table",
+      "answerable": true,
+      "generation_ms": 796.6333999938797,
+      "usage": {
+        "input_tokens": 448,
+        "output_tokens": 30,
+        "total_tokens": 478,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.5,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-2",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on Table 3 for the principal components benchmark, Model B achieves an accuracy of 85% and requires 7 training hours [1].",
+      "evidence_ids": [
+        "book-04-p2",
+        "book-06-p2",
+        "book-05-p2",
+        "book-04-p3",
+        "book-04-p4"
+      ],
+      "category": "table",
+      "answerable": true,
+      "generation_ms": 1633.0404999898747,
+      "usage": {
+        "input_tokens": 448,
+        "output_tokens": 30,
+        "total_tokens": 478,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-3",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, Figure 2 for principal components reaches its maximum at **epoch 2**, and its score is **18** [1].",
+      "evidence_ids": [
+        "book-04-p3",
+        "book-06-p3",
+        "book-05-p3",
+        "book-04-p2",
+        "book-04-p4"
+      ],
+      "category": "figure",
+      "answerable": true,
+      "generation_ms": 916.5632000076585,
+      "usage": {
+        "input_tokens": 494,
+        "output_tokens": 33,
+        "total_tokens": 527,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-3",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, Figure 2 for principal components reaches its maximum at epoch 2, and its score is 18 [1].",
+      "evidence_ids": [
+        "book-04-p3",
+        "book-06-p3",
+        "book-05-p3",
+        "book-04-p1",
+        "book-04-p4"
+      ],
+      "category": "figure",
+      "answerable": true,
+      "generation_ms": 2103.8109000073746,
+      "usage": {
+        "input_tokens": 465,
+        "output_tokens": 31,
+        "total_tokens": 496,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-4",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided documents:\n\n* **Definition:** Principal components are defined as projecting onto high variance directions [2].\n* **Main drawback:** The main drawback is the loss of interpretability [1].",
+      "evidence_ids": [
+        "book-04-p5",
+        "book-04-p1",
+        "book-04-p4",
+        "book-04-p2",
+        "book-04-p3"
+      ],
+      "category": "cross_page",
+      "answerable": true,
+      "generation_ms": 1141.7350000119768,
+      "usage": {
+        "input_tokens": 383,
+        "output_tokens": 42,
+        "total_tokens": 425,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.6666666666666666,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-4",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided evidence:\n\n* **Definition of principal components:** Projecting onto high variance directions [2].\n* **Main drawback:** Loss of interpretability [1].",
+      "evidence_ids": [
+        "book-04-p5",
+        "book-04-p1",
+        "book-04-p4",
+        "book-05-p5",
+        "book-06-p5"
+      ],
+      "category": "cross_page",
+      "answerable": true,
+      "generation_ms": 1276.9990999950096,
+      "usage": {
+        "input_tokens": 307,
+        "output_tokens": 36,
+        "total_tokens": 343,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.6666666666666666,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-5",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on Table 3 for the principal components benchmark, **Model B** is more accurate with an accuracy of 85 percent (compared to Model A's 81 percent) [1]. \n\nAccording to the provided text, Model B uses the **standardizing features** intervention [1, 4].",
+      "evidence_ids": [
+        "book-04-p2",
+        "book-04-p3",
+        "book-05-p2",
+        "book-04-p1",
+        "book-06-p2"
+      ],
+      "category": "multi_hop",
+      "answerable": true,
+      "generation_ms": 1380.475000012666,
+      "usage": {
+        "input_tokens": 455,
+        "output_tokens": 65,
+        "total_tokens": 520,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.5,
+      "unsupported_number_rate_proxy": 0.2,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-5",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on Table 3 in the provided documents (specifically for the principal components benchmark in `book-04.pdf`), Model B is more accurate with an accuracy of 85 percent compared to Model A's 81 percent [1]. Model B uses the intervention of standardizing features [1, 2].",
+      "evidence_ids": [
+        "book-04-p2",
+        "book-04-p1",
+        "book-04-p3",
+        "book-05-p2",
+        "book-06-p2"
+      ],
+      "category": "multi_hop",
+      "answerable": true,
+      "generation_ms": 3399.551199981943,
+      "usage": {
+        "input_tokens": 455,
+        "output_tokens": 66,
+        "total_tokens": 521,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.5,
+      "unsupported_number_rate_proxy": 0.16666666666666666,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-6",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, principal components is applied in chapter 5 using the following workflow: normalize inputs, apply standardizing features, and evaluate held-out examples (ensuring that parameters are not selected using the evaluation labels) [1].",
+      "evidence_ids": [
+        "book-04-p4",
+        "book-04-p5",
+        "book-04-p1",
+        "book-05-p4",
+        "book-06-p4"
+      ],
+      "category": "followup",
+      "answerable": true,
+      "generation_ms": 1020.917499990901,
+      "usage": {
+        "input_tokens": 314,
+        "output_tokens": 50,
+        "total_tokens": 364,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-6",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, in chapter 5, principal components are applied using the following workflow: normalize inputs, apply standardizing features, and evaluate held-out examples [1]. Additionally, parameters must not be selected using the evaluation labels [1].",
+      "evidence_ids": [
+        "book-04-p4",
+        "book-04-p1",
+        "book-04-p5",
+        "book-04-p3",
+        "book-05-p4"
+      ],
+      "category": "followup",
+      "answerable": true,
+      "generation_ms": 940.895100007765,
+      "usage": {
+        "input_tokens": 355,
+        "output_tokens": 52,
+        "total_tokens": 407,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-7",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided evidence, error code ZX-51 requires restarting the calibration stage [1].",
+      "evidence_ids": [
+        "book-04-p6",
+        "book-05-p6",
+        "book-06-p6",
+        "book-04-p1",
+        "book-05-p1"
+      ],
+      "category": "identifier",
+      "answerable": true,
+      "generation_ms": 757.6856999949086,
+      "usage": {
+        "input_tokens": 329,
+        "output_tokens": 20,
+        "total_tokens": 349,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-7",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided evidence, error code ZX-51 requires restarting the calibration stage [1].",
+      "evidence_ids": [
+        "book-04-p6",
+        "book-05-p6",
+        "book-06-p6",
+        "book-04-p1",
+        "book-05-p1"
+      ],
+      "category": "identifier",
+      "answerable": true,
+      "generation_ms": 2793.33289997885,
+      "usage": {
+        "input_tokens": 329,
+        "output_tokens": 20,
+        "total_tokens": 349,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-ambiguous",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided evidence, Model B has a higher accuracy percentage (85%) and requires fewer training hours (7 hours) compared to Model A, which has an accuracy of 81% and requires 9 training hours [1]. Model B also uses standardizing features [1].",
+      "evidence_ids": [
+        "book-04-p2",
+        "book-04-p3",
+        "book-04-p4",
+        "book-04-p1",
+        "book-04-p5"
+      ],
+      "category": "ambiguous",
+      "answerable": false,
+      "generation_ms": 3433.1426999997348,
+      "usage": {
+        "input_tokens": 377,
+        "output_tokens": 59,
+        "total_tokens": 436,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.0,
+      "citation_label_precision": 0.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": null,
+      "unanswerable_abstention_heuristic": false,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-ambiguous",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, Model B has a higher accuracy (85%) and requires fewer training hours (7 hours) compared to Model A, which has an accuracy of 81% and requires 9 training hours [1]. Model B also uses standardizing features [1]. \n\nIf your question refers to a different comparison, please clarify what topic or earlier statement you are asking about.",
+      "evidence_ids": [
+        "book-04-p2",
+        "book-04-p3",
+        "book-04-p4",
+        "book-04-p1",
+        "book-04-p5"
+      ],
+      "category": "ambiguous",
+      "answerable": false,
+      "generation_ms": 2265.14830000815,
+      "usage": {
+        "input_tokens": 377,
+        "output_tokens": 82,
+        "total_tokens": 459,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.0,
+      "citation_label_precision": 0.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.6666666666666666,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": null,
+      "unanswerable_abstention_heuristic": true,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-unanswerable",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, there is no mention of the author's phone number in the principal components book. Therefore, the evidence is insufficient.",
+      "evidence_ids": [
+        "book-04-p1",
+        "book-04-p4",
+        "book-04-p5",
+        "book-04-p3",
+        "book-04-p2"
+      ],
+      "category": "unanswerable",
+      "answerable": false,
+      "generation_ms": 2558.30179998884,
+      "usage": {
+        "input_tokens": 383,
+        "output_tokens": 31,
+        "total_tokens": 414,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.0,
+      "citation_label_precision": null,
+      "citation_index_validity": null,
+      "citation_sentence_coverage_proxy": 0.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": null,
+      "unanswerable_abstention_heuristic": true,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q04-unanswerable",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, there is no mention of the author's phone number in the principal components book. Therefore, the evidence is insufficient to answer the question.",
+      "evidence_ids": [
+        "book-04-p1",
+        "book-04-p4",
+        "book-04-p5",
+        "book-04-p3",
+        "book-04-p6"
+      ],
+      "category": "unanswerable",
+      "answerable": false,
+      "generation_ms": 2315.5529999930877,
+      "usage": {
+        "input_tokens": 366,
+        "output_tokens": 35,
+        "total_tokens": 401,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.0,
+      "citation_label_precision": null,
+      "citation_index_validity": null,
+      "citation_sentence_coverage_proxy": 0.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.0,
+      "context_recall": null,
+      "unanswerable_abstention_heuristic": true,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "cross-4",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, the main drawbacks of each are:\n\n* **Principal components:** The main drawback is the loss of interpretability [2].\n* **Support vector machines:** The main drawback is expensive training [1].",
+      "evidence_ids": [
+        "book-05-p5",
+        "book-04-p5",
+        "book-05-p1",
+        "book-05-p2",
+        "book-04-p1"
+      ],
+      "category": "cross_document",
+      "answerable": true,
+      "generation_ms": 2507.0883999869693,
+      "usage": {
+        "input_tokens": 329,
+        "output_tokens": 48,
+        "total_tokens": 377,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.6666666666666666,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.4,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "cross-4",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, the main drawback of support vector machines is expensive training [1]. \n\nHowever, the provided evidence is **insufficient** to discuss or compare the drawbacks of principal components, as the text contains no information about principal components.",
+      "evidence_ids": [
+        "book-05-p5",
+        "book-05-p1",
+        "book-05-p4",
+        "book-05-p2",
+        "book-05-p6"
+      ],
+      "category": "cross_document",
+      "answerable": true,
+      "generation_ms": 2325.324199977331,
+      "usage": {
+        "input_tokens": 347,
+        "output_tokens": 52,
+        "total_tokens": 399,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 0.5,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.5,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 0.5,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q05-0",
+      "variant": "dense",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, support vector machines are defined as maximizing the classification margin [1].",
+      "evidence_ids": [
+        "book-05-p1",
+        "book-05-p3",
+        "book-05-p5",
+        "book-05-p4",
+        "book-05-p2"
+      ],
+      "category": "factual",
+      "answerable": true,
+      "generation_ms": 2689.0028000052553,
+      "usage": {
+        "input_tokens": 370,
+        "output_tokens": 20,
+        "total_tokens": 390,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    },
+    {
+      "query_id": "q05-0",
+      "variant": "rrf_0.5_rerank",
+      "status": "completed",
+      "answer": "Based on the provided document evidence, support vector machines are defined as maximizing the classification margin [1].",
+      "evidence_ids": [
+        "book-05-p1",
+        "book-05-p5",
+        "book-05-p4",
+        "book-05-p3",
+        "book-05-p6"
+      ],
+      "category": "factual",
+      "answerable": true,
+      "generation_ms": 2458.298800018383,
+      "usage": {
+        "input_tokens": 353,
+        "output_tokens": 20,
+        "total_tokens": 373,
+        "input_token_details": {
+          "cache_read": 0
+        }
+      },
+      "estimated_cost": null,
+      "expected_phrase_recall_proxy": 1.0,
+      "citation_label_precision": 1.0,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 1.0,
+      "unsupported_number_rate_proxy": 0.0,
+      "context_precision": 0.2,
+      "context_recall": 1.0,
+      "unanswerable_abstention_heuristic": null,
+      "human_correctness": null,
+      "human_faithfulness": null,
+      "human_unsupported_claim_rate": null
+    }
+  ],
+  "failed_attempts": [
+    {
+      "query_id": "q04-ambiguous",
+      "variant": "dense",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2463.8666000100784
+    },
+    {
+      "query_id": "q04-ambiguous",
+      "variant": "rrf_0.5_rerank",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2636.972300009802
+    },
+    {
+      "query_id": "q04-unanswerable",
+      "variant": "dense",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2223.0455000244547
+    },
+    {
+      "query_id": "q04-unanswerable",
+      "variant": "rrf_0.5_rerank",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2163.2672999985516
+    },
+    {
+      "query_id": "cross-4",
+      "variant": "dense",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2701.170699991053
+    },
+    {
+      "query_id": "cross-4",
+      "variant": "rrf_0.5_rerank",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2088.4747999953106
+    },
+    {
+      "query_id": "q05-0",
+      "variant": "dense",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 1983.5459000023548
+    },
+    {
+      "query_id": "q05-0",
+      "variant": "rrf_0.5_rerank",
+      "status": "failed",
+      "failure_type": "GoogleRateLimitError",
+      "generation_ms": 2500.0638000201434
+    }
+  ],
+  "generation_ms": {
+    "n": 24,
+    "mean": 2034.7917624991776,
+    "p50": 2103.8109000073746,
+    "p95": 3433.1426999997348,
+    "p99": null,
+    "stdev": 981.8635169791905
+  },
+  "time_to_first_streamed_token": null,
+  "streaming_status": "not implemented"
+}

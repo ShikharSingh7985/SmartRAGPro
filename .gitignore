@@ -26,3 +26,7 @@ build/
 .integration-tmp/
 .integration-cache/
 .coverage.*
+evaluation/.cache/
+!evaluation/data/
+evaluation/data/*
+!evaluation/data/synthetic.json

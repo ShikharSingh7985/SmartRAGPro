@@ -1,0 +1,2539 @@
+{
+  "version": "synthetic-v1",
+  "chunks": [
+    {
+      "id": "book-00-p1",
+      "document_id": "book-00",
+      "filename": "book-00.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: overfitting. This synthetic handbook defines overfitting as memorizing training noise. The recommended intervention is regularization."
+    },
+    {
+      "id": "book-00-p2",
+      "document_id": "book-00",
+      "filename": "book-00.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: overfitting benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 77 | 5. Row: Model B | 81 | 3. Model B uses regularization. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-00-p3",
+      "document_id": "book-00",
+      "filename": "book-00.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: overfitting validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 14; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-00-p4",
+      "document_id": "book-00",
+      "filename": "book-00.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying overfitting. Workflow: normalize inputs, apply regularization, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-00-p5",
+      "document_id": "book-00",
+      "filename": "book-00.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of overfitting. The main drawback is high variance. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-00-p6",
+      "document_id": "book-00",
+      "filename": "book-00.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-47: the overfitting maintenance record. Error code ZX-47 requires restarting the calibration stage. The calibration interval is 11 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-01-p1",
+      "document_id": "book-01",
+      "filename": "book-01.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: random forests. This synthetic handbook defines random forests as combining decision trees. The recommended intervention is feature subsampling."
+    },
+    {
+      "id": "book-01-p2",
+      "document_id": "book-01",
+      "filename": "book-01.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: random forests benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 78 | 6. Row: Model B | 82 | 4. Model B uses feature subsampling. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-01-p3",
+      "document_id": "book-01",
+      "filename": "book-01.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: random forests validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 15; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-01-p4",
+      "document_id": "book-01",
+      "filename": "book-01.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying random forests. Workflow: normalize inputs, apply feature subsampling, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-01-p5",
+      "document_id": "book-01",
+      "filename": "book-01.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of random forests. The main drawback is limited interpretability. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-01-p6",
+      "document_id": "book-01",
+      "filename": "book-01.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-48: the random forests maintenance record. Error code ZX-48 requires restarting the calibration stage. The calibration interval is 12 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-02-p1",
+      "document_id": "book-02",
+      "filename": "book-02.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: gradient descent. This synthetic handbook defines gradient descent as iteratively reducing a loss. The recommended intervention is learning rate scheduling."
+    },
+    {
+      "id": "book-02-p2",
+      "document_id": "book-02",
+      "filename": "book-02.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: gradient descent benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 79 | 7. Row: Model B | 83 | 5. Model B uses learning rate scheduling. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-02-p3",
+      "document_id": "book-02",
+      "filename": "book-02.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: gradient descent validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 16; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-02-p4",
+      "document_id": "book-02",
+      "filename": "book-02.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying gradient descent. Workflow: normalize inputs, apply learning rate scheduling, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-02-p5",
+      "document_id": "book-02",
+      "filename": "book-02.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of gradient descent. The main drawback is sensitivity to step size. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-02-p6",
+      "document_id": "book-02",
+      "filename": "book-02.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-49: the gradient descent maintenance record. Error code ZX-49 requires restarting the calibration stage. The calibration interval is 13 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-03-p1",
+      "document_id": "book-03",
+      "filename": "book-03.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: dropout. This synthetic handbook defines dropout as randomly disabling training units. The recommended intervention is mask sampling."
+    },
+    {
+      "id": "book-03-p2",
+      "document_id": "book-03",
+      "filename": "book-03.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: dropout benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 80 | 8. Row: Model B | 84 | 6. Model B uses mask sampling. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-03-p3",
+      "document_id": "book-03",
+      "filename": "book-03.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: dropout validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 17; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-03-p4",
+      "document_id": "book-03",
+      "filename": "book-03.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying dropout. Workflow: normalize inputs, apply mask sampling, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-03-p5",
+      "document_id": "book-03",
+      "filename": "book-03.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of dropout. The main drawback is slower convergence. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-03-p6",
+      "document_id": "book-03",
+      "filename": "book-03.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-50: the dropout maintenance record. Error code ZX-50 requires restarting the calibration stage. The calibration interval is 14 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-04-p1",
+      "document_id": "book-04",
+      "filename": "book-04.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: principal components. This synthetic handbook defines principal components as projecting onto high variance directions. The recommended intervention is standardizing features."
+    },
+    {
+      "id": "book-04-p2",
+      "document_id": "book-04",
+      "filename": "book-04.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: principal components benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 81 | 9. Row: Model B | 85 | 7. Model B uses standardizing features. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-04-p3",
+      "document_id": "book-04",
+      "filename": "book-04.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: principal components validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 18; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-04-p4",
+      "document_id": "book-04",
+      "filename": "book-04.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying principal components. Workflow: normalize inputs, apply standardizing features, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-04-p5",
+      "document_id": "book-04",
+      "filename": "book-04.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of principal components. The main drawback is loss of interpretability. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-04-p6",
+      "document_id": "book-04",
+      "filename": "book-04.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-51: the principal components maintenance record. Error code ZX-51 requires restarting the calibration stage. The calibration interval is 15 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-05-p1",
+      "document_id": "book-05",
+      "filename": "book-05.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: support vector machines. This synthetic handbook defines support vector machines as maximizing the classification margin. The recommended intervention is kernel selection."
+    },
+    {
+      "id": "book-05-p2",
+      "document_id": "book-05",
+      "filename": "book-05.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: support vector machines benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 82 | 10. Row: Model B | 86 | 8. Model B uses kernel selection. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-05-p3",
+      "document_id": "book-05",
+      "filename": "book-05.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: support vector machines validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 19; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-05-p4",
+      "document_id": "book-05",
+      "filename": "book-05.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying support vector machines. Workflow: normalize inputs, apply kernel selection, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-05-p5",
+      "document_id": "book-05",
+      "filename": "book-05.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of support vector machines. The main drawback is expensive training. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-05-p6",
+      "document_id": "book-05",
+      "filename": "book-05.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-52: the support vector machines maintenance record. Error code ZX-52 requires restarting the calibration stage. The calibration interval is 16 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-06-p1",
+      "document_id": "book-06",
+      "filename": "book-06.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: naive Bayes. This synthetic handbook defines naive Bayes as assuming conditional independence. The recommended intervention is Laplace smoothing."
+    },
+    {
+      "id": "book-06-p2",
+      "document_id": "book-06",
+      "filename": "book-06.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: naive Bayes benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 83 | 11. Row: Model B | 87 | 9. Model B uses Laplace smoothing. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-06-p3",
+      "document_id": "book-06",
+      "filename": "book-06.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: naive Bayes validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 20; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-06-p4",
+      "document_id": "book-06",
+      "filename": "book-06.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying naive Bayes. Workflow: normalize inputs, apply Laplace smoothing, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-06-p5",
+      "document_id": "book-06",
+      "filename": "book-06.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of naive Bayes. The main drawback is correlated feature assumptions. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-06-p6",
+      "document_id": "book-06",
+      "filename": "book-06.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-53: the naive Bayes maintenance record. Error code ZX-53 requires restarting the calibration stage. The calibration interval is 17 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-07-p1",
+      "document_id": "book-07",
+      "filename": "book-07.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: k-means. This synthetic handbook defines k-means as assigning points to centroids. The recommended intervention is multiple initializations."
+    },
+    {
+      "id": "book-07-p2",
+      "document_id": "book-07",
+      "filename": "book-07.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: k-means benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 84 | 12. Row: Model B | 88 | 10. Model B uses multiple initializations. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-07-p3",
+      "document_id": "book-07",
+      "filename": "book-07.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: k-means validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 21; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-07-p4",
+      "document_id": "book-07",
+      "filename": "book-07.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying k-means. Workflow: normalize inputs, apply multiple initializations, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-07-p5",
+      "document_id": "book-07",
+      "filename": "book-07.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of k-means. The main drawback is sensitivity to outliers. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-07-p6",
+      "document_id": "book-07",
+      "filename": "book-07.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-54: the k-means maintenance record. Error code ZX-54 requires restarting the calibration stage. The calibration interval is 18 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-08-p1",
+      "document_id": "book-08",
+      "filename": "book-08.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: neural networks. This synthetic handbook defines neural networks as learning layered representations. The recommended intervention is early stopping."
+    },
+    {
+      "id": "book-08-p2",
+      "document_id": "book-08",
+      "filename": "book-08.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: neural networks benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 85 | 13. Row: Model B | 89 | 11. Model B uses early stopping. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-08-p3",
+      "document_id": "book-08",
+      "filename": "book-08.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: neural networks validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 22; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-08-p4",
+      "document_id": "book-08",
+      "filename": "book-08.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying neural networks. Workflow: normalize inputs, apply early stopping, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-08-p5",
+      "document_id": "book-08",
+      "filename": "book-08.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of neural networks. The main drawback is large training costs. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-08-p6",
+      "document_id": "book-08",
+      "filename": "book-08.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-55: the neural networks maintenance record. Error code ZX-55 requires restarting the calibration stage. The calibration interval is 19 days. This identifier is case-insensitive."
+    },
+    {
+      "id": "book-09-p1",
+      "document_id": "book-09",
+      "filename": "book-09.pdf",
+      "page": 1,
+      "content_type": "text",
+      "text": "Chapter 1: regularization. This synthetic handbook defines regularization as penalizing model complexity. The recommended intervention is L2 weight penalties."
+    },
+    {
+      "id": "book-09-p2",
+      "document_id": "book-09",
+      "filename": "book-09.pdf",
+      "page": 2,
+      "content_type": "table",
+      "text": "Table 3: regularization benchmark. Headers: Approach | Accuracy percent | Training hours. Row: Model A | 86 | 14. Row: Model B | 90 | 12. Model B uses L2 weight penalties. Values are synthetic, not scientific findings."
+    },
+    {
+      "id": "book-09-p3",
+      "document_id": "book-09",
+      "filename": "book-09.pdf",
+      "page": 3,
+      "content_type": "figure",
+      "text": "Figure 2: regularization validation curve. Chart x-axis: epoch, y-axis: validation score. At epoch 1 the score is 5; at epoch 2 it is 23; at epoch 3 it is 8. The maximum is epoch 2. This is a visible-value transcription, not model-derived vision."
+    },
+    {
+      "id": "book-09-p4",
+      "document_id": "book-09",
+      "filename": "book-09.pdf",
+      "page": 4,
+      "content_type": "text",
+      "text": "Chapter 5: applying regularization. Workflow: normalize inputs, apply L2 weight penalties, evaluate held-out examples. Do not select parameters using the evaluation labels."
+    },
+    {
+      "id": "book-09-p5",
+      "document_id": "book-09",
+      "filename": "book-09.pdf",
+      "page": 5,
+      "content_type": "text",
+      "text": "Chapter 6: limitations of regularization. The main drawback is underfitting with excessive strength. Monitoring held-out results helps identify this tradeoff."
+    },
+    {
+      "id": "book-09-p6",
+      "document_id": "book-09",
+      "filename": "book-09.pdf",
+      "page": 6,
+      "content_type": "text",
+      "text": "Appendix ZX-56: the regularization maintenance record. Error code ZX-56 requires restarting the calibration stage. The calibration interval is 20 days. This identifier is case-insensitive."
+    }
+  ],
+  "queries": [
+    {
+      "id": "q00-0",
+      "text": "What does overfitting mean?",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p1"
+      ],
+      "expected_answer": "memorizing training noise",
+      "answerable": true,
+      "category": "factual",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-1",
+      "text": "Explain the recommended intervention for overfitting.",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p1",
+        "book-00-p4"
+      ],
+      "expected_answer": "regularization",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for overfitting?",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p2"
+      ],
+      "expected_answer": "81 percent; 3 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-3",
+      "text": "At which epoch does Figure 2 for overfitting reach its maximum and what is its score?",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p3"
+      ],
+      "expected_answer": "epoch 2; 14",
+      "answerable": true,
+      "category": "figure",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-4",
+      "text": "Define overfitting and name its main drawback.",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p1",
+        "book-00-p5"
+      ],
+      "expected_answer": "memorizing training noise; high variance",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-5",
+      "text": "Which overfitting approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p1",
+        "book-00-p2"
+      ],
+      "expected_answer": "Model B; regularization",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p4"
+      ],
+      "expected_answer": "regularization",
+      "answerable": true,
+      "category": "followup",
+      "split": "validation",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is overfitting?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-7",
+      "text": "What action resolves ZX-47?",
+      "document_ids": [
+        "book-00",
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-00-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-00"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q00-unanswerable",
+      "text": "What is the author's phone number in the overfitting book?",
+      "document_ids": [
+        "book-00"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-0",
+      "text": "What does random forests mean?",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p1"
+      ],
+      "expected_answer": "combining decision trees",
+      "answerable": true,
+      "category": "factual",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-1",
+      "text": "Explain the recommended intervention for random forests.",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p1",
+        "book-01-p4"
+      ],
+      "expected_answer": "feature subsampling",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for random forests?",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p2"
+      ],
+      "expected_answer": "82 percent; 4 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-3",
+      "text": "At which epoch does Figure 2 for random forests reach its maximum and what is its score?",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p3"
+      ],
+      "expected_answer": "epoch 2; 15",
+      "answerable": true,
+      "category": "figure",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-4",
+      "text": "Define random forests and name its main drawback.",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p1",
+        "book-01-p5"
+      ],
+      "expected_answer": "combining decision trees; limited interpretability",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-5",
+      "text": "Which random forests approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p1",
+        "book-01-p2"
+      ],
+      "expected_answer": "Model B; feature subsampling",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p4"
+      ],
+      "expected_answer": "feature subsampling",
+      "answerable": true,
+      "category": "followup",
+      "split": "validation",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is random forests?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-7",
+      "text": "What action resolves ZX-48?",
+      "document_ids": [
+        "book-01",
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-01-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-01"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q01-unanswerable",
+      "text": "What is the author's phone number in the random forests book?",
+      "document_ids": [
+        "book-01"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-0",
+      "text": "What does gradient descent mean?",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p1"
+      ],
+      "expected_answer": "iteratively reducing a loss",
+      "answerable": true,
+      "category": "factual",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-1",
+      "text": "Explain the recommended intervention for gradient descent.",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p1",
+        "book-02-p4"
+      ],
+      "expected_answer": "learning rate scheduling",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for gradient descent?",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p2"
+      ],
+      "expected_answer": "83 percent; 5 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-3",
+      "text": "At which epoch does Figure 2 for gradient descent reach its maximum and what is its score?",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p3"
+      ],
+      "expected_answer": "epoch 2; 16",
+      "answerable": true,
+      "category": "figure",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-4",
+      "text": "Define gradient descent and name its main drawback.",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p1",
+        "book-02-p5"
+      ],
+      "expected_answer": "iteratively reducing a loss; sensitivity to step size",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-5",
+      "text": "Which gradient descent approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p1",
+        "book-02-p2"
+      ],
+      "expected_answer": "Model B; learning rate scheduling",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p4"
+      ],
+      "expected_answer": "learning rate scheduling",
+      "answerable": true,
+      "category": "followup",
+      "split": "validation",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is gradient descent?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-7",
+      "text": "What action resolves ZX-49?",
+      "document_ids": [
+        "book-02",
+        "book-03",
+        "book-04"
+      ],
+      "relevant_ids": [
+        "book-02-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-02"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q02-unanswerable",
+      "text": "What is the author's phone number in the gradient descent book?",
+      "document_ids": [
+        "book-02"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-0",
+      "text": "What does dropout mean?",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p1"
+      ],
+      "expected_answer": "randomly disabling training units",
+      "answerable": true,
+      "category": "factual",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-1",
+      "text": "Explain the recommended intervention for dropout.",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p1",
+        "book-03-p4"
+      ],
+      "expected_answer": "mask sampling",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for dropout?",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p2"
+      ],
+      "expected_answer": "84 percent; 6 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-3",
+      "text": "At which epoch does Figure 2 for dropout reach its maximum and what is its score?",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p3"
+      ],
+      "expected_answer": "epoch 2; 17",
+      "answerable": true,
+      "category": "figure",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-4",
+      "text": "Define dropout and name its main drawback.",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p1",
+        "book-03-p5"
+      ],
+      "expected_answer": "randomly disabling training units; slower convergence",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-5",
+      "text": "Which dropout approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p1",
+        "book-03-p2"
+      ],
+      "expected_answer": "Model B; mask sampling",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p4"
+      ],
+      "expected_answer": "mask sampling",
+      "answerable": true,
+      "category": "followup",
+      "split": "validation",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is dropout?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-7",
+      "text": "What action resolves ZX-50?",
+      "document_ids": [
+        "book-03",
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-03-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-03"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q03-unanswerable",
+      "text": "What is the author's phone number in the dropout book?",
+      "document_ids": [
+        "book-03"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-0",
+      "text": "What does principal components mean?",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p1"
+      ],
+      "expected_answer": "projecting onto high variance directions",
+      "answerable": true,
+      "category": "factual",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-1",
+      "text": "Explain the recommended intervention for principal components.",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p1",
+        "book-04-p4"
+      ],
+      "expected_answer": "standardizing features",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for principal components?",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p2"
+      ],
+      "expected_answer": "85 percent; 7 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-3",
+      "text": "At which epoch does Figure 2 for principal components reach its maximum and what is its score?",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p3"
+      ],
+      "expected_answer": "epoch 2; 18",
+      "answerable": true,
+      "category": "figure",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-4",
+      "text": "Define principal components and name its main drawback.",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p1",
+        "book-04-p5"
+      ],
+      "expected_answer": "projecting onto high variance directions; loss of interpretability",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-5",
+      "text": "Which principal components approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p1",
+        "book-04-p2"
+      ],
+      "expected_answer": "Model B; standardizing features",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p4"
+      ],
+      "expected_answer": "standardizing features",
+      "answerable": true,
+      "category": "followup",
+      "split": "test",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is principal components?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-7",
+      "text": "What action resolves ZX-51?",
+      "document_ids": [
+        "book-04",
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-04-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-04"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q04-unanswerable",
+      "text": "What is the author's phone number in the principal components book?",
+      "document_ids": [
+        "book-04"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-0",
+      "text": "What does support vector machines mean?",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p1"
+      ],
+      "expected_answer": "maximizing the classification margin",
+      "answerable": true,
+      "category": "factual",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-1",
+      "text": "Explain the recommended intervention for support vector machines.",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p1",
+        "book-05-p4"
+      ],
+      "expected_answer": "kernel selection",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for support vector machines?",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p2"
+      ],
+      "expected_answer": "86 percent; 8 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-3",
+      "text": "At which epoch does Figure 2 for support vector machines reach its maximum and what is its score?",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p3"
+      ],
+      "expected_answer": "epoch 2; 19",
+      "answerable": true,
+      "category": "figure",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-4",
+      "text": "Define support vector machines and name its main drawback.",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p1",
+        "book-05-p5"
+      ],
+      "expected_answer": "maximizing the classification margin; expensive training",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-5",
+      "text": "Which support vector machines approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p1",
+        "book-05-p2"
+      ],
+      "expected_answer": "Model B; kernel selection",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p4"
+      ],
+      "expected_answer": "kernel selection",
+      "answerable": true,
+      "category": "followup",
+      "split": "test",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is support vector machines?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-7",
+      "text": "What action resolves ZX-52?",
+      "document_ids": [
+        "book-05",
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-05-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-05"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q05-unanswerable",
+      "text": "What is the author's phone number in the support vector machines book?",
+      "document_ids": [
+        "book-05"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-0",
+      "text": "What does naive Bayes mean?",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p1"
+      ],
+      "expected_answer": "assuming conditional independence",
+      "answerable": true,
+      "category": "factual",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-1",
+      "text": "Explain the recommended intervention for naive Bayes.",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p1",
+        "book-06-p4"
+      ],
+      "expected_answer": "Laplace smoothing",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for naive Bayes?",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p2"
+      ],
+      "expected_answer": "87 percent; 9 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-3",
+      "text": "At which epoch does Figure 2 for naive Bayes reach its maximum and what is its score?",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p3"
+      ],
+      "expected_answer": "epoch 2; 20",
+      "answerable": true,
+      "category": "figure",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-4",
+      "text": "Define naive Bayes and name its main drawback.",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p1",
+        "book-06-p5"
+      ],
+      "expected_answer": "assuming conditional independence; correlated feature assumptions",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-5",
+      "text": "Which naive Bayes approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p1",
+        "book-06-p2"
+      ],
+      "expected_answer": "Model B; Laplace smoothing",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p4"
+      ],
+      "expected_answer": "Laplace smoothing",
+      "answerable": true,
+      "category": "followup",
+      "split": "test",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is naive Bayes?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-7",
+      "text": "What action resolves ZX-53?",
+      "document_ids": [
+        "book-06",
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-06-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-06"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q06-unanswerable",
+      "text": "What is the author's phone number in the naive Bayes book?",
+      "document_ids": [
+        "book-06"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-0",
+      "text": "What does k-means mean?",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p1"
+      ],
+      "expected_answer": "assigning points to centroids",
+      "answerable": true,
+      "category": "factual",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-1",
+      "text": "Explain the recommended intervention for k-means.",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p1",
+        "book-07-p4"
+      ],
+      "expected_answer": "multiple initializations",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for k-means?",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p2"
+      ],
+      "expected_answer": "88 percent; 10 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-3",
+      "text": "At which epoch does Figure 2 for k-means reach its maximum and what is its score?",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p3"
+      ],
+      "expected_answer": "epoch 2; 21",
+      "answerable": true,
+      "category": "figure",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-4",
+      "text": "Define k-means and name its main drawback.",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p1",
+        "book-07-p5"
+      ],
+      "expected_answer": "assigning points to centroids; sensitivity to outliers",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-5",
+      "text": "Which k-means approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p1",
+        "book-07-p2"
+      ],
+      "expected_answer": "Model B; multiple initializations",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p4"
+      ],
+      "expected_answer": "multiple initializations",
+      "answerable": true,
+      "category": "followup",
+      "split": "test",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is k-means?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-7",
+      "text": "What action resolves ZX-54?",
+      "document_ids": [
+        "book-07",
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-07-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-07"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q07-unanswerable",
+      "text": "What is the author's phone number in the k-means book?",
+      "document_ids": [
+        "book-07"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-0",
+      "text": "What does neural networks mean?",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p1"
+      ],
+      "expected_answer": "learning layered representations",
+      "answerable": true,
+      "category": "factual",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-1",
+      "text": "Explain the recommended intervention for neural networks.",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p1",
+        "book-08-p4"
+      ],
+      "expected_answer": "early stopping",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for neural networks?",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p2"
+      ],
+      "expected_answer": "89 percent; 11 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-3",
+      "text": "At which epoch does Figure 2 for neural networks reach its maximum and what is its score?",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p3"
+      ],
+      "expected_answer": "epoch 2; 22",
+      "answerable": true,
+      "category": "figure",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-4",
+      "text": "Define neural networks and name its main drawback.",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p1",
+        "book-08-p5"
+      ],
+      "expected_answer": "learning layered representations; large training costs",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-5",
+      "text": "Which neural networks approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p1",
+        "book-08-p2"
+      ],
+      "expected_answer": "Model B; early stopping",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p4"
+      ],
+      "expected_answer": "early stopping",
+      "answerable": true,
+      "category": "followup",
+      "split": "test",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is neural networks?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-7",
+      "text": "What action resolves ZX-55?",
+      "document_ids": [
+        "book-08",
+        "book-09",
+        "book-00"
+      ],
+      "relevant_ids": [
+        "book-08-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-08"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q08-unanswerable",
+      "text": "What is the author's phone number in the neural networks book?",
+      "document_ids": [
+        "book-08"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-0",
+      "text": "What does regularization mean?",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p1"
+      ],
+      "expected_answer": "penalizing model complexity",
+      "answerable": true,
+      "category": "factual",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-1",
+      "text": "Explain the recommended intervention for regularization.",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p1",
+        "book-09-p4"
+      ],
+      "expected_answer": "L2 weight penalties",
+      "answerable": true,
+      "category": "explanatory",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-2",
+      "text": "What accuracy and training hours does Model B achieve in Table 3 for regularization?",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p2"
+      ],
+      "expected_answer": "90 percent; 12 hours",
+      "answerable": true,
+      "category": "table",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-3",
+      "text": "At which epoch does Figure 2 for regularization reach its maximum and what is its score?",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p3"
+      ],
+      "expected_answer": "epoch 2; 23",
+      "answerable": true,
+      "category": "figure",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-4",
+      "text": "Define regularization and name its main drawback.",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p1",
+        "book-09-p5"
+      ],
+      "expected_answer": "penalizing model complexity; underfitting with excessive strength",
+      "answerable": true,
+      "category": "cross_page",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-5",
+      "text": "Which regularization approach is more accurate in Table 3 and which intervention does it use?",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p1",
+        "book-09-p2"
+      ],
+      "expected_answer": "Model B; L2 weight penalties",
+      "answerable": true,
+      "category": "multi_hop",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-6",
+      "text": "How is it applied in chapter 5?",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p4"
+      ],
+      "expected_answer": "L2 weight penalties",
+      "answerable": true,
+      "category": "followup",
+      "split": "test",
+      "context": [
+        {
+          "role": "user",
+          "content": "What is regularization?"
+        }
+      ],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-7",
+      "text": "What action resolves ZX-56?",
+      "document_ids": [
+        "book-09",
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-09-p6"
+      ],
+      "expected_answer": "restarting the calibration stage",
+      "answerable": true,
+      "category": "identifier",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-ambiguous",
+      "text": "Which of those is better?",
+      "document_ids": [
+        "book-09"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Request clarification",
+      "answerable": false,
+      "category": "ambiguous",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "q09-unanswerable",
+      "text": "What is the author's phone number in the regularization book?",
+      "document_ids": [
+        "book-09"
+      ],
+      "relevant_ids": [],
+      "expected_answer": "Insufficient evidence",
+      "answerable": false,
+      "category": "unanswerable",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-0",
+      "text": "Compare the main drawbacks of overfitting and random forests.",
+      "document_ids": [
+        "book-00",
+        "book-01"
+      ],
+      "relevant_ids": [
+        "book-00-p5",
+        "book-01-p5"
+      ],
+      "expected_answer": "high variance; limited interpretability",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-1",
+      "text": "Compare the main drawbacks of random forests and gradient descent.",
+      "document_ids": [
+        "book-01",
+        "book-02"
+      ],
+      "relevant_ids": [
+        "book-01-p5",
+        "book-02-p5"
+      ],
+      "expected_answer": "limited interpretability; sensitivity to step size",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-2",
+      "text": "Compare the main drawbacks of gradient descent and dropout.",
+      "document_ids": [
+        "book-02",
+        "book-03"
+      ],
+      "relevant_ids": [
+        "book-02-p5",
+        "book-03-p5"
+      ],
+      "expected_answer": "sensitivity to step size; slower convergence",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "validation",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-4",
+      "text": "Compare the main drawbacks of principal components and support vector machines.",
+      "document_ids": [
+        "book-04",
+        "book-05"
+      ],
+      "relevant_ids": [
+        "book-04-p5",
+        "book-05-p5"
+      ],
+      "expected_answer": "loss of interpretability; expensive training",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-5",
+      "text": "Compare the main drawbacks of support vector machines and naive Bayes.",
+      "document_ids": [
+        "book-05",
+        "book-06"
+      ],
+      "relevant_ids": [
+        "book-05-p5",
+        "book-06-p5"
+      ],
+      "expected_answer": "expensive training; correlated feature assumptions",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-6",
+      "text": "Compare the main drawbacks of naive Bayes and k-means.",
+      "document_ids": [
+        "book-06",
+        "book-07"
+      ],
+      "relevant_ids": [
+        "book-06-p5",
+        "book-07-p5"
+      ],
+      "expected_answer": "correlated feature assumptions; sensitivity to outliers",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-7",
+      "text": "Compare the main drawbacks of k-means and neural networks.",
+      "document_ids": [
+        "book-07",
+        "book-08"
+      ],
+      "relevant_ids": [
+        "book-07-p5",
+        "book-08-p5"
+      ],
+      "expected_answer": "sensitivity to outliers; large training costs",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    },
+    {
+      "id": "cross-8",
+      "text": "Compare the main drawbacks of neural networks and regularization.",
+      "document_ids": [
+        "book-08",
+        "book-09"
+      ],
+      "relevant_ids": [
+        "book-08-p5",
+        "book-09-p5"
+      ],
+      "expected_answer": "large training costs; underfitting with excessive strength",
+      "answerable": true,
+      "category": "cross_document",
+      "split": "test",
+      "context": [],
+      "provenance": "synthetic author-generated; not independently human reviewed",
+      "reviewed_by": null
+    }
+  ]
+}

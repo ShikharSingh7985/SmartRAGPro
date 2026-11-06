@@ -1,0 +1,33 @@
+{
+  "synthetic": true,
+  "scope": "actual PDFs, PyMuPDF extraction and chunking; excludes OCR, embeddings and queue/storage",
+  "results": [
+    {
+      "repeat": 0,
+      "pages": 60,
+      "chunks": 90,
+      "characters": 12262,
+      "seconds": 2.615228400012711,
+      "pages_per_second": 22.942546815302393,
+      "final_rss_bytes": 175964160
+    },
+    {
+      "repeat": 1,
+      "pages": 60,
+      "chunks": 90,
+      "characters": 12262,
+      "seconds": 2.383224399993196,
+      "pages_per_second": 25.175975875444752,
+      "final_rss_bytes": 175968256
+    },
+    {
+      "repeat": 2,
+      "pages": 60,
+      "chunks": 90,
+      "characters": 12262,
+      "seconds": 1.9509212999837473,
+      "pages_per_second": 30.754700356441774,
+      "final_rss_bytes": 175972352
+    }
+  ]
+}

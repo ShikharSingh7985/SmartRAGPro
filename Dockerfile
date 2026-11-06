@@ -20,6 +20,7 @@ FROM base AS test
 USER root
 RUN uv sync --frozen
 COPY tests ./tests
+COPY evaluation ./evaluation
 ENV COVERAGE_FILE=/tmp/.coverage
 USER app
 CMD ["python", "-m", "pytest", "--basetemp=/tmp/pytest", "-o", "cache_dir=/tmp/pytest-cache"]

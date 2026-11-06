@@ -1,5 +1,11 @@
 # Phase 3 validation evidence
 
+Subsequent Phase 4 validation resolved the earlier live-provider gate with the user's
+local `GEMINI_MODEL=gemini-3.5-flash-lite` configuration. The rebuilt application passed
+the actual four-turn HTTP workflow, logout/fresh-login restoration and expected page
+citations; see evaluation/results/live_workflow.json. The original failed observations
+below remain historical evidence rather than being reclassified as successful tests.
+
 Recorded 2026-11-06. This evolves the existing Phase 2 application; Phase 4 has not started.
 
 ## Prerequisite audit and implementation

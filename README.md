@@ -1,7 +1,7 @@
 # SmartRAG Pro
 
 A multi-user PDF assistant with page citations, private object storage,
-durable background ingestion, and persistent context-aware chat. Phase 3 conversations.
+durable background ingestion, and persistent context-aware chat, with measured retrieval alternatives.
 
 FastAPI + Streamlit · PostgreSQL / SQLAlchemy / Alembic · Qdrant · Redis · S3
 (SeaweedFS locally) · Gemini generation · configurable Google/OpenAI embeddings.
@@ -66,6 +66,26 @@ scoped citations. Rename, change selected PDFs, export or delete saved conversat
 from Streamlit. See [conversation architecture](docs/architecture/conversations.md),
 [setup and API](docs/setup/conversations.md), and [Phase 3 validation](docs/phase3-validation.md).
 Responses appear after source verification; live token streaming is not enabled.
+
+The user-revised Phase 4 adds tenant-scoped persistent BM25, weighted rank fusion,
+bounded optional reranking and a query-vector cache. Validation retained dense as
+default; the synthetic held-out experiment did not justify replacing it. See
+[evaluation commands and label review](evaluation/README.md),
+[measured comparison](docs/benchmarks/retrieval-comparison.md),
+[latency/memory](docs/benchmarks/latency-and-memory.md) and
+[methodology/limits](docs/benchmarks/evaluation-methodology.md).
+
+New uploads populate the SQL lexical index. After upgrading, existing ready documents
+can be indexed without new embedding calls:
+
+```powershell
+docker compose exec api python -m scripts.backfill_lexical
+```
+
+Run migrations/bootstrap first. `RETRIEVAL_MODE=dense|bm25|hybrid|hybrid_rerank` and
+other bounded retrieval settings are documented in `.env.example`; restart API after
+environment changes. Incomplete lexical indexes fall back to dense with explicit
+internal telemetry. Never change embedding model/dimensions in the same vector index.
 
 Citation metadata
 validates provenance, not factual entailment. Chat history is stored/displayed; contextual

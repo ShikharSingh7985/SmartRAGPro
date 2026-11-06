@@ -1,0 +1,10 @@
+{
+  "events": [
+    {"experiment": "initial live embedding pass", "status": "rate_limited", "reason": "Google per-minute embedding quota", "resolution": "bounded backoff and resumable per-query vector cache", "provider_exception_text_stored": false},
+    {"experiment": "initial live answer sample", "status": "partially_rate_limited", "reason": "GoogleRateLimitError", "evidence": "quality.json failed_attempts", "resolution": "resume failed cases only with pacing"},
+    {"experiment": "native SQL/Qdrant whole-service timing", "status": "aborted", "reason": "slow host loopback made the run impractical", "evidence": "server/retrieval.csv records actual host-loopback Qdrant timings", "resolution": "measure actual PostgreSQL and Qdrant inside the disposable Docker network; performance.json", "complete_native_SQL_metrics": false},
+    {"experiment": "first Docker regression build", "status": "collection_failed", "reason": "evaluation package absent from test image", "resolution": "test-target COPY and Docker context allowlist corrected; full suite subsequently passed"},
+    {"experiment": "initial Windows dependency cache install", "status": "cache_file_rename_denied", "resolution": "uv sync --no-cache --link-mode copy; subsequent frozen sync passed"},
+    {"experiment": "hybrid reranking", "status": "quality_regression", "evidence": "retrieval.json and retrieval.csv", "resolution": "kept opt-in; dense remains default"}
+  ]
+}

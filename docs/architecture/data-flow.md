@@ -1,5 +1,12 @@
 # Data flow and state transitions
 
+Phase 4 retrieval: authorize owned ready active scope -> tenant/model-keyed query
+embedding cache -> scoped Qdrant dense / scoped SQL BM25 -> optional weighted RRF ->
+bounded optional reranking/deduplication -> page/run/owner provenance checks -> existing
+evidence selection and citation verification. Telemetry contains mode, stage timings,
+cache flags and fallback reasons only. Ingestion stores term rows per chunk and fences
+them with the same published run as vectors; incomplete legacy indexes fall back.
+
 Phase 3 chat flow is documented with a [LangGraph node diagram](conversations.md).
 JWT -> owned conversation lock -> current owned ready scope -> recent SQL turns and
 incremental synopsis/older recall -> reference resolution -> standalone query ->

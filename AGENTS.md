@@ -53,6 +53,28 @@ can only be supplied by the user:
 
 ## Roadmap and continuity
 
+- The user revised Phase 4 to retrieval quality, performance and reproducible evaluation.
+  Phase 5 must not start automatically. Preserve the user's latest phase scope over
+  the original proposed roadmap order.
+- Keep dense as default until validation evidence on a reviewed corpus justifies a
+  change. BM25/RRF/reranking are configurable; never tune on held-out labels or compare
+  different query sets as equivalent. Record failures and regressions too.
+- SQL lexical corpus statistics and candidates must be filtered by owner, ready selected
+  document IDs and active ingestion run before scoring. Preserve idempotent indexing,
+  count-complete legacy fallback and cascading cleanup. Backfill existing vectors
+  without reembedding using `python -m scripts.backfill_lexical` after migrations.
+- Query cache stores only tenant/model-keyed vectors with bounded size/TTL. Never cache
+  authorized evidence without a proven invalidation scheme. Every retrieval reauthorizes.
+- `evaluation/` contains synthetic, unreviewed labels and real-provider benchmark evidence.
+  Do not promote synthetic scores or deterministic answer proxies to human-reviewed
+  accuracy/faithfulness. Never report mock-model timings as live performance.
+- Reproduce with `python -m evaluation.retrieval`, `evaluation.quality`,
+  `evaluation.memory`, `evaluation.pdf_corpus`, `evaluation.performance` and
+  `evaluation.report`. Service performance accepts only disposable smartrag_test and
+  must not run concurrently with tests that downgrade that database.
+- Keep private corpora, PDFs, embedding caches and private answer exports in ignored
+  evaluation/.cache folders. Only public synthetic metrics/answers may be committed.
+
 - Phase 3 chat uses the deterministic LangGraph in `backend/app/conversations`.
   Authorize and lock the conversation before opening its server-generated thread.
   Production uses PostgresSaver on the same psycopg transaction as SQL messages,
@@ -82,7 +104,8 @@ can only be supplied by the user:
 
 Phase 1: architecture, secure digital-PDF RAG MVP, tests and verified initial GitHub push.
 Phase 2: OCR, tables/images and richer ingestion. Phase 3: LangGraph conversations.
-Phase 4: security/tenant reliability. Phase 5: retrieval evaluation and optimization.
+Phase 4: retrieval evaluation and optimization (user-revised). Phase 5: next scope
+awaits explicit user direction; security/tenant reliability remains proposed work.
 Phase 6: production operations. Later scopes may be revised by user specifications.
 Do not begin a later phase automatically. Keep `docs/roadmap.md`, architectural decisions
 and validation evidence accurate, including unresolved credentials and remote push status.

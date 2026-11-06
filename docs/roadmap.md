@@ -84,15 +84,35 @@ type checks and staged secret/artifact scanning passed. Implementation commit
 verified with `git ls-remote` on 2026-11-06. The following documentation-only commit
 records that verified milestone. Do not start Phase 4 automatically.
 
-## Phase 4 — Security, tenancy and reliability
+## Phase 4 — Retrieval quality, grounding and performance (user-revised scope)
 
-Email verification/reset, refresh tokens, quotas, stronger database tenant constraints,
-concurrency/load tests, least-privilege service identities and operational retries.
+The user explicitly replaced the earlier proposed order with retrieval quality,
+grounding, performance and reproducible evaluation. Implemented persistent scoped SQL
+BM25, configurable dense/BM25/RRF/rerank modes, bounded query-vector caching, legacy
+backfill without reembedding, 108 labeled synthetic questions with fixed splits,
+real Google embedding experiments, separate real Gemini answer samples, vectorizer
+RSS comparisons, real-service probes and generated reports/charts.
 
-## Phase 5 — Retrieval quality and evaluation
+Dense remains default because validation chose zero lexical share. This synthetic
+held-out corpus has a dense Recall@5 ceiling; there is no claim of improved real-world
+accuracy. See [measured results and limits](benchmarks/retrieval-comparison.md),
+[performance](benchmarks/latency-and-memory.md) and [reproduction/review](../evaluation/README.md).
+Representative human-reviewed documents and semantic answer review remain outstanding.
+Full validation: 69 native tests passed with three expected host/service skips; all
+72 real-service tests passed. The final focused PostgreSQL regression also checks
+the complete-index fallback and cleanup. Formatting, lint and type checks pass.
+Git verification will be recorded after the push.
 
-Curated ground-truth datasets, citation entailment evaluation, hybrid search/reranking,
-adversarial documents and cost/latency benchmarks.
+The earlier live Gemini gate is now resolved for the locally selected
+`gemini-3.5-flash-lite`: the rebuilt application completed all four live HTTP turns,
+fresh-client login/history restoration and expected page citations. Full ingestion
+and whole-turn timings are captured in evaluation/results/live_workflow.json.
+
+## Phase 5 — Next scope awaits user specification
+
+Not started. Await the user's next specification; the former retrieval scope was
+explicitly moved into Phase 4. Security/tenant hardening, representative corpus review
+and further quality work are candidates, not automatically authorized next-phase work.
 
 ## Phase 6 — Production operations
 

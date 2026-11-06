@@ -1,7 +1,10 @@
 """Explicit paid-capable HTTP acceptance using a synthetic ML PDF and real providers."""
 
+import argparse
+import json
 import secrets
 import time
+from pathlib import Path
 from uuid import uuid4
 
 import httpx
@@ -10,6 +13,11 @@ from scripts.textbook_fixture import textbook_pdf
 
 
 def main() -> None:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--output", type=Path)
+    args = parser.parse_args()
+    observations = []
+    status = "failed"
     credentials = {
         "email": f"synthetic-chat-{uuid4().hex}@example.com",
         "password": secrets.token_urlsafe(36),
@@ -23,6 +31,7 @@ def main() -> None:
         token.raise_for_status()
         client.headers["Authorization"] = "Bearer " + token.json()["access_token"]
         stage = "synthetic PDF ingestion"
+        ingestion_started = time.monotonic()
         result = client.post(
             "/api/v1/documents",
             files={"file": ("synthetic-ml.pdf", textbook_pdf(), "application/pdf")},
@@ -41,6 +50,14 @@ def main() -> None:
             time.sleep(3)
         else:
             raise RuntimeError("Ingestion timed out")
+        observations.append(
+            {
+                "stage": "full_ingestion",
+                "seconds": time.monotonic() - ingestion_started,
+                "pages": 4,
+                "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication",
+            }
+        )
         result = client.post("/api/v1/conversations", json={"document_ids": [document_id]})
         result.raise_for_status()
         conversation_id = result.json()["id"]
@@ -74,6 +91,14 @@ def main() -> None:
             assert all(
                 c["document_id"] == document_id and 1 <= c["page"] <= 4 for c in reply["citations"]
             )
+            observations.append(
+                {
+                    "stage": "whole_turn",
+                    "turn": turn,
+                    "seconds": time.monotonic() - start,
+                    "source_pages": sorted({c["page"] for c in reply["citations"]}),
+                }
+            )
             print(
                 {
                     "turn": turn,
@@ -83,6 +108,7 @@ def main() -> None:
                 flush=True,
             )
         print("LIVE four-turn conversation and fresh-client restoration passed")
+        status = "passed"
     except httpx.HTTPStatusError as exc:
         raise SystemExit(
             f"LIVE check failed at {stage}: HTTP {exc.response.status_code}; details suppressed"
@@ -104,6 +130,19 @@ def main() -> None:
         except httpx.HTTPError:
             pass
         client.close()
+        if args.output:
+            args.output.parent.mkdir(parents=True, exist_ok=True)
+            args.output.write_text(
+                json.dumps(
+                    {
+                        "status": status,
+                        "last_stage": stage,
+                        "synthetic": True,
+                        "observations": observations,
+                    },
+                    indent=2,
+                )
+            )
         print("Synthetic source cleanup requested; synthetic account metadata remains.")
 
 

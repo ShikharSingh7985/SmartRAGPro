@@ -1,0 +1,66 @@
+{
+  "memory": {
+    "tfidf": {
+      "peak_rss_mib_mean": 195.81901041666666,
+      "peak_rss_mib_stdev": 0.8682279559704617,
+      "seconds_mean": 2.911115199996857
+    },
+    "hashing": {
+      "peak_rss_mib_mean": 168.76432291666666,
+      "peak_rss_mib_stdev": 0.8984148547870763,
+      "seconds_mean": 3.900093966648759
+    }
+  },
+  "generation": {
+    "n": 24,
+    "mean": 2034.7917624991776,
+    "p50": 2103.8109000073746,
+    "p95": 3433.1426999997348,
+    "p99": null,
+    "stdev": 981.8635169791905
+  },
+  "tokens": {
+    "input_tokens": 9066,
+    "output_tokens": 904,
+    "total_tokens": 9970
+  },
+  "answer_proxies": {
+    "dense": {
+      "n": 12,
+      "citation_label_precision": 0.9,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.7361111111111112,
+      "context_precision": 0.23333333333333334,
+      "context_recall": 1.0,
+      "expected_phrase_recall_proxy": 0.7916666666666666,
+      "unsupported_number_rate_proxy": 0.016666666666666666,
+      "unanswerable_abstention_heuristic": 0.5
+    },
+    "rrf_0.5_rerank": {
+      "n": 12,
+      "citation_label_precision": 0.9090909090909091,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.7777777777777778,
+      "context_precision": 0.21666666666666667,
+      "context_recall": 0.95,
+      "expected_phrase_recall_proxy": 0.7083333333333334,
+      "unsupported_number_rate_proxy": 0.013888888888888888,
+      "unanswerable_abstention_heuristic": 1
+    }
+  },
+  "followup_ablation": {
+    "bm25": {
+      "n": 6,
+      "recall5": 1.0,
+      "mrr": 0.75
+    },
+    "bm25_no_rewrite": {
+      "n": 6,
+      "recall5": 1.0,
+      "mrr": 0.6111111111111112
+    }
+  },
+  "estimated_generation_cost_usd": 0.0049797999999999995,
+  "input_price_per_million": 0.3,
+  "output_price_per_million": 2.5
+}

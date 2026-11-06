@@ -13,7 +13,14 @@ from qdrant_client import models as qm
 from sqlalchemy import Engine, delete, select, text
 from sqlalchemy.orm import Session
 
-from backend.app.models.entities import Document, DocumentAsset, IngestionJob, PageExtraction, now
+from backend.app.models.entities import (
+    Document,
+    DocumentAsset,
+    IngestionJob,
+    PageExtraction,
+    SearchChunk,
+    now,
+)
 from backend.app.rag.extraction import (
     InvalidDocument,
     ProcessingCancelled,
@@ -196,7 +203,13 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
                 chunks = structured_chunks(result.elements, resources.settings)
                 checkpoint("embedding")
                 index_knowledge(
-                    resources, document.user_id, document_id, document.filename, token, chunks
+                    resources,
+                    document.user_id,
+                    document_id,
+                    document.filename,
+                    token,
+                    chunks,
+                    db=db,
                 )
                 document.chunk_count += len(chunks)
                 document.table_count += sum(e.kind == "table" for e in result.elements)
@@ -233,6 +246,11 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
             wait=True,
         )
         document.status, document.active_run = "ready", token
+        db.execute(
+            delete(SearchChunk).where(
+                SearchChunk.document_id == document_id, SearchChunk.run_token != token
+            )
+        )
         document.index_fingerprint = embedding_fingerprint(resources.settings)
         document.index_collection = resources.settings.qdrant_collection
         job.status, job.stage, job.error = "succeeded", "completed", None

@@ -5,6 +5,8 @@
 !frontend/**
 !scripts/**
 !tests/**
+!evaluation/**
+evaluation/.cache/**
 !alembic.ini
 **/__pycache__
 **/*.pyc

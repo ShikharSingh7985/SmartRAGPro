@@ -24,7 +24,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     close_database()
 
 
-app = FastAPI(title="SmartRAG Pro", version="0.3.0", lifespan=lifespan)
+app = FastAPI(title="SmartRAG Pro", version="0.4.0", lifespan=lifespan)
 app.include_router(router)
 app.include_router(ingestion_router)
 

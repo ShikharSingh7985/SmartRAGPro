@@ -21,7 +21,7 @@ from backend.app.conversations.memory import (
 from backend.app.conversations.rewriting import rewrite_followup
 from backend.app.models.entities import Conversation, Document, Message
 from backend.app.schemas.api import Question
-from backend.app.services.resources import Resources
+from backend.app.services.resources import ABSTENTION, Resources
 
 logger = logging.getLogger(__name__)
 
@@ -146,10 +146,15 @@ def build_graph(
         start = perf_counter()
         chosen = [d for d in documents if str(d.id) in state["plan"]["document_ids"]]
         result = retrieve(
-            resources, conversation.user_id, chosen, state["rewritten_question"], state["plan"]
+            resources,
+            conversation.user_id,
+            chosen,
+            state["rewritten_question"],
+            state["plan"],
+            db=db,
         )
         timings["retrieval"] = (perf_counter() - start) * 1000
-        return {"evidence": result}
+        return {"evidence": result, "plan": state["plan"]}
 
     def selection(state: ConversationState) -> dict[str, Any]:
         available = (
@@ -207,6 +212,8 @@ def build_graph(
         return {"generation": result}
 
     def verify(state: ConversationState) -> dict[str, Any]:
+        if state["generation"].strip() == ABSTENTION:
+            return {"citations": [], "errors": [*state["errors"], "model_abstained"]}
         if not state["evidence"] or state["clarification"]:
             return {"citations": []}
         cited = {int(number) for number in re.findall(r"\[(\d+)\]", state["generation"])}
@@ -230,6 +237,7 @@ def build_graph(
             "budgets": state["budgets"],
             "followup": state["is_followup"],
             "errors": state["errors"],
+            "retrieval_metrics": state["plan"].get("retrieval_metrics", {}),
         }
         reply = Message(
             conversation_id=conversation.id,
