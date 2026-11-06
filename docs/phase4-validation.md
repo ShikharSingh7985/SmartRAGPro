@@ -80,5 +80,8 @@ answer checks are labeled proxies; human semantic scores remain null. API retent
 tenant safety and existing conversation behavior remain covered by regression tests.
 
 Git destination remains the supplied origin/main. Plain-English implementation message:
-`Add measured retrieval options and benchmarks`. Remote verification is recorded after
-the push; the final report identifies the exact implementation and documentation heads.
+`Add measured retrieval options and benchmarks`. Implementation commit
+`04ed2a6f52728ed9a50ef4dc88486bdc173999eb` was pushed successfully; independent
+`git ls-remote origin refs/heads/main` returned that exact hash on 2026-11-06.
+A following documentation-only commit records verification. The completion report
+identifies the resulting remote head. No later phase was started.

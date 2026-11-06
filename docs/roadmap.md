@@ -101,7 +101,10 @@ Representative human-reviewed documents and semantic answer review remain outsta
 Full validation: 69 native tests passed with three expected host/service skips; all
 72 real-service tests passed. The final focused PostgreSQL regression also checks
 the complete-index fallback and cleanup. Formatting, lint and type checks pass.
-Git verification will be recorded after the push.
+Implementation commit `04ed2a6f52728ed9a50ef4dc88486bdc173999eb` was pushed to the
+existing origin/main and independently verified with `git ls-remote` on 2026-11-06.
+A following documentation-only commit records this verified milestone. No Phase 5
+work has started.
 
 The earlier live Gemini gate is now resolved for the locally selected
 `gemini-3.5-flash-lite`: the rebuilt application completed all four live HTTP turns,
