@@ -5,6 +5,8 @@ import time
 from alembic import command
 from alembic.config import Config
 
+from backend.app.conversations.checkpoints import setup_checkpoints
+from backend.app.db.session import session_factory
 from backend.app.rag.vectors import ensure_collection
 from backend.app.services.resources import S3Store, get_resources
 
@@ -12,6 +14,7 @@ from backend.app.services.resources import S3Store, get_resources
 def main() -> None:
     resources = get_resources()
     command.upgrade(Config("alembic.ini"), "head")
+    setup_checkpoints(session_factory().kw["bind"])
     for attempt in range(30):
         try:
             assert isinstance(resources.store, S3Store)

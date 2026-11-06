@@ -65,7 +65,7 @@ class AssetOut(Schema):
 
 
 class ConversationIn(Schema):
-    title: str = Field(default="New conversation", min_length=1, max_length=120)
+    title: str = Field(default="New conversation", min_length=1, max_length=120, pattern=r"\S")
     document_ids: list[UUID] = Field(min_length=1, max_length=20)
 
 
@@ -73,6 +73,17 @@ class ConversationOut(Schema):
     id: UUID
     title: str
     created_at: datetime
+    scope_version: int
+    source_warning: str | None
+
+
+class ConversationUpdate(Schema):
+    title: str | None = Field(default=None, min_length=1, max_length=120, pattern=r"\S")
+    document_ids: list[UUID] | None = Field(default=None, max_length=20)
+
+
+class ConversationDetail(ConversationOut):
+    document_ids: list[UUID]
 
 
 class Question(Schema):
@@ -90,6 +101,10 @@ class Citation(Schema):
     content_type: str = "text"
     asset_id: UUID | None = None
     model_derived: bool = False
+    chunk_id: str | None = None
+    element_id: str | None = None
+    section_heading: str | None = None
+    preview_path: str | None = None
 
 
 class MessageOut(Schema):
@@ -98,3 +113,9 @@ class MessageOut(Schema):
     content: str
     citations: list[Citation]
     created_at: datetime
+
+
+class ConversationExport(Schema):
+    conversation: ConversationDetail
+    messages: list[MessageOut]
+    next_offset: int | None

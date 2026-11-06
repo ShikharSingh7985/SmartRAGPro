@@ -51,6 +51,17 @@ class Settings(BaseSettings):
     ingestion_max_attempts: int = Field(default=3, ge=1, le=10)
     page_timeout_seconds: int = Field(default=180, ge=10, le=600)
     max_extracted_characters: int = Field(default=20_000_000, ge=1000)
+    chat_context_tokens: int = Field(default=10000, ge=2000, le=32000)
+    chat_history_tokens: int = Field(default=1800, ge=200, le=6000)
+    chat_summary_tokens: int = Field(default=800, ge=100, le=3000)
+    chat_evidence_tokens: int = Field(default=4000, ge=500, le=12000)
+    chat_recent_messages: int = Field(default=12, ge=2, le=40)
+    chat_recall_messages: int = Field(default=6, ge=1, le=20)
+    chat_summary_batch: int = Field(default=100, ge=2, le=200)
+    chat_query_model: str | None = None
+    chat_llm_rewrite: bool = False
+    chat_trace_queries: bool = False
+    environment: Literal["production", "development"] = "production"
 
     @model_validator(mode="after")
     def secure_configuration(self) -> "Settings":

@@ -53,6 +53,22 @@ can only be supplied by the user:
 
 ## Roadmap and continuity
 
+- Phase 3 chat uses the deterministic LangGraph in `backend/app/conversations`.
+  Authorize and lock the conversation before opening its server-generated thread.
+  Production uses PostgresSaver on the same psycopg transaction as SQL messages,
+  exit durability and keep_latest pruning. Bootstrap initializes library schema.
+  SQLite saver injection is tests only; never use an in-memory production fallback.
+- Keep durable SQL history separate from finite graph context. Incremental extractive
+  summaries and recalled turns resolve language; only retrieved PDF chunks support
+  document claims. Scope versions prevent old-scope history entering new prompts.
+- Preserve atomic idempotent turn recovery, NOWAIT conversation locks and document
+  SHARE locks. Deleting sources clears derived history/checkpoints but retains shells.
+  Explicit scope changes reset context. Do not publish unverified token streams.
+- Keep LangSmith tracing disabled for private conversations. Query logs require
+  explicit development opt-in; record only timings/budgets/flags by default.
+- Run `uv run pytest tests/test_conversations.py` and real PostgreSQL service acceptance
+  after changing checkpoints, concurrency, memory, scope or citation handling.
+
 - Use plain English commit messages; the user explicitly requested no `feat` prefix.
 - Phase 2 ingestion uses Docling primary structure, PyMuPDF fallback and selective
   Tesseract. Keep extraction page-bounded and warnings/provenance honest. Vision

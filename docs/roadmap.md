@@ -59,7 +59,28 @@ for review/Phase 3 planning. Phase 3 requires a new explicit user instruction.
 
 ## Phase 3 — Conversational orchestration
 
-LangGraph orchestration, contextual query rewriting, constrained memory and streaming.
+Implemented after explicit user direction: deterministic LangGraph orchestration,
+PostgreSQL checkpointer/message transactions, finite recent context, incremental
+extractive synopses and distant recall, contextual query rewriting, ordered answer
+references, strict scoped evidence/citations, multi-document comparisons, conversation
+rename/delete/export/scope management and Streamlit recovery controls. Historical source
+associations preserve deletion privacy even after scope changes. SSE was considered;
+this phase returns complete verified replies with processing indicators.
+
+See [Phase 3 validation and live-service gate](phase3-validation.md),
+[architecture](architecture/conversations.md) and [setup/API](setup/conversations.md).
+The synthetic overfitting conversation passes across fresh clients, with checkpoint
+restore additionally checked in a separate interpreter. Native and real-service
+regressions, atomic rollback and cross-user isolation are documented in that evidence.
+The live HTTP check ingested its synthetic PDF, then returned 503 on the first chat turn;
+real Gemini conversation acceptance remains unverified. Optional Gemini rewriting is
+also not claimed live-validated. No production-readiness or unlimited-context claim.
+
+Git milestone uses the existing origin/main and plain English message
+`Add persistent document conversations`. Final checks: 63 native tests passed with
+3 expected host/service skips; all 66 real-service tests passed. Formatting, lint,
+type checks and staged secret/artifact scanning passed. Push verification is pending
+the Git operation; record its exact hash after remote verification. Do not start Phase 4 automatically.
 
 ## Phase 4 — Security, tenancy and reliability
 

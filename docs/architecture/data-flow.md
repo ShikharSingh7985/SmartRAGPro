@@ -1,5 +1,13 @@
 # Data flow and state transitions
 
+Phase 3 chat flow is documented with a [LangGraph node diagram](conversations.md).
+JWT -> owned conversation lock -> current owned ready scope -> recent SQL turns and
+incremental synopsis/older recall -> reference resolution -> standalone query ->
+scoped retrieval and evidence selection -> Gemini -> citation validation -> atomic
+message/checkpoint commit. Failure rolls back a whole turn. Duplicate request UUIDs
+return the committed reply; same-thread contention returns 409. Source deletion clears
+derived messages, synopsis, references and checkpoints while preserving the shell.
+
 Phase 2 current ingestion flow:
 
 ```mermaid

@@ -1,5 +1,12 @@
 # System design
 
+Phase 3 adds the [persistent conversation graph](conversations.md) and
+[ADR 0006](adr/0006-persistent-conversations.md). Chat reconstructs finite context
+from durable SQL messages, scoped summaries and recalled older turns. The official
+PostgreSQL checkpointer commits with messages in one transaction. Historical Phase 1
+chat/deletion details below are superseded: source deletion clears derived content
+and checkpoints but retains a recoverable conversation shell.
+
 SmartRAG Pro is a modular monolith with an independently running ingestion worker.
 Phase 2 extends ingestion as described in [ADR 0005](adr/0005-multimodal-ingestion.md)
 and the [operation guide](../setup/phase2-ingestion.md). Phase 1 details below are
@@ -28,6 +35,10 @@ flowchart LR
     API --> Embeddings
     API --> Qdrant
     API --> Gemini[Gemini generation]
+    API --> Graph[LangGraph conversation workflow]
+    Graph -->|history, summaries, checkpoints in one transaction| Postgres
+    Graph --> Qdrant
+    Graph --> Gemini
 ```
 
 ## Boundaries

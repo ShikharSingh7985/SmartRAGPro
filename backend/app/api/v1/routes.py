@@ -5,10 +5,11 @@ from typing import Literal
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Response, UploadFile
-from sqlalchemy import delete, select, update
+from sqlalchemy import delete, or_, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
+from backend.app.conversations.checkpoints import clear_checkpoint
 from backend.app.core.config import Settings, get_settings
 from backend.app.core.security import (
     current_user,
@@ -21,6 +22,7 @@ from backend.app.db.session import get_db
 from backend.app.models.entities import (
     Conversation,
     ConversationDocument,
+    ConversationSummary,
     Document,
     IngestionJob,
     Message,
@@ -28,8 +30,11 @@ from backend.app.models.entities import (
     now,
 )
 from backend.app.schemas.api import (
+    ConversationDetail,
+    ConversationExport,
     ConversationIn,
     ConversationOut,
+    ConversationUpdate,
     Credentials,
     DocumentOut,
     MessageOut,
@@ -217,11 +222,28 @@ def remove_document(
         for conversation in conversations:
             db.execute(delete(Message).where(Message.conversation_id == conversation.id))
             db.execute(
-                delete(ConversationDocument).where(
-                    ConversationDocument.conversation_id == conversation.id
+                delete(ConversationSummary).where(
+                    ConversationSummary.conversation_id == conversation.id
                 )
             )
-            db.delete(conversation)
+            clear_checkpoint(db, conversation)
+            db.execute(
+                delete(ConversationDocument).where(
+                    ConversationDocument.conversation_id == conversation.id,
+                    or_(
+                        ConversationDocument.document_id == document_id,
+                        ConversationDocument.active.is_(False),
+                    ),
+                )
+            )
+            conversation.scope_version += 1
+            conversation.active_topic = ""
+            conversation.title = "Recovered conversation"
+            conversation.references = {}
+            conversation.source_warning = (
+                "A source was deleted. Derived history was cleared for privacy. "
+                "Select available sources to continue."
+            )
         db.add(IngestionJob(document_id=doc.id, kind="delete"))
         db.commit()
     return {"status": "deleting"}
@@ -275,6 +297,136 @@ def conversations(
 
 
 @router.get(
+    "/conversations/{conversation_id}", response_model=ConversationDetail, tags=["conversations"]
+)
+def conversation_detail(
+    conversation_id: UUID, db: Session = Depends(get_db), user: User = Depends(current_user)
+) -> ConversationDetail:
+    conv = owned_conversation(db, conversation_id, user.id)
+    ids = list(
+        db.scalars(
+            select(ConversationDocument.document_id).where(
+                ConversationDocument.conversation_id == conversation_id,
+                ConversationDocument.active.is_(True),
+            )
+        )
+    )
+    return ConversationDetail(**ConversationOut.model_validate(conv).model_dump(), document_ids=ids)
+
+
+@router.patch(
+    "/conversations/{conversation_id}", response_model=ConversationDetail, tags=["conversations"]
+)
+def update_conversation(
+    conversation_id: UUID,
+    body: ConversationUpdate,
+    db: Session = Depends(get_db),
+    user: User = Depends(current_user),
+) -> ConversationDetail:
+    conv = owned_conversation(db, conversation_id, user.id, lock=True)
+    if body.title is not None:
+        conv.title = body.title.strip()
+    if body.document_ids is not None:
+        ids = set(body.document_ids)
+        docs = list(
+            db.scalars(
+                select(Document)
+                .where(
+                    Document.id.in_(ids), Document.user_id == user.id, Document.status == "ready"
+                )
+                .order_by(Document.id)
+                .with_for_update()
+            )
+        )
+        if len(docs) != len(ids):
+            raise HTTPException(404, "One or more ready documents not found")
+        previous = set(
+            db.scalars(
+                select(ConversationDocument.document_id).where(
+                    ConversationDocument.conversation_id == conv.id,
+                    ConversationDocument.active.is_(True),
+                )
+            )
+        )
+        if ids != previous:
+            clear_checkpoint(db, conv)
+            db.execute(
+                delete(ConversationSummary).where(ConversationSummary.conversation_id == conv.id)
+            )
+            db.execute(
+                update(ConversationDocument)
+                .where(ConversationDocument.conversation_id == conv.id)
+                .values(active=False)
+            )
+            for doc in docs:
+                association = db.get(ConversationDocument, (conv.id, doc.id))
+                if association:
+                    association.active = True
+                else:
+                    db.add(
+                        ConversationDocument(
+                            conversation_id=conv.id, document_id=doc.id, active=True
+                        )
+                    )
+            conv.scope_version += 1
+            conv.active_topic, conv.references = "", {}
+            conv.source_warning = (
+                "Document scope changed. Previous messages remain visible; "
+                "new turns use the current scope only."
+            )
+    db.commit()
+    return conversation_detail(conversation_id, db, user)
+
+
+@router.delete("/conversations/{conversation_id}", status_code=204, tags=["conversations"])
+def delete_conversation(
+    conversation_id: UUID, db: Session = Depends(get_db), user: User = Depends(current_user)
+) -> Response:
+    conv = owned_conversation(db, conversation_id, user.id, lock=True)
+    clear_checkpoint(db, conv)
+    db.delete(conv)
+    db.commit()
+    return Response(status_code=204)
+
+
+@router.post("/conversations/{conversation_id}/summary/refresh", tags=["conversations"])
+def refresh_summary(
+    conversation_id: UUID,
+    db: Session = Depends(get_db),
+    user: User = Depends(current_user),
+    resources: Resources = Depends(get_resources),
+) -> dict[str, int]:
+    from backend.app.conversations.memory import reconstruct
+
+    conv = owned_conversation(db, conversation_id, user.id, lock=True)
+    db.execute(delete(ConversationSummary).where(ConversationSummary.conversation_id == conv.id))
+    result = reconstruct(db, conv, "", resources.settings)
+    db.commit()
+    return {"version": result["summary_version"], "covered_through": result["covered_through"]}
+
+
+@router.get(
+    "/conversations/{conversation_id}/export",
+    response_model=ConversationExport,
+    tags=["conversations"],
+)
+def export_conversation(
+    conversation_id: UUID,
+    db: Session = Depends(get_db),
+    user: User = Depends(current_user),
+    limit: int = 100,
+    offset: int = 0,
+) -> ConversationExport:
+    detail = conversation_detail(conversation_id, db, user)
+    page = messages(conversation_id, db, user, limit, offset)
+    return ConversationExport(
+        conversation=detail,
+        messages=[MessageOut.model_validate(message) for message in page],
+        next_offset=offset + len(page) if len(page) == limit else None,
+    )
+
+
+@router.get(
     "/conversations/{conversation_id}/messages",
     response_model=list[MessageOut],
     tags=["conversations"],
@@ -316,9 +468,12 @@ def ask(
     try:
         return answer(db, resources, conversation_id, user.id, body)
     except HTTPException:
+        db.rollback()
         raise
     except Exception as exc:
         db.rollback()
         raise HTTPException(
-            503, "Answer dependency unavailable; retry with the same request_id"
+            503,
+            "Answer dependency unavailable; retry with the same request_id",
+            headers={"Retry-After": "10"},
         ) from exc

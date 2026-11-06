@@ -76,7 +76,8 @@ def test_two_user_isolation_and_deletion(stack, pdf):
     )
     assert {item["document_id"] for item in response.json()["citations"]} == {alice_doc}
     assert client.delete(f"/api/v1/documents/{alice_doc}", headers=alice).status_code == 202
-    assert client.get(endpoint, headers=alice).status_code == 404
+    assert client.get(endpoint, headers=alice).json() == []
+    assert client.get(f"/api/v1/conversations/{alice_chat}", headers=alice).json()["source_warning"]
     with factory() as db:
         assert process_one(db, resources)
     assert client.get(f"/api/v1/documents/{alice_doc}", headers=alice).status_code == 404

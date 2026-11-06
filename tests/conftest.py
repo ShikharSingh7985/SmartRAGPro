@@ -1,6 +1,8 @@
 import math
 import os
+import sqlite3
 from collections.abc import Iterator
+from contextlib import contextmanager
 from io import BytesIO
 from pathlib import Path
 from typing import Any
@@ -12,6 +14,7 @@ from alembic import command
 from alembic.config import Config
 from fastapi.testclient import TestClient
 from langchain_core.embeddings import Embeddings
+from langgraph.checkpoint.sqlite import SqliteSaver
 from qdrant_client import QdrantClient
 from redis import Redis
 from reportlab.pdfgen.canvas import Canvas
@@ -45,11 +48,11 @@ class TestEmbeddings(Embeddings):
         vector = [
             float(sum(text.casefold().count(word) for word in group))
             for group in [
-                ("alpha", "accuracy", "model a"),
-                ("beta", "model b"),
-                ("revenue",),
-                ("million",),
-                ("policy",),
+                ("alpha", "accuracy", "model a", "overfitting", "overfit"),
+                ("beta", "model b", "regularization", "penalty", "weights"),
+                ("revenue", "validation"),
+                ("million", "early stopping"),
+                ("policy", "random forests"),
                 ("leave",),
                 ("days",),
                 ("secret",),
@@ -88,7 +91,7 @@ def pdf() -> bytes:
 
 
 @pytest.fixture
-def stack(tmp_path) -> Iterator[tuple[TestClient, sessionmaker[Session], Resources]]:
+def stack(tmp_path, monkeypatch) -> Iterator[tuple[TestClient, sessionmaker[Session], Resources]]:
     url = os.environ.get("TEST_DATABASE_URL", f"sqlite:///{tmp_path / 'test.db'}")
     if not url.startswith("sqlite") and not url.endswith("/smartrag_test"):
         raise RuntimeError("Integration tests require a dedicated smartrag_test database")
@@ -113,6 +116,29 @@ def stack(tmp_path) -> Iterator[tuple[TestClient, sessionmaker[Session], Resourc
             connection.execute("PRAGMA foreign_keys=ON")
 
     factory = sessionmaker(engine, expire_on_commit=False)
+    from backend.app.conversations import checkpoints
+
+    if "sqlite" in url:
+
+        class TestSaver(SqliteSaver):
+            def prune(self, thread_ids, *, strategy):
+                for thread in thread_ids:
+                    self.conn.execute(
+                        "DELETE FROM checkpoints WHERE thread_id = ? AND checkpoint_id != "
+                        "(SELECT MAX(checkpoint_id) FROM checkpoints WHERE thread_id = ?)",
+                        (thread, thread),
+                    )
+                    self.conn.execute("DELETE FROM writes WHERE thread_id = ?", (thread,))
+                self.conn.commit()
+
+        @contextmanager
+        def isolated_checkpoint(_db):
+            with sqlite3.connect(tmp_path / "checkpoints.db", check_same_thread=False) as conn:
+                yield TestSaver(conn)
+
+        monkeypatch.setattr(checkpoints, "checkpoint_store", isolated_checkpoint)
+    else:
+        checkpoints.setup_checkpoints(engine)
     resources = Resources.__new__(Resources)
     resources.settings = settings
     resources.store = MemoryStore()
@@ -159,6 +185,17 @@ def stack(tmp_path) -> Iterator[tuple[TestClient, sessionmaker[Session], Resourc
         app.dependency_overrides.clear()
         resources.qdrant.delete_collection(settings.qdrant_collection)
         resources.close()
+        if "sqlite" not in url:
+            from sqlalchemy import text
+
+            with engine.begin() as conn:
+                for table in (
+                    "checkpoint_writes",
+                    "checkpoint_blobs",
+                    "checkpoints",
+                    "checkpoint_migrations",
+                ):
+                    conn.execute(text(f"DROP TABLE IF EXISTS {table}"))
         engine.dispose()
         command.downgrade(config, "base")
         get_settings.cache_clear()

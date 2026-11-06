@@ -14,7 +14,17 @@ from backend.app.models.entities import Base
 def test_migrations_round_trip_and_no_drift(stack):
     _, factory, _ = stack
     with factory() as db:
-        assert compare_metadata(MigrationContext.configure(db.connection()), Base.metadata) == []
+
+        def include(obj, name, type_, reflected, compare_to):
+            return not (name.startswith("checkpoint") or name == "ix_messages_search")
+
+        assert (
+            compare_metadata(
+                MigrationContext.configure(db.connection(), opts={"include_object": include}),
+                Base.metadata,
+            )
+            == []
+        )
     config = Config("alembic.ini")
     command.downgrade(config, "base")
     command.upgrade(config, "head")

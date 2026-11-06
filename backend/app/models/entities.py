@@ -99,6 +99,10 @@ class Conversation(Identity, Base):
         ForeignKey("users.id", ondelete="CASCADE"), index=True
     )
     title: Mapped[str] = mapped_column(String(120), default="New conversation")
+    scope_version: Mapped[int] = mapped_column(default=1)
+    active_topic: Mapped[str] = mapped_column(Text, default="")
+    references: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+    source_warning: Mapped[str | None] = mapped_column(String(255))
 
 
 class ConversationDocument(Base):
@@ -109,6 +113,7 @@ class ConversationDocument(Base):
     document_id: Mapped[uuid.UUID] = mapped_column(
         ForeignKey("documents.id", ondelete="CASCADE"), primary_key=True
     )
+    active: Mapped[bool] = mapped_column(default=True)
     __table_args__ = (Index("ix_conversation_documents_document", "document_id"),)
 
 
@@ -122,6 +127,7 @@ class Message(Identity, Base):
     content: Mapped[str] = mapped_column(Text)
     citations: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
     request_id: Mapped[uuid.UUID] = mapped_column(Uuid)
+    turn_metadata: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
     __table_args__ = (
         UniqueConstraint("conversation_id", "request_id", "role"),
         UniqueConstraint("conversation_id", "position"),
@@ -154,3 +160,15 @@ class DocumentAsset(Identity, Base):
     available: Mapped[bool] = mapped_column(default=False)
     model_derived: Mapped[bool] = mapped_column(default=False)
     details: Mapped[dict[str, Any]] = mapped_column(JSON, default=dict)
+
+
+class ConversationSummary(Base):
+    __tablename__ = "conversation_summaries"
+    conversation_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("conversations.id", ondelete="CASCADE"), primary_key=True
+    )
+    covered_through: Mapped[int] = mapped_column(default=0)
+    version: Mapped[int] = mapped_column(default=0)
+    content: Mapped[str] = mapped_column(Text, default="")
+    provenance: Mapped[list[dict[str, Any]]] = mapped_column(JSON, default=list)
+    updated_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), default=now, onupdate=now)

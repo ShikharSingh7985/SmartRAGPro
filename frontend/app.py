@@ -1,3 +1,4 @@
+import json
 import os
 from typing import Any
 from uuid import uuid4
@@ -161,7 +162,7 @@ def main() -> None:
                                     st.text(element["text"])
                                     st.json(element["data"])
         st.caption(
-            "Deletion also removes conversations based on the document. "
+            "Deleting a source clears derived chat history and keeps the conversation available. "
             "Refresh to see job progress."
         )
         return
@@ -190,7 +191,53 @@ def main() -> None:
             "Upload a PDF in Documents, wait until it is ready, then select it to create a chat."
         )
         return
-    for message in all_items(f"/conversations/{conversation_id}/messages"):
+    current = api("GET", f"/conversations/{conversation_id}")
+    st.subheader(current["title"])
+    if current.get("source_warning"):
+        st.warning(current["source_warning"])
+    if any(identifier not in ready for identifier in current["document_ids"]):
+        st.warning(
+            "A selected PDF is unavailable or processing. "
+            "Update the selection or wait for it to be ready."
+        )
+    st.caption("Strict document mode · saved history · responses appear after source verification")
+    with st.sidebar, st.expander("Manage current conversation"):
+        with st.form("manage-" + conversation_id):
+            renamed = st.text_input("Title", value=current["title"], max_chars=120)
+            scope = st.multiselect(
+                "Current documents",
+                list(ready),
+                default=[
+                    identifier for identifier in current["document_ids"] if identifier in ready
+                ],
+                format_func=lambda value: ready[value],
+                key="scope-" + conversation_id,
+            )
+            if st.form_submit_button("Save title and document selection"):
+                api(
+                    "PATCH",
+                    f"/conversations/{conversation_id}",
+                    json={"title": renamed, "document_ids": scope},
+                )
+                st.session_state.pop("pending", None)
+                st.rerun()
+        if st.button("Refresh conversation summary"):
+            api("POST", f"/conversations/{conversation_id}/summary/refresh")
+            st.success("Summary refreshed from saved messages.")
+        confirm_delete = st.checkbox("Delete this conversation and its saved history")
+        if st.button("Delete conversation", disabled=not confirm_delete):
+            api("DELETE", f"/conversations/{conversation_id}")
+            st.session_state.pop("conversation_id", None)
+            st.session_state.pop("pending", None)
+            st.rerun()
+    saved_messages = all_items(f"/conversations/{conversation_id}/messages")
+    st.download_button(
+        "Export conversation",
+        json.dumps({"conversation": current, "messages": saved_messages}, indent=2),
+        file_name="conversation.json",
+        mime="application/json",
+    )
+    for message in saved_messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             if message["citations"]:

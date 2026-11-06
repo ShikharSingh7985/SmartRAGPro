@@ -1,5 +1,28 @@
 # Database design
 
+Phase 3 migration `20261106_conversations` adds conversation scope_version,
+active_topic, bounded answer references and source_warning; messages gain JSON
+turn_metadata containing scope version and content-free timing/budget flags.
+`conversation_summaries` has a cascading conversation UUID primary key, covered_through
+position, version, bounded content/provenance and updated_at. PostgreSQL adds a GIN
+message-content full-text index for distant recall.
+
+The official PostgresSaver owns checkpoints, checkpoint_blobs, checkpoint_writes and
+checkpoint_migrations, initialized by bootstrap setup (not Alembic auto-create).
+Thread names include server-owned user and conversation UUIDs. Access is exclusively
+through authorized conversation operations; no public checkpoint endpoints exist.
+Prune to the latest checkpoint after every turn. Back up these tables alongside
+application data. Deletion explicitly clears thread tables in the same PostgreSQL
+transaction; scope changes invalidate checkpoints and summary context.
+See [transaction and retention details](conversations.md).
+
+Migration `20261106_scope_provenance` adds `conversation_documents.active`. Scope
+changes deactivate previous associations instead of removing their provenance. This
+allows deleting a previously selected document to find and purge conversations that
+still contain its historical answers. Active selection queries filter active=true;
+privacy cleanup considers both active and historical associations. Clearing history
+also removes obsolete inactive associations.
+
 PostgreSQL 17 is the production target. SQLAlchemy 2 UUIDs map to native PostgreSQL
 UUID. Timezone-aware timestamps store UTC. SQLite is confined to isolated tests.
 The baseline Alembic revision is `3f9e7d07d878`; runtime never calls `create_all`.

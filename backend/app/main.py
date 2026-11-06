@@ -24,7 +24,7 @@ async def lifespan(_app: FastAPI) -> AsyncIterator[None]:
     close_database()
 
 
-app = FastAPI(title="SmartRAG Pro", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="SmartRAG Pro", version="0.3.0", lifespan=lifespan)
 app.include_router(router)
 app.include_router(ingestion_router)
 
@@ -81,6 +81,8 @@ def ready(
 ) -> dict[str, str]:
     try:
         db.execute(text("SELECT 1 FROM alembic_version"))
+        if db.get_bind().dialect.name == "postgresql":
+            db.execute(text("SELECT 1 FROM checkpoint_migrations LIMIT 1"))
         resources.redis.ping()
         resources.qdrant.get_collections()
         resources.store.ping()

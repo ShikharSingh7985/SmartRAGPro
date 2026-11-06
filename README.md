@@ -1,7 +1,7 @@
 # SmartRAG Pro
 
 A multi-user PDF assistant with page citations, private object storage,
-durable background ingestion, and persistent chat. Phase 2 ingestion platform.
+durable background ingestion, and persistent context-aware chat. Phase 3 conversations.
 
 FastAPI + Streamlit · PostgreSQL / SQLAlchemy / Alembic · Qdrant · Redis · S3
 (SeaweedFS locally) · Gemini generation · configurable Google/OpenAI embeddings.
@@ -25,9 +25,11 @@ docker compose up --build -d
 ```
 
 Open http://localhost:8501, register, upload a text PDF, refresh its processing status,
-select ready documents, create a chat, and ask a self-contained question. API docs:
+select ready documents, create a chat, and ask questions and follow-ups. Saved chats
+restore their document selection and context after login or restart. API docs:
 http://localhost:8000/docs. Health: `/health/live` and `/health/ready`.
-Logout revokes all sessions. Deleting a document also removes conversations using it.
+Logout revokes all sessions. Deleting a source clears derived history and checkpoints
+while preserving conversation shells for recovery with available documents.
 
 ## Verify without API keys
 
@@ -57,6 +59,13 @@ Phase 2 adds Docling structure, selective Tesseract OCR, table JSON, secure figu
 assets/previews, optional Gemini vision, progress/cancel/retry, deduplication and
 versioned reindexing. See [Phase 2 operation](docs/setup/phase2-ingestion.md) and
 [Phase 2 evidence and limitations](docs/phase2-validation.md).
+
+Phase 3 adds a deterministic LangGraph, transactional PostgreSQL checkpoints,
+incremental bounded summaries, distant-turn recall, contextual rewriting and verified
+scoped citations. Rename, change selected PDFs, export or delete saved conversations
+from Streamlit. See [conversation architecture](docs/architecture/conversations.md),
+[setup and API](docs/setup/conversations.md), and [Phase 3 validation](docs/phase3-validation.md).
+Responses appear after source verification; live token streaming is not enabled.
 
 Citation metadata
 validates provenance, not factual entailment. Chat history is stored/displayed; contextual
