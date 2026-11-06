@@ -132,9 +132,12 @@ No production-readiness or general prompt-injection immunity is claimed.
 
 Git milestone: implementation commit `429fce00089300f33e43af43a5190fbfe4ca02e5`
 was pushed to the existing origin/main and independently verified on 2026-11-06.
-The final lifecycle follow-up and validation record are being finalized. Staged-byte
-scanning passed for 70 implementation files; the complete tracked-source scan passed
-for 177 files. No secrets or private PDFs were committed. Do not start Phase 6. See
+Lifecycle follow-up `a1dc307a540434df5afbd3d234666f67e4de6b22` was also pushed to
+origin/main and independently verified on 2026-11-06. This following documentation
+commit records those verified source milestones; deployment acceptance remains open.
+Staged-byte scanning passed for 70 implementation files and ten follow-up files; the
+initial complete tracked-source scan passed for 177 files. No secrets or private PDFs
+were committed. Do not start Phase 6. See
 [secure setup and final acceptance commands](security/local-hardening.md).
 
 ## Phase 6 — Production operations

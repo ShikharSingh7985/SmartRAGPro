@@ -122,6 +122,14 @@ CI performs frozen install, full tests, deterministic adversarial checks, depend
 audits and tracked-source secret/artifact scanning; live model calls are separate.
 Final staged-byte scanning and Git verification are recorded with the milestone.
 
+Implementation `429fce00089300f33e43af43a5190fbfe4ca02e5` and lifecycle follow-up
+`a1dc307a540434df5afbd3d234666f67e4de6b22` were pushed to the existing
+https://github.com/ShikharSingh7985/SmartRAGPro.git main branch and independently
+verified using git ls-remote. Both use plain-English commit messages. Staged-byte
+scans passed for 70 implementation files and ten follow-up files; tracked-source
+scanning passed for 177 files before the final follow-up. The subsequent docs commit
+records these source milestones. No release tag was created while live acceptance is open.
+
 ## Remaining gates and priorities
 
 1. Rebuild/restart the final source and rerun the HTTP acceptance workflow; the declined
