@@ -2,7 +2,15 @@ from datetime import datetime
 from typing import Literal
 from uuid import UUID
 
-from pydantic import BaseModel, ConfigDict, EmailStr, Field, field_serializer
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    SecretStr,
+    field_serializer,
+    field_validator,
+)
 
 
 class Schema(BaseModel):
@@ -13,6 +21,11 @@ class Credentials(Schema):
     email: EmailStr = Field(max_length=254)
     password: str = Field(min_length=12, max_length=128)
 
+    @field_validator("email", mode="before")
+    @classmethod
+    def normalize_email(cls, value: str) -> str:
+        return value.strip().casefold() if isinstance(value, str) else value
+
 
 class UserOut(Schema):
     id: UUID
@@ -22,6 +35,21 @@ class UserOut(Schema):
 class TokenOut(Schema):
     access_token: str
     token_type: str = "bearer"
+    refresh_token: str
+    expires_in: int
+
+
+class RefreshIn(Schema):
+    refresh_token: SecretStr = Field(min_length=70, max_length=150)
+
+
+class PasswordChange(Schema):
+    current_password: SecretStr = Field(max_length=128)
+    new_password: SecretStr = Field(min_length=12, max_length=128)
+
+
+class ConfirmPassword(Schema):
+    password: SecretStr = Field(max_length=128)
 
 
 class DocumentOut(Schema):

@@ -86,3 +86,17 @@ Failed documents can be deleted and reuploaded; there is no retry endpoint yet.
 No API key is sent to Streamlit/browser. Document chunks and questions leave the host
 when sent to the configured embedding provider and Gemini. Users must choose providers
 whose data handling terms fit their documents. Model answers are untrusted generated text.
+# Phase 5 boundary changes
+
+Uploads are bounded by actual received bytes and owner-locked storage/job quotas.
+The worker verifies canonical storage ownership, optionally scans with ClamAV,
+rejects active/resource-exhausting PDF structures, renders bounded page previews,
+inspects metadata/raw text/structured chunks, and indexes only non-quarantined content.
+Retrieval retains tenant/document/run filters and re-inspects candidate text before
+generation. Memory is reconstructed from inspected context; source claims still need
+authorized PDF evidence. Output/citation checks precede persistence. UI messages and
+source excerpts use plain text to prevent remote-image requests.
+
+Session refresh rotates a hash-only credential under an owner lock; valid reuse
+revokes all sessions. Account deletion disables first and defers owner removal until
+durable cleanup finishes. See the [security trust diagram](../security/threat-model.md).

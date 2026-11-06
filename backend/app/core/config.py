@@ -8,10 +8,31 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", hide_input_in_errors=True)
     database_url: str
-    jwt_secret: SecretStr
+    service_role: Literal["api", "worker", "dispatcher", "bootstrap"] = "api"
+    jwt_secret: SecretStr = SecretStr("")
+    migration_database_url: SecretStr = SecretStr("")
+    runtime_database_password: SecretStr = SecretStr("")
+    worker_database_password: SecretStr = SecretStr("")
     jwt_issuer: str = "smartrag-pro"
     jwt_audience: str = "smartrag-pro-api"
     access_token_minutes: int = Field(default=30, ge=1, le=1440)
+    refresh_token_days: int = Field(default=14, ge=1, le=30)
+    max_documents_per_user: int = Field(default=100, ge=1, le=1000)
+    max_storage_bytes_per_user: int = Field(default=500 * 1024 * 1024, ge=1024)
+    max_active_jobs_per_user: int = Field(default=3, ge=1, le=10)
+    max_derived_bytes_per_document: int = Field(default=256 * 1024 * 1024, ge=1024)
+    max_pdf_objects: int = Field(default=50000, ge=100, le=200000)
+    max_pdf_image_pixels: int = Field(default=20_000_000, ge=1000, le=100_000_000)
+    max_pdf_stream_bytes: int = Field(default=256 * 1024 * 1024, ge=1024)
+    max_pdf_expansion_ratio: int = Field(default=200, ge=1, le=1000)
+    security_block_threshold: int = Field(default=80, ge=60, le=100)
+    security_audit_retention_days: int = Field(default=90, ge=7, le=365)
+    allowed_hosts: list[str] = ["localhost", "127.0.0.1", "api", "testserver"]
+    cors_origins: list[str] = []
+    require_https: bool = False
+    clamav_enabled: bool = False
+    clamav_host: str = "clamav"
+    clamav_port: int = 3310
     gemini_api_key: SecretStr = SecretStr("")
     gemini_model: str = "gemini-3.8-flash"
     embedding_provider: Literal["google", "openai", "local"] = "google"
@@ -74,10 +95,14 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def secure_configuration(self) -> "Settings":
         secret = self.jwt_secret.get_secret_value()
-        if len(secret) < 32 or "CHANGE_ME" in secret:
+        if self.service_role == "api" and (len(secret) < 32 or "CHANGE_ME" in secret):
             raise ValueError("JWT_SECRET must be a unique random secret of at least 32 characters")
         if "CHANGE_ME" in self.s3_secret_key.get_secret_value():
             raise ValueError("Configure S3_SECRET_KEY")
+        if self.environment == "production" and (
+            "*" in self.allowed_hosts or "*" in self.cors_origins
+        ):
+            raise ValueError("Production host/CORS wildcards are forbidden")
         return self
 
 

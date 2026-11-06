@@ -9,6 +9,7 @@ from sqlalchemy.orm import Session
 
 from backend.app.core.config import Settings
 from backend.app.models.entities import Conversation, ConversationSummary, Message
+from backend.app.security.content import safe_memory
 
 STOP_WORDS = {
     "what",
@@ -75,6 +76,8 @@ def reconstruct(
     if older:
         segments = list(summary.provenance)
         for message in older:
+            if not safe_memory(message.content, settings.security_block_threshold):
+                continue
             segments.append(
                 {
                     "from": message.position,
@@ -122,6 +125,8 @@ def reconstruct(
     history: list[dict[str, Any]] = []
     remaining = settings.chat_history_tokens
     for message in reversed(recent):
+        if not safe_memory(message.content, settings.security_block_threshold):
+            continue
         if remaining < 20:
             break
         content = truncate(message.content, min(remaining, 450))
@@ -135,11 +140,14 @@ def reconstruct(
             "position": message.position,
         }
         for message in recall
+        if safe_memory(message.content, settings.security_block_threshold)
     ]
     return {
         "history": history,
         "recalled": recalled,
-        "summary": summary.content,
+        "summary": summary.content
+        if safe_memory(summary.content, settings.security_block_threshold)
+        else "",
         "summary_version": summary.version,
         "covered_through": summary.covered_through,
     }

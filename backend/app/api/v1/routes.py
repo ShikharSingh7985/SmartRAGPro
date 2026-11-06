@@ -5,7 +5,7 @@ from typing import Literal
 from uuid import UUID, uuid4
 
 from fastapi import APIRouter, Depends, Form, HTTPException, Response, UploadFile
-from sqlalchemy import delete, or_, select, update
+from sqlalchemy import delete, func, or_, select, update
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session
 
@@ -15,11 +15,11 @@ from backend.app.core.security import (
     current_user,
     dummy_hash,
     hasher,
-    issue_token,
     verify_password,
 )
 from backend.app.db.session import get_db
 from backend.app.models.entities import (
+    AuditEvent,
     Conversation,
     ConversationDocument,
     ConversationSummary,
@@ -30,6 +30,7 @@ from backend.app.models.entities import (
     now,
 )
 from backend.app.schemas.api import (
+    ConfirmPassword,
     ConversationDetail,
     ConversationExport,
     ConversationIn,
@@ -38,40 +39,89 @@ from backend.app.schemas.api import (
     Credentials,
     DocumentOut,
     MessageOut,
+    PasswordChange,
     Question,
+    RefreshIn,
     TokenOut,
     UserOut,
 )
+from backend.app.security.rate import account_rate
+from backend.app.services.accounts import delete_account
 from backend.app.services.chat import answer, owned_conversation
 from backend.app.services.resources import Resources, get_resources, upload_stream
+from backend.app.services.sessions import issue_pair, revoke, rotate
 
 router = APIRouter(prefix="/api/v1")
 
 
-@router.post("/auth/register", response_model=UserOut, status_code=201, tags=["auth"])
-def register(body: Credentials, db: Session = Depends(get_db)) -> User:
+@router.post("/auth/register", status_code=201, tags=["auth"])
+def register(
+    body: Credentials, db: Session = Depends(get_db), resources: Resources = Depends(get_resources)
+) -> dict[str, str]:
+    account_rate(resources, str(body.email), "register")
     user = User(email=str(body.email).strip().casefold(), password_hash=hasher.hash(body.password))
     db.add(user)
     try:
         db.commit()
-    except IntegrityError as exc:
+    except IntegrityError:
         db.rollback()
-        raise HTTPException(409, "Email is already registered") from exc
-    return user
+    db.add(AuditEvent(event="registration_attempt"))
+    db.commit()
+    return {
+        "detail": "If this address is available, your account has been created. "
+        "Sign in to continue."
+    }
 
 
 @router.post("/auth/login", response_model=TokenOut, tags=["auth"])
 def login(
-    body: Credentials, db: Session = Depends(get_db), settings: Settings = Depends(get_settings)
+    body: Credentials,
+    db: Session = Depends(get_db),
+    settings: Settings = Depends(get_settings),
+    resources: Resources = Depends(get_resources),
 ) -> TokenOut:
-    user = db.scalar(select(User).where(User.email == str(body.email).strip().casefold()))
+    account_rate(resources, str(body.email), "login")
+    user = db.scalar(
+        select(User).where(User.email == str(body.email).strip().casefold()).with_for_update()
+    )
     valid = verify_password(body.password, user.password_hash if user else dummy_hash)
-    if not user or not valid:
+    if not user or not valid or not user.is_active or user.deleted_at:
+        db.add(AuditEvent(event="login_failed"))
+        db.commit()
         raise HTTPException(401, "Incorrect email or password")
     if hasher.check_needs_rehash(user.password_hash):
         user.password_hash = hasher.hash(body.password)
-        db.commit()
-    return TokenOut(access_token=issue_token(user, settings))
+    result = issue_pair(db, user, settings)
+    db.add(AuditEvent(actor_id=user.id, event="login_succeeded"))
+    db.commit()
+    return result
+
+
+@router.post("/auth/refresh", response_model=TokenOut, tags=["auth"])
+def refresh(
+    body: RefreshIn, db: Session = Depends(get_db), settings: Settings = Depends(get_settings)
+) -> TokenOut:
+    return rotate(db, body.refresh_token.get_secret_value(), settings)
+
+
+@router.post("/auth/password", status_code=204, tags=["auth"])
+def change_password(
+    body: PasswordChange, user: User = Depends(current_user), db: Session = Depends(get_db)
+) -> Response:
+    locked = db.scalar(
+        select(User)
+        .where(User.id == user.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    if not locked or not verify_password(
+        body.current_password.get_secret_value(), locked.password_hash
+    ):
+        raise HTTPException(401, "Incorrect email or password")
+    locked.password_hash = hasher.hash(body.new_password.get_secret_value())
+    revoke(db, locked, "password_changed")
+    db.commit()
+    return Response(status_code=204)
 
 
 @router.get("/auth/me", response_model=UserOut, tags=["auth"])
@@ -79,9 +129,32 @@ def me(user: User = Depends(current_user)) -> User:
     return user
 
 
+@router.delete("/auth/account", status_code=202, tags=["auth"])
+def remove_account(
+    body: ConfirmPassword, user: User = Depends(current_user), db: Session = Depends(get_db)
+) -> dict[str, str]:
+    locked = db.scalar(
+        select(User)
+        .where(User.id == user.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    if not locked or not verify_password(body.password.get_secret_value(), locked.password_hash):
+        raise HTTPException(401, "Incorrect email or password")
+    delete_account(db, locked)
+    return {"status": "deletion-queued"}
+
+
 @router.post("/auth/logout", status_code=204, tags=["auth"])
 def logout(user: User = Depends(current_user), db: Session = Depends(get_db)) -> Response:
-    db.execute(update(User).where(User.id == user.id).values(token_version=User.token_version + 1))
+    locked = db.scalar(
+        select(User)
+        .where(User.id == user.id)
+        .with_for_update()
+        .execution_options(populate_existing=True)
+    )
+    assert locked is not None
+    revoke(db, locked, "logout")
     db.commit()
     return Response(status_code=204)
 
@@ -128,6 +201,27 @@ def upload(
     )
     if existing:
         return existing
+    settings = resources.settings
+    count, total = db.execute(
+        select(func.count(Document.id), func.coalesce(func.sum(Document.size_bytes), 0)).where(
+            Document.user_id == user.id
+        )
+    ).one()
+    active = (
+        db.scalar(
+            select(func.count(Document.id)).where(
+                Document.user_id == user.id, Document.status.in_(["uploading", "queued"])
+            )
+        )
+        or 0
+    )
+    if (
+        count >= settings.max_documents_per_user
+        or total + size > settings.max_storage_bytes_per_user
+    ):
+        raise HTTPException(429, "Document storage quota exceeded")
+    if active >= settings.max_active_jobs_per_user:
+        raise HTTPException(429, "Concurrent ingestion quota exceeded; wait for existing jobs")
     document_id = uuid4()
     key = f"{user.id}/{document_id}.pdf"
     doc = Document(
@@ -137,6 +231,7 @@ def upload(
         object_key=key,
         content_hash=digest.hexdigest(),
         extraction_mode=extraction_mode,
+        size_bytes=size,
     )
     # Persist pending metadata before external I/O so a failed commit cannot orphan an object.
     doc.status = "uploading"

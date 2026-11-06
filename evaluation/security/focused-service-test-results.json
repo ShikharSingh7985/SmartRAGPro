@@ -1,0 +1,37 @@
+{
+  "scope": "Final v3 focus: real PostgreSQL/Qdrant/Redis/S3; isolated model doubles",
+  "counts": {
+    "tests": 5,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "seconds": 31.003,
+  "cases": [
+    {
+      "name": "test_educational_pdf_survives_all_inspection_stages[quoted_roles]",
+      "module": "tests.test_security",
+      "result": "passed"
+    },
+    {
+      "name": "test_educational_pdf_survives_all_inspection_stages[live_false_positive_regression]",
+      "module": "tests.test_security",
+      "result": "passed"
+    },
+    {
+      "name": "test_postgres_runtime_roles_are_limited",
+      "module": "tests.test_security",
+      "result": "passed"
+    },
+    {
+      "name": "test_concurrent_refresh_reuse_is_atomic_postgres",
+      "module": "tests.test_security",
+      "result": "passed"
+    },
+    {
+      "name": "test_legacy_vector_poison_is_quarantined_before_model",
+      "module": "tests.test_security",
+      "result": "passed"
+    }
+  ]
+}

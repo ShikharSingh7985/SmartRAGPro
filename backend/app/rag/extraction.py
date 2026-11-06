@@ -1,10 +1,12 @@
 """Page-bounded PDF inspection, structural extraction, selective OCR and secure assets."""
 
+import base64
 import hashlib
 import io
 import re
 import shutil
 import time
+import zlib
 from collections import Counter
 from collections.abc import Callable, Iterator
 from dataclasses import dataclass
@@ -18,6 +20,7 @@ from pypdf import PdfReader
 
 from backend.app.core.config import Settings
 from backend.app.rag.types import Element
+from backend.app.security.content import inspect_content
 
 
 class InvalidDocument(ValueError):
@@ -267,6 +270,41 @@ def inspect_pdf(source: Path, settings: Settings) -> int:
                 raise InvalidDocument("Encrypted PDFs are unsupported")
             if not 1 <= len(document) <= settings.max_pdf_pages:
                 raise InvalidDocument(f"PDF must have 1 to {settings.max_pdf_pages} pages")
+            if document.xref_length() > settings.max_pdf_objects or document.embfile_count():
+                raise InvalidDocument("PDF object count or embedded attachments are unsupported")
+            decoded_total = 0
+            for xref in range(1, document.xref_length()):
+                obj = document.xref_object(xref, compressed=False)
+                if re.search(
+                    r"/(?:JavaScript|JS|Launch|OpenAction|AA|XFA|RichMedia|EmbeddedFiles)\b", obj
+                ):
+                    raise InvalidDocument("Active PDF content is unsupported")
+                if not document.xref_is_stream(xref):
+                    continue
+                raw = document.xref_stream_raw(xref)
+                if not raw:
+                    continue
+                # Bound expansion before MuPDF/Docling decodes Flate streams.
+                if re.search(r"/FlateDecode\b", obj):
+                    if re.search(r"/ASCII85Decode\b", obj):
+                        raw = base64.a85decode(raw.strip().removesuffix(b"~>"))
+                    decoder = zlib.decompressobj()
+                    limit = min(
+                        settings.max_pdf_stream_bytes - decoded_total,
+                        len(raw) * settings.max_pdf_expansion_ratio,
+                    )
+                    decoded = decoder.decompress(raw, limit + 1)
+                    if len(decoded) > limit or decoder.unconsumed_tail:
+                        raise InvalidDocument("PDF stream expansion limit exceeded")
+                    decoded_total += len(decoded)
+                else:
+                    decoded_total += len(raw)
+                if decoded_total > settings.max_pdf_stream_bytes:
+                    raise InvalidDocument("PDF stream budget exceeded")
+            for page in document:
+                for image in page.get_images(full=True):
+                    if image[2] * image[3] > settings.max_pdf_image_pixels:
+                        raise InvalidDocument("PDF image pixel budget exceeded")
             return len(document)
     except InvalidDocument:
         raise
@@ -296,8 +334,30 @@ def extract_pages(
                 raise ProcessingDependencyError("Document processing deadline exceeded")
             page = document[ordinal]
             number = ordinal + 1
+            if asset_sink:
+                preview_settings = settings.model_copy(
+                    update={"render_max_dimension": 900, "render_dpi": 96}
+                )
+                asset_sink(
+                    number,
+                    "page_preview",
+                    render_page(page, preview_settings),
+                    "",
+                    {"extension": "png"},
+                )
             raw = page.get_text("text", sort=True)
             quality = text_quality(raw)
+            inspection = inspect_content(raw, settings.security_block_threshold)
+            quality["raw_security"] = inspection.as_dict()
+            if inspection.decision == "block":
+                yield PageResult(
+                    number,
+                    [],
+                    quality,
+                    "security-quarantine",
+                    ["Page quarantined by content security policy"],
+                )
+                continue
             images = page.get_images(full=True)
             quality["content_type"] = (
                 "mixed"

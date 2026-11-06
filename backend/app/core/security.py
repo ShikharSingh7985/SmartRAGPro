@@ -3,7 +3,7 @@ from uuid import UUID, uuid4
 
 import jwt
 from argon2 import PasswordHasher
-from argon2.exceptions import VerificationError
+from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from sqlalchemy.orm import Session
@@ -20,7 +20,7 @@ bearer = HTTPBearer(auto_error=False)
 def verify_password(password: str, stored: str) -> bool:
     try:
         return hasher.verify(stored, password)
-    except VerificationError:
+    except (VerificationError, InvalidHashError):
         return False
 
 
@@ -36,6 +36,7 @@ def issue_token(user: User, settings: Settings) -> str:
             "exp": issued + timedelta(minutes=settings.access_token_minutes),
             "iss": settings.jwt_issuer,
             "aud": settings.jwt_audience,
+            "type": "access",
         },
         settings.jwt_secret.get_secret_value(),
         algorithm="HS256",
@@ -56,10 +57,18 @@ def current_user(
             algorithms=["HS256"],
             issuer=settings.jwt_issuer,
             audience=settings.jwt_audience,
-            options={"require": ["sub", "ver", "jti", "iat", "nbf", "exp", "iss", "aud"]},
+            options={"require": ["sub", "ver", "jti", "iat", "nbf", "exp", "iss", "aud", "type"]},
         )
         user = db.get(User, UUID(claims["sub"]))
-        if not user or user.token_version != claims["ver"]:
+        UUID(claims["jti"])
+        if (
+            not user
+            or not user.is_active
+            or user.deleted_at
+            or type(claims["ver"]) is not int
+            or user.token_version != claims["ver"]
+            or claims["type"] != "access"
+        ):
             raise ValueError("revoked token")
         return user
     except (jwt.InvalidTokenError, ValueError, TypeError, KeyError) as exc:

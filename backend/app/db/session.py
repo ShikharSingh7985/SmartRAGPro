@@ -9,7 +9,7 @@ from backend.app.core.config import get_settings
 
 @lru_cache
 def session_factory() -> sessionmaker[Session]:
-    engine = create_engine(get_settings().database_url, pool_pre_ping=True)
+    engine = create_engine(get_settings().database_url, pool_pre_ping=True, hide_parameters=True)
     return sessionmaker(engine, expire_on_commit=False)
 
 

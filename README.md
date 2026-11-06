@@ -21,6 +21,7 @@ existing configuration. Set `GEMINI_API_KEY` locally in `.env` using your key fr
 Provider use may incur charges; never paste keys in chat or commit `.env`.
 
 ```powershell
+uv run python -m scripts.configure_security
 docker compose up --build -d
 ```
 
@@ -87,7 +88,23 @@ other bounded retrieval settings are documented in `.env.example`; restart API a
 environment changes. Incomplete lexical indexes fall back to dense with explicit
 internal telemetry. Never change embedding model/dimensions in the same vector index.
 
-Citation metadata
-validates provenance, not factual entailment. Chat history is stored/displayed; contextual
-follow-up rewriting is deferred. Public hosting requires the hardening listed in the
-system design. Phase 3 does not start automatically.
+Citation metadata validates provenance, not factual entailment. Persistent bounded-context
+follow-ups are implemented. Public hosting still requires the deployment gates in the
+security report. Phase 6 has not started.
+
+## Security hardening (Phase 5)
+
+After configuring `.env`, run `uv run python -m scripts.configure_security` before
+`docker compose up -d --build`. This preserves provider settings and creates ignored
+role-specific environments, database runtime credentials, Redis authentication and
+Qdrant read/write keys. Rerun the helper after changing `.env`.
+
+Sessions now use rotating refresh tokens; existing access tokens require a new login.
+Streamlit refreshes server-side and supports password change/account deletion. PDF
+previews are worker-generated; reindex older documents to create previews. Content
+inspection can quarantine suspicious pages; owner-authorized reasons are available at
+`GET /api/v1/documents/{id}/security`. Security heuristics do not prove safety.
+
+See [local hardening and validation](docs/security/local-hardening.md),
+[threat model](docs/security/threat-model.md), [authentication](docs/security/authentication.md),
+[authorization](docs/security/authorization.md) and [adversarial results](docs/security/adversarial-test-report.md).

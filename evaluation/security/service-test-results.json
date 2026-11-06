@@ -1,0 +1,22 @@
+{
+  "recorded_at": "2026-11-06T16:09:11.159319+00:00",
+  "source": "Transcribed from completed pytest command output; exit code 0",
+  "scope": "Full application suite in existing test image with backend/tests/scripts mounted read-only from workspace",
+  "counts": {
+    "tests": 132,
+    "passed": 132,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "seconds": 531.08,
+  "services": [
+    "real PostgreSQL",
+    "real Qdrant",
+    "real Redis",
+    "real S3",
+    "real Tesseract"
+  ],
+  "providers": "isolated deterministic test doubles; no live generation claimed",
+  "followup": "Final v3 policy tag and one additional educational fixture verified in focused-service-test-results.json"
+}

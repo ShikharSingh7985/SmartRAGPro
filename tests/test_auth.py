@@ -24,7 +24,7 @@ def test_registration_login_logout(stack):
             "/api/v1/auth/register",
             json={"email": "alice@example.com", "password": "strong-test-password"},
         ).status_code
-        == 409
+        == 201
     )
     assert client.post("/api/v1/auth/logout", headers=headers).status_code == 204
     assert client.get("/api/v1/auth/me", headers=headers).status_code == 401
@@ -67,7 +67,18 @@ def test_unauthorized(stack, path):
 
 
 @pytest.mark.parametrize(
-    "change", ["expired", "issuer", "audience", "algorithm", "signature", "missing"]
+    "change",
+    [
+        "expired",
+        "issuer",
+        "audience",
+        "algorithm",
+        "signature",
+        "missing",
+        "purpose",
+        "version",
+        "jti",
+    ],
 )
 def test_jwt_validation(stack, change):
     client, _, _ = stack
@@ -84,6 +95,12 @@ def test_jwt_validation(stack, change):
         claims["aud"] = "attacker"
     elif change == "missing":
         del claims["exp"]
+    elif change == "purpose":
+        claims["type"] = "refresh"
+    elif change == "version":
+        claims["ver"] = False
+    elif change == "jti":
+        claims["jti"] = "not-a-uuid"
     token = jwt.encode(
         claims,
         "wrong-secret-at-least-32-characters" if change == "signature" else secret,

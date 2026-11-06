@@ -17,6 +17,7 @@ from backend.app.rag.ranking import deduplicate, rerank, rrf
 from backend.app.rag.types import embedding_fingerprint
 from backend.app.rag.vectors import tenant_filter
 from backend.app.schemas.api import Citation
+from backend.app.security.content import inspect_content, record_inspection
 from backend.app.services.resources import Resources
 
 
@@ -29,6 +30,10 @@ def retrieve(
     db: Session | None = None,
 ) -> list[dict[str, Any]]:
     settings = resources.settings
+    # This service is also used outside routes: never trust caller-provided tenant scope.
+    documents = [doc for doc in documents if doc.user_id == user_id and doc.status == "ready"]
+    if not documents:
+        return []
     for document in documents:
         if (
             document.index_fingerprint
@@ -147,6 +152,14 @@ def retrieve(
             ):
                 continue
             if not text.strip():
+                continue
+            inspection = inspect_content(
+                text + "\n" + str(payload.get("section_heading", "")),
+                settings.security_block_threshold,
+            )
+            if db is not None and inspection.reasons:
+                record_inspection(db, user_id, doc.id, str(payload["id"]), "retrieval", inspection)
+            if inspection.decision == "block":
                 continue
             citation = Citation(
                 source=len(evidence) + 1,

@@ -75,3 +75,18 @@ Unique request IDs prevent retry duplication; job retries use deterministic vect
 Qdrant payload stores `user_id`, `document_id`, `page`, `text`; user and document fields
 have keyword indexes, with `is_tenant` on the user index. Changing embedding model or
 dimension requires a new collection and re-ingestion, never mixing incompatible vectors.
+# Phase 5 security schema additions
+
+Alembic revision `20261107_security` follows `20261106_retrieval`. It adds account
+active/deleted state, document original/derived byte counters, refresh token hashes
+with owner/family/absolute expiry/consumed/revoked timestamps, versioned content
+inspection decisions and reason-only audit events. Refresh selectors are UUIDs, digests
+are unique, and owner/family columns are indexed. No plaintext refresh credential is
+stored. Existing accounts default active; existing byte counters start at zero and
+are filled on reprocessing, so legacy storage quotas can undercount until reindexing.
+
+Inspections are unique by document/object/stage/policy and use conflict-safe upserts.
+Document deletion cascades inspections; account removal cascades tokens. Audit actors
+use SET NULL on account removal and an indexed timestamp supports retention pruning.
+Deleted owner tombstones survive until physical document cleanup finishes. See
+[authentication](../security/authentication.md) and [retention](../security/data-retention.md).

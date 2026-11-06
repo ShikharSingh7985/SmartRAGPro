@@ -103,19 +103,34 @@ Full validation: 69 native tests passed with three expected host/service skips; 
 the complete-index fallback and cleanup. Formatting, lint and type checks pass.
 Implementation commit `04ed2a6f52728ed9a50ef4dc88486bdc173999eb` was pushed to the
 existing origin/main and independently verified with `git ls-remote` on 2026-11-06.
-A following documentation-only commit records this verified milestone. No Phase 5
-work has started.
+A following documentation-only commit records this verified milestone. Phase 5 had not started at that milestone.
 
 The earlier live Gemini gate is now resolved for the locally selected
 `gemini-3.5-flash-lite`: the rebuilt application completed all four live HTTP turns,
 fresh-client login/history restoration and expected page citations. Full ingestion
 and whole-turn timings are captured in evaluation/results/live_workflow.json.
 
-## Phase 5 — Next scope awaits user specification
+## Phase 5 - Security hardening (explicit user scope)
 
-Not started. Await the user's next specification; the former retrieval scope was
-explicitly moved into Phase 4. Security/tenant hardening, representative corpus review
-and further quality work are candidates, not automatically authorized next-phase work.
+Implemented session rotation/reuse revocation, account lifecycle controls, upload and
+processing limits, versioned ingestion/retrieval/memory poisoning defenses, private
+object-key checks, worker-generated previews, plain-text model rendering, runtime DB
+roles and authenticated Redis/Qdrant. Architecture and all security documents live in
+[the security report](security/adversarial-test-report.md), with machine-readable
+adversarial, dependency, infrastructure and regression evidence under evaluation/security/.
+
+The final native suite passed 128 tests with five expected skips. The complete
+disposable-service suite passed 132 tests; five final focused PostgreSQL/
+security regressions also passed. The synthetic retrieval regression preserved earlier
+metrics. Historical live model failures remain recorded. The existing deployed image
+passed seven of eight HTTP acceptance checks but falsely quarantined educational text;
+the current v3 source fixes quotation handling and passes the exact PDF regression.
+The final application rebuild was declined, so deployment acceptance remains open.
+No production-readiness or general prompt-injection immunity is claimed.
+
+Git milestone: source validation and the authorized plain-English commit/push are being
+finalized against the existing origin/main. Do not start Phase 6 automatically. See
+[secure setup and final acceptance commands](security/local-hardening.md).
 
 ## Phase 6 — Production operations
 

@@ -2,6 +2,7 @@ from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, HTTPException, Request
+from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from sqlalchemy import text
 from sqlalchemy.orm import Session
@@ -11,6 +12,7 @@ from backend.app.api.v1.ingestion import router as ingestion_router
 from backend.app.api.v1.routes import router
 from backend.app.core.config import get_settings
 from backend.app.db.session import close_database, get_db
+from backend.app.security.http import HostAndCorsBoundary, RequestBoundary
 from backend.app.services.resources import Resources, get_resources
 
 
@@ -29,15 +31,27 @@ app.include_router(router)
 app.include_router(ingestion_router)
 
 
+@app.exception_handler(RequestValidationError)
+async def validation_failure(_request: Request, exc: RequestValidationError) -> JSONResponse:
+    # Pydantic's default error includes input values, which may contain credentials.
+    errors = [{k: error[k] for k in ("loc", "msg", "type")} for error in exc.errors()]
+    return JSONResponse({"detail": errors}, status_code=422)
+
+
 @app.middleware("http")
 async def boundary(request: Request, call_next):  # type: ignore[no-untyped-def]
     # The frontend is server-side; do not enable wildcard CORS.
     if request.url.path.startswith("/api/"):
+        if get_settings().require_https and request.url.scheme != "https":
+            return JSONResponse({"detail": "HTTPS is required"}, status_code=400)
         if request.method in {"POST", "PUT", "PATCH"} and "content-length" not in request.headers:
             return JSONResponse({"detail": "Content-Length is required"}, status_code=411)
         maximum = get_settings().max_upload_bytes + 1024 * 1024
         try:
-            if int(request.headers.get("content-length", "0")) > maximum:
+            length = int(request.headers.get("content-length", "0"))
+            if length < 0:
+                return JSONResponse({"detail": "Invalid Content-Length"}, status_code=400)
+            if length > maximum:
                 return JSONResponse({"detail": "Request exceeds size limit"}, status_code=413)
         except ValueError:
             return JSONResponse({"detail": "Invalid Content-Length"}, status_code=400)
@@ -64,10 +78,12 @@ async def boundary(request: Request, call_next):  # type: ignore[no-untyped-def]
         except Exception:
             return JSONResponse({"detail": "Rate limit service unavailable"}, status_code=503)
     response = await call_next(request)
-    response.headers["X-Content-Type-Options"] = "nosniff"
-    response.headers["Cache-Control"] = "no-store"
-    response.headers["X-Frame-Options"] = "DENY"
     return response
+
+
+# Outermost boundary also covers early rate/validation/host failures.
+app.add_middleware(HostAndCorsBoundary)
+app.add_middleware(RequestBoundary)
 
 
 @app.get("/health/live", tags=["health"])

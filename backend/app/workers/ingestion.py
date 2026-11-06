@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 from uuid import UUID, uuid4, uuid5
 
+import pymupdf
 from qdrant_client import models as qm
 from sqlalchemy import Engine, delete, select, text
 from sqlalchemy.orm import Session
@@ -19,6 +20,7 @@ from backend.app.models.entities import (
     IngestionJob,
     PageExtraction,
     SearchChunk,
+    User,
     now,
 )
 from backend.app.rag.extraction import (
@@ -30,6 +32,9 @@ from backend.app.rag.extraction import (
 )
 from backend.app.rag.types import embedding_fingerprint, structured_chunks
 from backend.app.rag.vectors import index_knowledge, tenant_filter
+from backend.app.security.content import inspect_content, inspection_text, record_inspection
+from backend.app.security.malware import scan_file
+from backend.app.security.storage import owned_key
 from backend.app.services.resources import GeminiGenerator, Resources, download_object
 
 logger = logging.getLogger(__name__)
@@ -53,7 +58,11 @@ def _remove_content(db: Session, resources: Resources, document: Document) -> No
                 wait=True,
             )
     for asset in db.scalars(select(DocumentAsset).where(DocumentAsset.document_id == document.id)):
+        if not owned_key(asset.object_key, document.user_id, document.id):
+            raise ValueError("Invalid owned object key")
         resources.store.delete(asset.object_key)
+    if not owned_key(document.object_key, document.user_id, document.id):
+        raise ValueError("Invalid owned object key")
     resources.store.delete(document.object_key)
     db.execute(delete(PageExtraction).where(PageExtraction.document_id == document.id))
     db.execute(delete(DocumentAsset).where(DocumentAsset.document_id == document.id))
@@ -104,6 +113,12 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
             raise ProcessingCancelled()
         if current.cancel_requested or (document.status == "deleting" and current.kind == "ingest"):
             raise ProcessingCancelled()
+        if current.kind == "ingest" and not db.scalar(
+            select(User.id).where(
+                User.id == document.user_id, User.is_active.is_(True), User.deleted_at.is_(None)
+            )
+        ):
+            raise ProcessingCancelled()
         if time.monotonic() - started > resources.settings.ingestion_timeout_seconds:
             raise ProcessingDependencyError("Ingestion deadline exceeded")
         if stage:
@@ -146,6 +161,9 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
         def save_asset(
             page: int, kind: str, data: bytes, caption: str, details: dict[str, Any]
         ) -> str:
+            assert document is not None
+            if len(data) > 32 * 1024 * 1024:
+                raise InvalidDocument("Asset exceeds response size limit")
             checkpoint("extracting")
             asset_id = uuid5(document_id, f"{page}:{kind}:{hashlib.sha256(data).hexdigest()}")
             extension = details.get("extension", "png")
@@ -166,15 +184,35 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
                 db.add(asset)
                 db.commit()
             if not asset.available:
+                if (
+                    document.derived_bytes + len(data)
+                    > resources.settings.max_derived_bytes_per_document
+                ):
+                    raise InvalidDocument("Derived asset quota exceeded")
                 resources.store.put(key, data)
                 asset.available = True
+                document.derived_bytes += len(data)
                 db.commit()
             return str(asset_id)
 
         with tempfile.TemporaryDirectory(prefix="smartrag-") as directory:
             source = Path(directory) / "source.pdf"
-            download_object(resources.store, document.object_key, source)
+            if not owned_key(document.object_key, owner_id, document_id):
+                raise InvalidDocument("Invalid owned object key")
+            download_object(
+                resources.store, document.object_key, source, resources.settings.max_upload_bytes
+            )
+            document.size_bytes = source.stat().st_size
+            scan_file(source, resources.settings)
             job.total_pages = inspect_pdf(source, resources.settings)
+            with pymupdf.open(source) as inspected:
+                metadata_result = inspect_content(
+                    inspection_text(inspected.metadata), resources.settings.security_block_threshold
+                )
+            record_inspection(db, owner_id, document_id, "metadata", "ingestion", metadata_result)
+            db.commit()
+            if metadata_result.decision == "block":
+                raise InvalidDocument("Document metadata quarantined by content security policy")
             document.page_count = job.total_pages
             db.commit()
             for result in extract_pages(
@@ -187,6 +225,21 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
                     db.add(record)
                 record.strategy, record.quality = result.strategy, result.quality
                 record.content = [element.to_dict() for element in result.elements]
+                page_inspection = inspect_content(
+                    inspection_text(record.content),
+                    resources.settings.security_block_threshold,
+                )
+                raw_security = result.quality.get("raw_security", {})
+                if raw_security.get("decision") == "block":
+                    from backend.app.security.content import Inspection
+
+                    page_inspection = Inspection(
+                        raw_security["score"], "block", raw_security["reasons"]
+                    )
+                record.quality = {**record.quality, "security": page_inspection.as_dict()}
+                record_inspection(
+                    db, owner_id, document_id, f"page-{result.page}", "ingestion", page_inspection
+                )
                 for element in result.elements:
                     if element.asset_id and element.model_derived:
                         asset = db.get(DocumentAsset, UUID(element.asset_id))
@@ -201,6 +254,20 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
                 db.commit()
                 checkpoint("chunking")
                 chunks = structured_chunks(result.elements, resources.settings)
+                if page_inspection.decision == "block":
+                    chunks = []
+                safe_chunks = []
+                for chunk in chunks:
+                    inspection = inspect_content(
+                        chunk.text + "\n" + inspection_text(chunk.metadata),
+                        resources.settings.security_block_threshold,
+                    )
+                    record_inspection(
+                        db, owner_id, document_id, chunk.chunk_id, "ingestion", inspection
+                    )
+                    if inspection.decision != "block":
+                        safe_chunks.append(chunk)
+                chunks = safe_chunks
                 checkpoint("embedding")
                 index_knowledge(
                     resources,

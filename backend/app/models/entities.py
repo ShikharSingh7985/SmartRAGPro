@@ -34,6 +34,8 @@ class User(Identity, Base):
     email: Mapped[str] = mapped_column(String(254), unique=True)
     password_hash: Mapped[str] = mapped_column(String(255))
     token_version: Mapped[int] = mapped_column(default=0)
+    is_active: Mapped[bool] = mapped_column(default=True)
+    deleted_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
 
 
 class Document(Identity, Base):
@@ -54,6 +56,8 @@ class Document(Identity, Base):
     index_fingerprint: Mapped[str | None] = mapped_column(String(64))
     index_collection: Mapped[str | None] = mapped_column(String(255))
     active_run: Mapped[str | None] = mapped_column(String(36))
+    size_bytes: Mapped[int] = mapped_column(default=0)
+    derived_bytes: Mapped[int] = mapped_column(default=0)
     __table_args__ = (
         UniqueConstraint(
             "user_id", "content_hash", "extraction_mode", name="uq_owned_content_mode"
@@ -195,3 +199,42 @@ class SearchTerm(Base):
     term: Mapped[str] = mapped_column(String(80), primary_key=True)
     frequency: Mapped[int] = mapped_column()
     __table_args__ = (Index("ix_search_term", "term", "chunk_id"),)
+
+
+class RefreshToken(Identity, Base):
+    __tablename__ = "refresh_tokens"
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    family_id: Mapped[uuid.UUID] = mapped_column(Uuid, index=True)
+    digest: Mapped[str] = mapped_column(String(64), unique=True)
+    expires_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    consumed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    revoked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+
+
+class SecurityInspection(Identity, Base):
+    __tablename__ = "security_inspections"
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("users.id", ondelete="CASCADE"), index=True
+    )
+    document_id: Mapped[uuid.UUID] = mapped_column(
+        ForeignKey("documents.id", ondelete="CASCADE"), index=True
+    )
+    object_id: Mapped[str] = mapped_column(String(128))
+    stage: Mapped[str] = mapped_column(String(20))
+    policy_version: Mapped[str] = mapped_column(String(30))
+    decision: Mapped[str] = mapped_column(String(20))
+    score: Mapped[int] = mapped_column()
+    reasons: Mapped[list[str]] = mapped_column(JSON)
+    __table_args__ = (UniqueConstraint("document_id", "object_id", "stage", "policy_version"),)
+
+
+class AuditEvent(Identity, Base):
+    __tablename__ = "audit_events"
+    actor_id: Mapped[uuid.UUID | None] = mapped_column(
+        ForeignKey("users.id", ondelete="SET NULL"), index=True
+    )
+    event: Mapped[str] = mapped_column(String(50))
+    resource_id: Mapped[uuid.UUID | None] = mapped_column(Uuid)
+    __table_args__ = (Index("ix_audit_retention", "created_at"),)

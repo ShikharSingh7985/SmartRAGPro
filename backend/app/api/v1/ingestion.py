@@ -1,22 +1,81 @@
-import tempfile
-from pathlib import Path
+from datetime import timedelta
 from typing import Any
 from uuid import UUID
 
-import pymupdf
 from fastapi import APIRouter, Depends, HTTPException, Response
-from sqlalchemy import select
+from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
 from backend.app.api.v1.routes import owned_document
+from backend.app.core.config import get_settings
 from backend.app.core.security import current_user
 from backend.app.db.session import get_db
-from backend.app.models.entities import Document, DocumentAsset, IngestionJob, PageExtraction, User
-from backend.app.rag.extraction import render_page
+from backend.app.models.entities import (
+    Document,
+    DocumentAsset,
+    IngestionJob,
+    PageExtraction,
+    SecurityInspection,
+    User,
+    now,
+)
 from backend.app.schemas.api import AssetOut, JobOut
-from backend.app.services.resources import Resources, download_object, get_resources
+from backend.app.services.resources import Resources, get_resources
 
 router = APIRouter(prefix="/api/v1/documents", tags=["ingestion"])
+
+
+def ingestion_quota(db: Session, user: User) -> None:
+    # Match upload/account lock order and bound explicit retries independently of broker retries.
+    db.scalar(select(User.id).where(User.id == user.id).with_for_update())
+    recent = (
+        db.scalar(
+            select(func.count(IngestionJob.id))
+            .join(Document)
+            .where(
+                Document.user_id == user.id,
+                IngestionJob.kind == "ingest",
+                IngestionJob.created_at >= now() - timedelta(minutes=10),
+            )
+        )
+        or 0
+    )
+    if recent >= 20:
+        raise HTTPException(429, "Ingestion request quota exceeded; retry later")
+    active = (
+        db.scalar(
+            select(func.count(Document.id)).where(
+                Document.user_id == user.id, Document.status.in_(["queued", "uploading"])
+            )
+        )
+        or 0
+    )
+    if active >= get_settings().max_active_jobs_per_user:
+        raise HTTPException(429, "Concurrent ingestion quota exceeded; wait for existing jobs")
+
+
+@router.get("/{document_id}/security")
+def security_results(
+    document_id: UUID, db: Session = Depends(get_db), user: User = Depends(current_user)
+) -> list[dict[str, Any]]:
+    owned_document(db, document_id, user.id)
+    return [
+        {
+            "object_id": item.object_id,
+            "stage": item.stage,
+            "score": item.score,
+            "decision": item.decision,
+            "reasons": item.reasons,
+            "policy_version": item.policy_version,
+        }
+        for item in db.scalars(
+            select(SecurityInspection)
+            .where(
+                SecurityInspection.document_id == document_id, SecurityInspection.user_id == user.id
+            )
+            .limit(1000)
+        )
+    ]
 
 
 def accessible(db: Session, document_id: UUID, user_id: UUID) -> Document:
@@ -51,6 +110,7 @@ def jobs(
 def retry(
     document_id: UUID, db: Session = Depends(get_db), user: User = Depends(current_user)
 ) -> IngestionJob:
+    ingestion_quota(db, user)
     accessible(db, document_id, user.id)
     document = db.scalar(
         select(Document)
@@ -71,6 +131,7 @@ def retry(
 def reindex(
     document_id: UUID, db: Session = Depends(get_db), user: User = Depends(current_user)
 ) -> IngestionJob:
+    ingestion_quota(db, user)
     accessible(db, document_id, user.id)
     document = db.scalar(
         select(Document)
@@ -159,6 +220,8 @@ def image(
     )
     if not asset:
         raise HTTPException(404, "Asset not found")
+    if not asset.object_key.startswith(f"{user.id}/{document_id}/assets/"):
+        raise HTTPException(404, "Asset not found")
     try:
         extension = asset.object_key.rsplit(".", 1)[-1]
         media_type = {
@@ -185,12 +248,14 @@ def preview(
     document = accessible(db, document_id, user.id)
     if page < 1 or page > document.page_count:
         raise HTTPException(404, "Page not found")
-    try:
-        with tempfile.TemporaryDirectory(prefix="smartrag-preview-") as directory:
-            source = Path(directory) / "source.pdf"
-            download_object(resources.store, document.object_key, source)
-            with pymupdf.open(source) as pdf:
-                data = render_page(pdf[page - 1], resources.settings)
-        return Response(data, media_type="image/png")
-    except Exception:
-        raise HTTPException(503, "Page preview temporarily unavailable") from None
+    asset = db.scalar(
+        select(DocumentAsset).where(
+            DocumentAsset.document_id == document_id,
+            DocumentAsset.page == page,
+            DocumentAsset.kind == "page_preview",
+            DocumentAsset.available.is_(True),
+        )
+    )
+    if not asset:
+        raise HTTPException(404, "Preview not yet available; reindex older documents")
+    return image(document_id, asset.id, db, user, resources)

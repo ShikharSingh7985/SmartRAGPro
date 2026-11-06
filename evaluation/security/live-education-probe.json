@@ -1,0 +1,61 @@
+{
+  "execution_date": "2026-11-06T15:56:17.819989+00:00",
+  "services": "real PostgreSQL, Qdrant, Redis, S3, worker and Gemini",
+  "checks": [
+    {
+      "check": "refresh_rotation",
+      "passed": true
+    },
+    {
+      "check": "education.pdf",
+      "expected": "ready",
+      "actual": "failed",
+      "passed": false,
+      "jobs": [
+        {
+          "id": "7155a885-a417-406a-b126-f6e5138c8c17",
+          "document_id": "eb27f741-ca62-4f5d-afe9-2d5814a87f5e",
+          "status": "failed",
+          "stage": "failed",
+          "pages_processed": 1,
+          "total_pages": 1,
+          "attempts": 1,
+          "error": "Invalid or unsupported PDF/index configuration",
+          "retryable": false,
+          "cancel_requested": false,
+          "updated_at": "2026-11-06T15:56:16.793006Z"
+        }
+      ],
+      "inspections": [
+        {
+          "object_id": "metadata",
+          "stage": "ingestion",
+          "score": 0,
+          "decision": "allow",
+          "reasons": [],
+          "policy_version": "content-2026-11-v2"
+        },
+        {
+          "object_id": "page-1",
+          "stage": "ingestion",
+          "score": 95,
+          "decision": "block",
+          "reasons": [
+            "override",
+            "evidence_override"
+          ],
+          "policy_version": "content-2026-11-v2"
+        }
+      ],
+      "page_count": 1
+    },
+    {
+      "check": "refresh_reuse_revokes_access",
+      "passed": true
+    },
+    {
+      "check": "account_cleanup_queued",
+      "passed": true
+    }
+  ]
+}

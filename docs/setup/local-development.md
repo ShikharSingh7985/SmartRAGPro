@@ -117,3 +117,10 @@ can use a free account. Authenticate locally with `gh auth login` or your Git cr
 manager/SSH agent. Never send a personal token, password or private key in chat.
 After the destination is confirmed: preserve/fetch remote history, reconcile without
 force, push main and `v0.1.0-mvp`, and compare `git ls-remote` with the local commit/tag.
+# Phase 5 setup change
+
+After configuring `.env`, run `uv run python -m scripts.configure_security`, then
+`docker compose up -d --build`. Repeat the helper after editing configuration; Compose
+now consumes private role-specific files under `.docker-local/`. Migration/admin and
+runtime database credentials are separated without replacing the existing database
+volume. See [hardening setup and verification](../security/local-hardening.md).

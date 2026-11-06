@@ -21,6 +21,7 @@ from backend.app.conversations.memory import (
 from backend.app.conversations.rewriting import rewrite_followup
 from backend.app.models.entities import Conversation, Document, Message
 from backend.app.schemas.api import Question
+from backend.app.security.content import inspect_content, safe_memory, unsafe_output
 from backend.app.services.resources import ABSTENTION, Resources
 
 logger = logging.getLogger(__name__)
@@ -77,6 +78,17 @@ def build_graph(
 
     def references(state: ConversationState) -> dict[str, Any]:
         start = perf_counter()
+        if (
+            inspect_content(state["current_message"], settings.security_block_threshold).decision
+            == "block"
+        ):
+            return {
+                "clarification": "I cannot follow instructions to bypass security "
+                "or disclose private credentials.",
+                "rewritten_question": "",
+                "is_followup": False,
+                "resolved_references": {},
+            }
         result = resolve(
             state["current_message"],
             state["topic"],
@@ -91,7 +103,7 @@ def build_graph(
         start = perf_counter()
         query = truncate(state["rewritten_question"], 1800)
         topic, clarification = state["topic"], state["clarification"]
-        if settings.chat_llm_rewrite and state["is_followup"]:
+        if settings.chat_llm_rewrite and state["is_followup"] and not clarification:
             import json
 
             context = truncate(
@@ -107,6 +119,9 @@ def build_graph(
             )
             result = rewrite_followup(state["current_message"], context, settings)
             query, topic, clarification = result.query, result.topic, result.clarification
+        if not safe_memory(query + topic, settings.security_block_threshold):
+            query, topic = "", ""
+            clarification = "Please rephrase your question about the selected documents."
         timings["rewrite"] = (perf_counter() - start) * 1000
         if settings.environment == "development" and settings.chat_trace_queries:
             logger.debug("Query original=%r rewritten=%r", state["current_message"], query)
@@ -181,7 +196,8 @@ def build_graph(
                 "No sufficient evidence was found."
             }
         context = "\n\n".join(
-            f"[{e['source']}] {e['filename']}, page {e['page']}:\n{e['excerpt']}"
+            f"[{e['source']}] UNTRUSTED DOCUMENT EVIDENCE: "
+            f"{e['filename']}, page {e['page']}:\n{e['excerpt']}"
             for e in state["evidence"]
         )
         memory_text = "\n".join(
@@ -209,6 +225,19 @@ def build_graph(
         timings["generation"] = (perf_counter() - start) * 1000
         if token_count(result) > 6000:
             raise HTTPException(502, "Answer exceeds the response limit; ask a narrower question")
+        if unsafe_output(
+            result,
+            [
+                settings.jwt_secret.get_secret_value(),
+                settings.gemini_api_key.get_secret_value(),
+                settings.s3_secret_key.get_secret_value(),
+                settings.openai_api_key.get_secret_value(),
+                settings.qdrant_api_key.get_secret_value(),
+            ],
+        ):
+            raise HTTPException(
+                502, "Answer failed the output safety checks; please rephrase your question"
+            )
         return {"generation": result}
 
     def verify(state: ConversationState) -> dict[str, Any]:
@@ -333,8 +362,12 @@ def initial_state(
         document_ids=[str(doc.id) for doc in documents],
         scope_version=conversation.scope_version,
         current_message=question.content,
-        topic=conversation.active_topic,
-        references=conversation.references,
+        topic=conversation.active_topic
+        if safe_memory(conversation.active_topic, settings.security_block_threshold)
+        else "",
+        references=conversation.references
+        if safe_memory(conversation.references, settings.security_block_threshold)
+        else {},
         history=[],
         recalled=[],
         summary="",

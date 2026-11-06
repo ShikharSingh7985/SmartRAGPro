@@ -13,11 +13,16 @@ services:
       retries: 20
   qdrant:
     image: qdrant/qdrant:v1.20.0
+    environment:
+      QDRANT__SERVICE__API_KEY: ${QDRANT_API_KEY:?Run scripts.configure_security}
+      QDRANT__SERVICE__READ_ONLY_API_KEY: ${QDRANT_READ_API_KEY:?Run scripts.configure_security}
     volumes: [qdrant_data:/qdrant/storage]
   redis:
     image: redis:7.4.12-alpine
-    command: [redis-server, --appendonly, "yes"]
-    volumes: [redis_data:/data]
+    command: [redis-server, /usr/local/etc/redis/redis.conf]
+    environment:
+      REDISCLI_AUTH: ${REDIS_PASSWORD:?Run scripts.configure_security}
+    volumes: [redis_data:/data, "./.docker-local/redis.conf:/usr/local/etc/redis/redis.conf:ro"]
     healthcheck:
       test: [CMD, redis-cli, ping]
       interval: 5s
@@ -32,7 +37,7 @@ services:
     volumes: [objectstore_data:/data]
   bootstrap:
     build: .
-    env_file: .env
+    env_file: .docker-local/bootstrap.env
     command: [python, -m, scripts.bootstrap]
     depends_on:
       postgres: {condition: service_healthy}
@@ -41,7 +46,7 @@ services:
       qdrant: {condition: service_started}
   api:
     build: .
-    env_file: .env
+    env_file: .docker-local/api.env
     ports: ["127.0.0.1:8000:8000"]
     depends_on:
       bootstrap: {condition: service_completed_successfully}
@@ -55,18 +60,23 @@ services:
     build:
       context: .
       target: worker
-    env_file: .env
+    env_file: .docker-local/worker.env
     command: [dramatiq, backend.app.workers.tasks, --processes, "1", --threads, "1"]
     depends_on:
       bootstrap: {condition: service_completed_successfully}
     restart: unless-stopped
     mem_limit: 4g
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    tmpfs: ["/tmp:size=1g,mode=1777"]
     cpus: 1.0
     stop_grace_period: 120s
     volumes: [model_cache:/tmp/model-cache]
   dispatcher:
     build: .
-    env_file: .env
+    env_file: .docker-local/dispatcher.env
     command: [python, -m, backend.app.workers.dispatcher]
     depends_on:
       bootstrap: {condition: service_completed_successfully}

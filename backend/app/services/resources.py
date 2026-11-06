@@ -51,7 +51,13 @@ class S3Store:
     def get(self, key: str) -> bytes:
         response = self.client.get_object(Bucket=self.bucket, Key=key)
         with response["Body"] as stream:
-            return stream.read()
+            limit = 32 * 1024 * 1024
+            if response["ContentLength"] > limit:
+                raise ValueError("Stored asset exceeds response size limit")
+            data = stream.read(limit + 1)
+            if len(data) > limit:
+                raise ValueError("Stored asset exceeds response size limit")
+            return data
 
     def delete(self, key: str) -> None:
         self.client.delete_object(Bucket=self.bucket, Key=key)
@@ -198,11 +204,28 @@ def get_resources() -> Resources:
     return Resources(get_settings())
 
 
-def download_object(store: ObjectStore, key: str, destination: Path) -> None:
+def download_object(
+    store: ObjectStore, key: str, destination: Path, max_bytes: int | None = None
+) -> None:
     if isinstance(store, S3Store):
-        store.download(key, destination)
+        if max_bytes is None:
+            store.download(key, destination)
+        else:
+            response = store.client.get_object(Bucket=store.bucket, Key=key)
+            with response["Body"] as stream, destination.open("wb") as output:
+                if response["ContentLength"] > max_bytes:
+                    raise ValueError("Stored document exceeds processing limit")
+                total = 0
+                while block := stream.read(1024 * 1024):
+                    total += len(block)
+                    if total > max_bytes:
+                        raise ValueError("Stored document exceeds processing limit")
+                    output.write(block)
     else:
-        destination.write_bytes(store.get(key))
+        data = store.get(key)
+        if max_bytes is not None and len(data) > max_bytes:
+            raise ValueError("Stored document exceeds processing limit")
+        destination.write_bytes(data)
 
 
 def upload_object(store: ObjectStore, key: str, source: Path) -> None:

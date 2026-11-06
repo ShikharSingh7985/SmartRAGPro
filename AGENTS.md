@@ -104,8 +104,14 @@ can only be supplied by the user:
 
 Phase 1: architecture, secure digital-PDF RAG MVP, tests and verified initial GitHub push.
 Phase 2: OCR, tables/images and richer ingestion. Phase 3: LangGraph conversations.
-Phase 4: retrieval evaluation and optimization (user-revised). Phase 5: next scope
-awaits explicit user direction; security/tenant reliability remains proposed work.
+Phase 4: retrieval evaluation and optimization (user-revised). Phase 5: security and
+tenant hardening (explicit user scope). Preserve single-use refresh rotation/reuse
+revocation, owner locks, reason-only content inspections, fail-closed service boundaries,
+worker isolation and private role environments. Never treat heuristic scores as safety
+proof. Run tests/test_security.py and python -m evaluation.security.run; live probes
+require real configured providers and must preserve failures separately. Generate local
+runtime envs with python -m scripts.configure_security after editing .env; never commit
+those generated files. Keep threat model and residual-risk reports accurate.
 Phase 6: production operations. Later scopes may be revised by user specifications.
 Do not begin a later phase automatically. Keep `docs/roadmap.md`, architectural decisions
 and validation evidence accurate, including unresolved credentials and remote push status.

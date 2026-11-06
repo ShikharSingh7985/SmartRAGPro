@@ -1,0 +1,45 @@
+{
+  "execution_date": "2026-11-06T15:50:03.071097+00:00",
+  "services": "real PostgreSQL, Qdrant, Redis, S3, worker and Gemini",
+  "checks": [
+    {
+      "check": "refresh_rotation",
+      "passed": true
+    },
+    {
+      "check": "benign.pdf",
+      "expected": "ready",
+      "actual": "ready",
+      "passed": true
+    },
+    {
+      "check": "worker_preview",
+      "passed": true
+    },
+    {
+      "check": "real_grounded_answer",
+      "status": 201,
+      "passed": true
+    },
+    {
+      "check": "malicious.pdf",
+      "expected": "failed",
+      "actual": "failed",
+      "passed": true
+    },
+    {
+      "check": "education.pdf",
+      "expected": "ready",
+      "actual": "failed",
+      "passed": false
+    },
+    {
+      "check": "refresh_reuse_revokes_access",
+      "passed": true
+    },
+    {
+      "check": "account_cleanup_queued",
+      "passed": true
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 import json
 import os
+import re
+import threading
+import time
 from typing import Any
 from uuid import uuid4
 
@@ -10,7 +13,42 @@ st.set_page_config(page_title="SmartRAG Pro", page_icon="📚", layout="wide")
 BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8000")
 
 
+def remember_tokens(result: dict[str, Any]) -> None:
+    # Server-side Streamlit session only. Never put credentials in URLs or browser storage.
+    st.session_state["token"] = result["access_token"]
+    st.session_state["refresh_token"] = result["refresh_token"]
+    st.session_state["expires_at"] = time.time() + result["expires_in"]
+
+
+def refresh_session(*, expected_token: str | None = None) -> None:
+    lock = st.session_state.setdefault("session_refresh_lock", threading.RLock())
+    with lock:
+        if expected_token is not None and st.session_state.get("token") != expected_token:
+            return
+        if expected_token is None and time.time() < st.session_state.get("expires_at", 0) - 30:
+            return
+        _refresh_session()
+
+
+def _refresh_session() -> None:
+    try:
+        response = httpx.post(
+            BASE_URL + "/api/v1/auth/refresh",
+            json={"refresh_token": st.session_state["refresh_token"]},
+            timeout=30,
+        )
+        response.raise_for_status()
+        remember_tokens(response.json())
+    except (httpx.HTTPError, ValueError, KeyError):
+        # Do not retry an uncertain rotation: its one-use credential may already be consumed.
+        st.session_state.clear()
+        st.warning("Your session expired. Please sign in again.")
+        st.stop()
+
+
 def api(method: str, path: str, **kwargs: Any) -> Any:
+    if "token" in st.session_state and time.time() >= st.session_state.get("expires_at", 0) - 30:
+        refresh_session()
     headers = (
         {"Authorization": f"Bearer {st.session_state['token']}"}
         if "token" in st.session_state
@@ -21,9 +59,19 @@ def api(method: str, path: str, **kwargs: Any) -> Any:
             method, BASE_URL + "/api/v1" + path, headers=headers, timeout=180, **kwargs
         )
         if response.status_code == 401 and "token" in st.session_state:
-            st.session_state.clear()
-            st.warning("Your session expired. Please sign in again.")
-            st.stop()
+            refresh_session(expected_token=headers["Authorization"].removeprefix("Bearer "))
+            headers = {"Authorization": f"Bearer {st.session_state['token']}"}
+            # Only retry non-upload requests; a consumed upload stream is not replayable here.
+            if "files" in kwargs:
+                st.warning("Session renewed. Please submit the upload again.")
+                st.stop()
+            response = httpx.request(
+                method, BASE_URL + "/api/v1" + path, headers=headers, timeout=180, **kwargs
+            )
+            if response.status_code == 401:
+                st.session_state.clear()
+                st.warning("Please sign in again.")
+                st.stop()
         if response.is_error:
             detail = response.json().get("detail", "Request failed")
             st.error(detail if isinstance(detail, str) else "Please check the form values.")
@@ -34,6 +82,10 @@ def api(method: str, path: str, **kwargs: Any) -> Any:
     except (httpx.HTTPError, ValueError):
         st.error("The service is unavailable. Please retry shortly.")
         st.stop()
+
+
+def plain_label(value: str) -> str:
+    return re.sub(r"([\\`*_{}\[\]()#+.!|<>~\-])", r"\\\1", value)
 
 
 def all_items(path: str) -> list[dict[str, Any]]:
@@ -49,21 +101,23 @@ def auth() -> None:
     st.title("SmartRAG Pro")
     st.caption("Private document conversations with page-level sources")
     login_tab, register_tab = st.tabs(["Sign in", "Create account"])
-    with login_tab, st.form("login"):
+    with login_tab, st.form("login", clear_on_submit=True):
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
         if st.form_submit_button("Sign in", type="primary"):
             result = api("POST", "/auth/login", json={"email": email, "password": password})
-            st.session_state["token"] = result["access_token"]
+            remember_tokens(result)
             st.rerun()
-    with register_tab, st.form("register"):
+    with register_tab, st.form("register", clear_on_submit=True):
         email = st.text_input("Email", key="register_email")
         password = st.text_input(
             "Password (at least 12 characters)", type="password", key="register_password"
         )
         if st.form_submit_button("Create account"):
             api("POST", "/auth/register", json={"email": email, "password": password})
-            st.success("Account created. Sign in to continue.")
+            st.success(
+                "If this address is available, your account has been created. Sign in to continue."
+            )
 
 
 def main() -> None:
@@ -81,6 +135,25 @@ def main() -> None:
             api("POST", "/auth/logout")
             st.session_state.clear()
             st.rerun()
+        with st.expander("Account security"):
+            with st.form("change-password", clear_on_submit=True):
+                current_password = st.text_input("Current password", type="password")
+                new_password = st.text_input("New password (12+ characters)", type="password")
+                if st.form_submit_button("Change password and sign out"):
+                    api(
+                        "POST",
+                        "/auth/password",
+                        json={"current_password": current_password, "new_password": new_password},
+                    )
+                    st.session_state.clear()
+                    st.rerun()
+            with st.form("delete-account", clear_on_submit=True):
+                confirmation = st.checkbox("Permanently delete my account and all documents")
+                password_confirmation = st.text_input("Confirm password", type="password")
+                if st.form_submit_button("Delete account", disabled=not confirmation):
+                    api("DELETE", "/auth/account", json={"password": password_confirmation})
+                    st.session_state.clear()
+                    st.rerun()
     docs = all_items("/documents")
     if page == "Documents":
         st.title("Your documents")
@@ -106,7 +179,7 @@ def main() -> None:
         for doc in docs:
             with st.container(border=True):
                 left, right = st.columns([5, 1])
-                left.write(doc["filename"])
+                left.text(doc["filename"])
                 left.caption(f"{doc['status'].capitalize()} · {doc['page_count']} pages")
                 left.caption(
                     f"{doc['extraction_mode']} · {doc['chunk_count']} chunks · "
@@ -181,7 +254,7 @@ def main() -> None:
             st.rerun()
         st.subheader("Previous conversations")
         for conversation in history:
-            if st.button(conversation["title"], key=conversation["id"]):
+            if st.button(plain_label(conversation["title"]), key=conversation["id"]):
                 st.session_state["conversation_id"] = conversation["id"]
                 st.session_state.pop("pending", None)
                 st.rerun()
@@ -192,7 +265,7 @@ def main() -> None:
         )
         return
     current = api("GET", f"/conversations/{conversation_id}")
-    st.subheader(current["title"])
+    st.subheader(plain_label(current["title"]))
     if current.get("source_warning"):
         st.warning(current["source_warning"])
     if any(identifier not in ready for identifier in current["document_ids"]):
@@ -239,7 +312,8 @@ def main() -> None:
     )
     for message in saved_messages:
         with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+            # Plain rendering prevents model-supplied Markdown images from making browser requests.
+            st.text(message["content"])
             if message["citations"]:
                 with st.expander("Sources"):
                     for citation in message["citations"]:

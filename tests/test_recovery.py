@@ -14,10 +14,12 @@ def test_abandoned_upload_cleanup(stack):
     authenticate(client)
     with factory() as db:
         user = db.scalar(select(User))
+        document_id = uuid4()
         document = Document(
+            id=document_id,
             user_id=user.id,
             filename="abandoned.pdf",
-            object_key=f"{user.id}/{uuid4()}.pdf",
+            object_key=f"{user.id}/{document_id}.pdf",
             status="uploading",
         )
         db.add(document)
