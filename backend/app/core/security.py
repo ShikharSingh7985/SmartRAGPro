@@ -6,6 +6,7 @@ from argon2 import PasswordHasher
 from argon2.exceptions import InvalidHashError, VerificationError
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from backend.app.core.config import Settings, get_settings
@@ -15,6 +16,17 @@ from backend.app.models.entities import User, now
 hasher = PasswordHasher()
 dummy_hash = hasher.hash("timing-equalization-non-user-password")
 bearer = HTTPBearer(auto_error=False)
+
+
+def lock_active_owner(db: Session, user_id: UUID) -> None:
+    """Serialize resource creation with account deletion; recheck after acquiring the lock."""
+    owner = db.scalar(
+        select(User.id)
+        .where(User.id == user_id, User.is_active.is_(True), User.deleted_at.is_(None))
+        .with_for_update()
+    )
+    if owner is None:
+        raise HTTPException(401, "Valid authentication required")
 
 
 def verify_password(password: str, stored: str) -> bool:

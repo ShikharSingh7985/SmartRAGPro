@@ -119,17 +119,22 @@ roles and authenticated Redis/Qdrant. Architecture and all security documents li
 [the security report](security/adversarial-test-report.md), with machine-readable
 adversarial, dependency, infrastructure and regression evidence under evaluation/security/.
 
-The final native suite passed 128 tests with five expected skips. The complete
+The final native suite passed 129 tests with seven expected skips. The complete
 disposable-service suite passed 132 tests; five final focused PostgreSQL/
-security regressions also passed. The synthetic retrieval regression preserved earlier
+security regressions and four final account-lifecycle service checks also passed.
+Resource creation rechecks the active owner under the same lock as deletion, preventing
+in-flight uploads/chats from surviving revocation. The synthetic retrieval regression preserved earlier
 metrics. Historical live model failures remain recorded. The existing deployed image
 passed seven of eight HTTP acceptance checks but falsely quarantined educational text;
 the current v3 source fixes quotation handling and passes the exact PDF regression.
 The final application rebuild was declined, so deployment acceptance remains open.
 No production-readiness or general prompt-injection immunity is claimed.
 
-Git milestone: source validation and the authorized plain-English commit/push are being
-finalized against the existing origin/main. Do not start Phase 6 automatically. See
+Git milestone: implementation commit `429fce00089300f33e43af43a5190fbfe4ca02e5`
+was pushed to the existing origin/main and independently verified on 2026-11-06.
+The final lifecycle follow-up and validation record are being finalized. Staged-byte
+scanning passed for 70 implementation files; the complete tracked-source scan passed
+for 177 files. No secrets or private PDFs were committed. Do not start Phase 6. See
 [secure setup and final acceptance commands](security/local-hardening.md).
 
 ## Phase 6 — Production operations

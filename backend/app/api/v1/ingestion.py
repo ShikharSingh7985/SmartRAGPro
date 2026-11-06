@@ -8,7 +8,7 @@ from sqlalchemy.orm import Session
 
 from backend.app.api.v1.routes import owned_document
 from backend.app.core.config import get_settings
-from backend.app.core.security import current_user
+from backend.app.core.security import current_user, lock_active_owner
 from backend.app.db.session import get_db
 from backend.app.models.entities import (
     Document,
@@ -27,7 +27,7 @@ router = APIRouter(prefix="/api/v1/documents", tags=["ingestion"])
 
 def ingestion_quota(db: Session, user: User) -> None:
     # Match upload/account lock order and bound explicit retries independently of broker retries.
-    db.scalar(select(User.id).where(User.id == user.id).with_for_update())
+    lock_active_owner(db, user.id)
     recent = (
         db.scalar(
             select(func.count(IngestionJob.id))

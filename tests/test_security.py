@@ -434,6 +434,90 @@ def test_worker_denies_disabled_owner_ingestion(stack, pdf):
         assert db.get(Document, UUID(response.json()["id"])).status == "failed"
 
 
+def test_stale_authenticated_request_cannot_create_after_disable(stack, pdf):
+    from backend.app.core.security import current_user
+    from backend.app.main import app
+
+    client, factory, _ = stack
+    headers = authenticate(client)
+    document_id = ingest(stack, pdf, headers)
+    with factory() as db:
+        snapshot = db.scalar(select(User))
+        snapshot.is_active = False
+        db.commit()
+    # Isolated stale authorization result models a request verified before revocation.
+    app.dependency_overrides[current_user] = lambda: snapshot
+    try:
+        assert (
+            client.post(
+                "/api/v1/documents",
+                headers=headers,
+                files={"file": ("book.pdf", pdf, "application/pdf")},
+            ).status_code
+            == 401
+        )
+        assert (
+            client.post(
+                "/api/v1/conversations", headers=headers, json={"document_ids": [document_id]}
+            ).status_code
+            == 401
+        )
+    finally:
+        app.dependency_overrides.pop(current_user)
+    with factory() as db:
+        assert len(list(db.scalars(select(Document)))) == 1
+        assert not db.scalar(select(Conversation))
+
+
+@pytest.mark.parametrize("operation", ["upload", "conversation"])
+def test_creation_waits_for_account_revocation_postgres(stack, pdf, operation):
+    from concurrent.futures import ThreadPoolExecutor
+    from io import BytesIO
+    from threading import Event
+
+    from fastapi import HTTPException, UploadFile
+    from starlette.datastructures import Headers
+
+    from backend.app.api.v1.routes import create_conversation, upload
+    from backend.app.schemas.api import ConversationIn
+
+    client, factory, resources = stack
+    if factory.kw["bind"].dialect.name != "postgresql":
+        pytest.skip("Account lifecycle row-lock verification requires PostgreSQL")
+    headers = authenticate(client)
+    document_id = ingest(stack, pdf, headers)
+    with factory() as db:
+        owner = db.scalar(select(User).with_for_update())
+        began = Event()
+
+        def attempt():
+            with factory() as request_db:
+                began.set()
+                try:
+                    if operation == "upload":
+                        file = UploadFile(
+                            filename="book.pdf",
+                            file=BytesIO(pdf),
+                            headers=Headers({"content-type": "application/pdf"}),
+                        )
+                        upload(file, request_db, owner, resources, "text-first")
+                    else:
+                        create_conversation(
+                            ConversationIn(document_ids=[UUID(document_id)]), request_db, owner
+                        )
+                    return 200
+                except HTTPException as exc:
+                    return exc.status_code
+
+        with ThreadPoolExecutor(max_workers=1) as pool:
+            pending = pool.submit(attempt)
+            assert began.wait(timeout=5)
+            owner.is_active = False
+            db.commit()
+            assert pending.result(timeout=20) == 401
+        assert not db.scalar(select(Conversation))
+
+
 def test_concurrent_refresh_reuse_is_atomic_postgres(stack):
     from concurrent.futures import ThreadPoolExecutor
 

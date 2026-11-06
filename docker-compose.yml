@@ -77,6 +77,11 @@ services:
   dispatcher:
     build: .
     env_file: .docker-local/dispatcher.env
+    environment:
+      GEMINI_API_KEY: ""
+      OPENAI_API_KEY: ""
+      QDRANT_API_KEY: ""
+      S3_SECRET_KEY: ""
     command: [python, -m, backend.app.workers.dispatcher]
     depends_on:
       bootstrap: {condition: service_completed_successfully}

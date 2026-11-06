@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-11-06T16:46:47.104306+00:00",
+  "source": "Completed pytest output; exit code 0",
+  "scope": "Real PostgreSQL, Qdrant, Redis and S3; isolated model doubles; final owner-lock implementation",
+  "counts": {
+    "tests": 4,
+    "passed": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0
+  },
+  "seconds": 30.61,
+  "cases": [
+    "stale authentication rejects uploads and conversations",
+    "PostgreSQL upload waits for account revocation",
+    "PostgreSQL conversation waits for account revocation",
+    "account cleanup removes S3 originals and assets"
+  ]
+}

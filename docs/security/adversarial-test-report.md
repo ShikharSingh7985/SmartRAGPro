@@ -70,13 +70,17 @@ suppressed. Real S3 cleanup now checks absence of each original and asset object
 ## Validation scope
 
 Frozen dependency installation, Ruff lint/format and mypy run against the current
-source. Final native execution passed 128 tests, with five expected skips (host OCR
-and PostgreSQL-only checks), in 167.04 seconds. The complete disposable-service run
+source. Final native execution passed 129 tests, with seven expected skips (host OCR
+and PostgreSQL-only checks), in 186.15 seconds. The complete disposable-service run
 passed 132 tests with no failures/skips in 531.08 seconds. Five focused final-v3 service
 checks also passed in 31.00 seconds, including both educational fixtures. See
 [native case results](../../evaluation/security/native-test-results.json),
 [service results](../../evaluation/security/service-test-results.json) and
 [final focused results](../../evaluation/security/focused-service-test-results.json).
+Four additional real-service lifecycle checks passed in 30.61 seconds: stale requests
+cannot create uploads/chats after revocation, actual PostgreSQL owner locks serialize
+both operations, and S3 cleanup still removes originals/assets. See
+[lifecycle evidence](../../evaluation/security/account-lifecycle-results.json).
 Tests include authentication, invalid/expired/purpose-mismatched JWTs, rotation
 and replay, disabled accounts, password changes, upload abuses, quarantined legacy
 vectors, summary poisoning, account cleanup, foreign objects/jobs/chats, real PostgreSQL
@@ -85,7 +89,7 @@ All automated model/embedding doubles remain confined to isolated tests. Windows
 the initial report/temp directory; those nonzero artifact/setup failures were resolved
 by using a workspace-owned temp directory and rerunning successfully, not suppressing
 failed tests. The final native command used --basetemp=.pytest_cache/security-native-final.
-The dedicated security module has 56 native passes and two PostgreSQL-only skips;
+The dedicated security module has 57 native passes and four PostgreSQL-only skips;
 the latter checks pass against real PostgreSQL. Cross-user access and storage isolation
 regressions pass in the complete native/service suites.
 
@@ -94,6 +98,8 @@ regressions pass in the complete native/service suites.
 They verify non-admin runtime accounts, worker denial of password/session/checkpoint
 reads, Redis/Qdrant auth, API read-only vector access and process capability restrictions.
 Docker inspection separately confirmed read-only root and the 4 GiB memory limit.
+Final Compose configuration also clears unused provider/storage secrets from the
+dispatcher; its settings validation passes. That final runtime change awaits deployment.
 
 The retrieval regression reran all 108 synthetic questions using cached **real Google
 embeddings**, actual in-process Qdrant and unchanged relevance labels. Held-out dense

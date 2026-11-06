@@ -12,6 +12,10 @@ Thread IDs are constructed from the verified owner's conversation UUID; no publi
 checkpoint read/write endpoint exists. The conversation is authorized/locked before
 PostgresSaver loads state, and checkpoints/messages share the request transaction.
 
+New uploads, conversation creation and retry requests lock/recheck the active owner
+before document/scope locks. This serializes them with account deletion and prevents
+an already-authenticated in-flight request from creating content after revocation.
+
 Original PDFs and derived images stay in a private bucket. Only server-generated
 owner/document keys are used; asset handlers authorize the document and asset and
 check the canonical owner prefix. No raw bucket URLs or client-supplied storage paths
@@ -31,6 +35,8 @@ application/checkpoint DML but no migration DML. Worker gets ingestion/search/as
 tables and only id/is_active/deleted_at from users; no password, session or checkpoint
 tables. Migration credentials are present only in the bootstrap environment.
 Qdrant's API credential is read-only; the worker/bootstrap credential can index.
+Compose clears unused model/vector/object-storage secrets from the dispatcher runtime;
+it needs PostgreSQL and Redis access for outbox/retention maintenance.
 
 PostgreSQL RLS is not enabled: explicit ownership checks remain primary. Adding RLS
 requires safe transaction-local tenant identity and separate worker policies; enabling

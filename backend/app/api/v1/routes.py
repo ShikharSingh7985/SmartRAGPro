@@ -15,6 +15,7 @@ from backend.app.core.security import (
     current_user,
     dummy_hash,
     hasher,
+    lock_active_owner,
     verify_password,
 )
 from backend.app.db.session import get_db
@@ -191,7 +192,7 @@ def upload(
             raise HTTPException(413, "PDF exceeds upload size limit")
         digest.update(block)
     file.file.seek(0)
-    db.scalar(select(User).where(User.id == user.id).with_for_update())
+    lock_active_owner(db, user.id)
     existing = db.scalar(
         select(Document).where(
             Document.user_id == user.id,
@@ -350,6 +351,7 @@ def remove_document(
 def create_conversation(
     body: ConversationIn, db: Session = Depends(get_db), user: User = Depends(current_user)
 ) -> Conversation:
+    lock_active_owner(db, user.id)
     ids = set(body.document_ids)
     docs = list(
         db.scalars(
