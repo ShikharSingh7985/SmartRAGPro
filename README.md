@@ -26,7 +26,7 @@ uv run python -m scripts.configure_security
 docker compose up --build -d
 ```
 
-Open http://localhost:8501, register, upload a text PDF, refresh its processing status,
+Open http://localhost:8501, register, upload a PDF and watch its status update every 15 seconds,
 select ready documents, create a chat, and ask questions and follow-ups. Saved chats
 restore their document selection and context after login or restart. API docs:
 http://localhost:8000/docs. Health: `/health/live` and `/health/ready`.

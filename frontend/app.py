@@ -120,6 +120,83 @@ def auth() -> None:
             )
 
 
+@st.fragment(run_every="15s")
+def document_list() -> None:
+    docs = all_items("/documents")
+    if not docs:
+        st.info("Upload your first PDF to start a conversation.")
+    for doc in docs:
+        job: dict[str, Any] | None = None
+        if doc["status"] == "queued":
+            job_history = api("GET", f"/documents/{doc['id']}/jobs")
+            job = job_history[0] if job_history else None
+        status = (
+            "Processing" if job and job["status"] == "processing" else doc["status"].capitalize()
+        )
+        with st.container(border=True):
+            left, right = st.columns([5, 1])
+            left.text(doc["filename"])
+            left.caption(f"{status} · {doc['page_count']} pages")
+            left.caption(
+                f"{doc['extraction_mode']} · {doc['chunk_count']} chunks · "
+                f"{doc['table_count']} tables · {doc['figure_count']} figures"
+            )
+            if doc["status"] in {"queued", "failed"}:
+                if job:
+                    left.progress(
+                        min(1.0, job["pages_processed"] / max(1, job["total_pages"])),
+                        text=f"{job['stage']} · attempt {job['attempts']} · "
+                        f"{job['pages_processed']}/{job['total_pages']} pages",
+                    )
+                if doc["status"] == "failed" and left.button(
+                    "Retry ingestion", key="retry-" + doc["id"]
+                ):
+                    api("POST", f"/documents/{doc['id']}/retry")
+                    st.rerun()
+                if doc["status"] == "queued" and left.button(
+                    "Cancel ingestion", key="cancel-" + doc["id"]
+                ):
+                    api("POST", f"/documents/{doc['id']}/cancel")
+                    st.rerun()
+            if doc["error"]:
+                left.warning(doc["error"])
+            if doc["status"] == "ready" and left.button(
+                "Reindex document", key="reindex-" + doc["id"]
+            ):
+                api("POST", f"/documents/{doc['id']}/reindex")
+                st.rerun()
+            if doc["status"] != "deleting" and right.button("Delete", key=doc["id"]):
+                api("DELETE", f"/documents/{doc['id']}")
+                st.session_state.pop("conversation_id", None)
+                st.session_state.pop("loaded-preview-" + doc["id"], None)
+                st.rerun()
+            if doc["page_count"] and doc["status"] != "deleting":
+                with st.expander("Page preview and extracted knowledge"):
+                    number = st.number_input(
+                        "Page",
+                        min_value=1,
+                        max_value=doc["page_count"],
+                        key="page-" + doc["id"],
+                    )
+                    if st.button("Load page", key="preview-" + doc["id"]):
+                        st.session_state["loaded-preview-" + doc["id"]] = number
+                    if st.session_state.get("loaded-preview-" + doc["id"]) == number:
+                        st.image(api("GET", f"/documents/{doc['id']}/preview/{number}"))
+                        details = api("GET", f"/documents/{doc['id']}/pages/{number}")
+                        st.caption(f"Extraction: {details['strategy']}")
+                        st.json(details["quality"])
+                        for warning in details["warnings"]:
+                            st.warning(warning)
+                        for element in details["elements"]:
+                            if element["kind"] == "table":
+                                st.text(element["text"])
+                                st.json(element["data"])
+    st.caption(
+        "Deleting a source clears derived chat history and keeps the conversation available. "
+        "Document status updates automatically every 15 seconds."
+    )
+
+
 def main() -> None:
     if "token" not in st.session_state:
         auth()
@@ -154,7 +231,6 @@ def main() -> None:
                     api("DELETE", "/auth/account", json={"password": password_confirmation})
                     st.session_state.clear()
                     st.rerun()
-    docs = all_items("/documents")
     if page == "Documents":
         st.title("Your documents")
         st.caption("Text, scanned and mixed PDFs. OCR runs in the worker; vision is optional.")
@@ -174,72 +250,10 @@ def main() -> None:
                     )
                     progress.progress(1.0, text="Upload stored; background ingestion queued")
                 st.rerun()
-        if not docs:
-            st.info("Upload your first PDF to start a conversation.")
-        for doc in docs:
-            with st.container(border=True):
-                left, right = st.columns([5, 1])
-                left.text(doc["filename"])
-                left.caption(f"{doc['status'].capitalize()} · {doc['page_count']} pages")
-                left.caption(
-                    f"{doc['extraction_mode']} · {doc['chunk_count']} chunks · "
-                    f"{doc['table_count']} tables · {doc['figure_count']} figures"
-                )
-                if doc["status"] in {"queued", "failed"}:
-                    job_history = api("GET", f"/documents/{doc['id']}/jobs")
-                    if job_history:
-                        job = job_history[0]
-                        left.progress(
-                            min(1.0, job["pages_processed"] / max(1, job["total_pages"])),
-                            text=f"{job['stage']} · attempt {job['attempts']} · "
-                            f"{job['pages_processed']}/{job['total_pages']} pages",
-                        )
-                    if doc["status"] == "failed" and left.button(
-                        "Retry ingestion", key="retry-" + doc["id"]
-                    ):
-                        api("POST", f"/documents/{doc['id']}/retry")
-                        st.rerun()
-                    if doc["status"] == "queued" and left.button(
-                        "Cancel ingestion", key="cancel-" + doc["id"]
-                    ):
-                        api("POST", f"/documents/{doc['id']}/cancel")
-                        st.rerun()
-                if doc["error"]:
-                    left.warning(doc["error"])
-                if doc["status"] == "ready" and left.button(
-                    "Reindex document", key="reindex-" + doc["id"]
-                ):
-                    api("POST", f"/documents/{doc['id']}/reindex")
-                    st.rerun()
-                if doc["status"] != "deleting" and right.button("Delete", key=doc["id"]):
-                    api("DELETE", f"/documents/{doc['id']}")
-                    st.session_state.pop("conversation_id", None)
-                    st.rerun()
-                if doc["page_count"] and doc["status"] != "deleting":
-                    with st.expander("Page preview and extracted knowledge"):
-                        number = st.number_input(
-                            "Page",
-                            min_value=1,
-                            max_value=doc["page_count"],
-                            key="page-" + doc["id"],
-                        )
-                        if st.button("Load page", key="preview-" + doc["id"]):
-                            st.image(api("GET", f"/documents/{doc['id']}/preview/{number}"))
-                            details = api("GET", f"/documents/{doc['id']}/pages/{number}")
-                            st.caption(f"Extraction: {details['strategy']}")
-                            st.json(details["quality"])
-                            for warning in details["warnings"]:
-                                st.warning(warning)
-                            for element in details["elements"]:
-                                if element["kind"] == "table":
-                                    st.text(element["text"])
-                                    st.json(element["data"])
-        st.caption(
-            "Deleting a source clears derived chat history and keeps the conversation available. "
-            "Refresh to see job progress."
-        )
+        document_list()
         return
     st.title("Ask your documents")
+    docs = all_items("/documents")
     ready = {doc["id"]: doc["filename"] for doc in docs if doc["status"] == "ready"}
     history = all_items("/conversations")
     with st.sidebar:
