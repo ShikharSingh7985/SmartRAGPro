@@ -178,6 +178,30 @@ def answer_methods(text: str, previous: list[str] | None = None) -> list[str]:
     return [label for _, label in sorted(mentions.values())]
 
 
+DOCUMENT_REFERENCE = re.compile(
+    r"\b(?:this|that|these|those|the|my|our|uploaded|selected)\s+"
+    r"(?:(?:uploaded|selected)\s+)?(?:pdf|document|book|file|paper)s?\b",
+    re.I,
+)
+
+
+def document_overview(question: str) -> bool:
+    if re.search(r"\bchapter\s+(?:\d+|[ivx]+)\b", question, re.I):
+        return False
+    query = DOCUMENT_REFERENCE.sub("SOURCE", question).strip(" ?.!\\")
+    return bool(
+        re.search(
+            r"\bwhat\b.{0,25}\bSOURCE\b.{0,12}\babout$|"
+            r"\bsummari[sz]e\s+SOURCE\b|\b(?:summary|overview)\s+of\s+SOURCE\b|"
+            r"\b(?:main|key)\s+(?:topics|points|themes|ideas|takeaways)\s+(?:of|in)\s+SOURCE\b|"
+            r"\b(?:asking|tell\s+me|what)\s+about\s+SOURCE$|"
+            r"\b(?:explain|describe)\s+SOURCE$",
+            query,
+            re.I,
+        )
+    )
+
+
 def resolve(
     question: str,
     topic: str,
@@ -200,17 +224,24 @@ def resolve(
             (item["content"] for item in reversed(history) if item["role"] == "assistant"), ""
         )
         references = {**references, "methods": answer_methods(previous)}
-    query = question.strip()
+    # Demonstratives bound to an explicit source noun refer to the authorized
+    # document scope, not necessarily to an earlier conversational entity.
+    query = DOCUMENT_REFERENCE.sub("the selected document", question.strip())
     ordinal = re.search(
         r"\b(first|second|third|fourth|fifth|[1-5](?:st|nd|rd|th))\s+(?:method|technique|approach|option|item)",
         query,
         re.I,
     )
+    followup_input = (
+        re.sub(r"\bwhat\s+about\b", "", query, flags=re.I)
+        if DOCUMENT_REFERENCE.search(question)
+        else query
+    )
     followup = bool(
         re.search(
             r"\b(it|its|they|them|their|those|these|that|this|former|latter)\b|what about|"
             r"\b(?:second|third|fourth)\s+method",
-            query,
+            followup_input,
             re.I,
         )
     )
@@ -256,13 +287,20 @@ def resolve(
                     )
     else:
         topic = infer_topic(query) or topic
-    if not followup and re.match(r"\s*(how|why|which|can|what about)\b", query, re.I) and topic:
+    if (
+        not followup
+        and not DOCUMENT_REFERENCE.search(question)
+        and re.match(r"\s*(how|why|which|can|what about)\b", query, re.I)
+        and topic
+    ):
         # Short elliptical questions (e.g. 'What about the disadvantages?') still need the topic.
         if (
             re.search(r"\b(disadvantages|advantages|limitations|example)\b", query, re.I)
             and len(query.split()) < 8
         ):
             query += f"\nTopic: {topic}"
+    if document_overview(question):
+        topic = "selected documents"
     return {
         "rewritten_question": query,
         "topic": topic,

@@ -14,6 +14,7 @@ from backend.app.conversations.citations import normalize_citations
 from backend.app.conversations.evidence import retrieve, select_evidence
 from backend.app.conversations.memory import (
     answer_methods,
+    document_overview,
     reconstruct,
     resolve,
     token_count,
@@ -146,10 +147,21 @@ def build_graph(
             )
         if compare and len(documents) < 2:
             clarification = "Select both documents before asking for a comparison."
+        if (
+            len(documents) > 1
+            and not named
+            and re.search(
+                r"\b(?:this|that)\s+(?:pdf|document|book|file|paper)\b",
+                query,
+                re.I,
+            )
+        ):
+            clarification = "Which selected document do you mean? Name it or select just one."
         if not documents:
             clarification = "No selected source is ready. Select an available document to continue."
         return {
             "plan": {
+                "overview": document_overview(query),
                 "chapter": chapter[1] if chapter else None,
                 "compare": compare,
                 "document_ids": [str(d.id) for d in named]
@@ -215,6 +227,12 @@ def build_graph(
             "Attribute contradictory claims to their respective sources. "
             "Use numbered lists when listing techniques for unambiguous later references."
         )
+        if state["plan"].get("overview"):
+            suffix += (
+                " Give a brief overview based on the sampled source excerpts. "
+                "Say that the overview uses selected excerpts, "
+                "not an exhaustive review of every page."
+            )
         memory_text = truncate(
             memory_text + "\nOlder synopsis: " + state["summary"],
             max(0, settings.chat_context_tokens - token_count(context + prefix + suffix) - 300),

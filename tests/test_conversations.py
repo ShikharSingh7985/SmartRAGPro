@@ -29,6 +29,76 @@ def ask(client, headers, chat, content, request_id=None):
     )
 
 
+@pytest.mark.parametrize(
+    "question",
+    [
+        "what this pdf is about",
+        "What is this document about?",
+        "Summarize this PDF",
+        "Give me an overview of the uploaded book",
+        "i ajkm asking about this pdf\\",
+        "What about this PDF?",
+        "Tell me about this document",
+        "Explain this file",
+    ],
+)
+def test_explicit_document_references_are_not_unresolved_pronouns(question):
+    from backend.app.conversations.memory import document_overview
+
+    result = resolve(question, "", {}, [], [])
+    assert result["clarification"] == ""
+    assert not result["is_followup"]
+    assert document_overview(question)
+
+
+def test_document_reference_keeps_a_specific_topic_query_specific():
+    from backend.app.conversations.memory import document_overview
+
+    query = "What does this PDF say about regularization?"
+    assert not document_overview(query)
+    assert not document_overview("Summarize this PDF's chapter 5")
+    result = resolve(query, "", {}, [], [])
+    assert not result["clarification"]
+    assert "regularization" in result["rewritten_question"]
+
+
+def test_overview_uses_real_scoped_evidence_after_a_clarification(stack, pdf, monkeypatch):
+    client, _, resources = stack
+    headers = authenticate(client)
+    chosen = ingest(stack, textbook_pdf(), headers)
+    unselected = ingest(stack, pdf, headers)
+    other = authenticate(client, "bob@example.com")
+    ingest(stack, pdf, other)
+    chat = new_conversation(client, headers, [chosen])
+    unclear = ask(client, headers, chat, "Explain it")
+    assert unclear.status_code == 201 and not unclear.json()["citations"]
+
+    def no_generic_embedding(_query):
+        raise AssertionError("A source overview must not depend on generic-query vector similarity")
+
+    monkeypatch.setattr(resources.embedding, "embed_query", no_generic_embedding)
+
+    def summarize(prompt, context):
+        assert "sampled source excerpts" in prompt
+        assert "Overfitting" in context
+        assert "Alpha revenue" not in context
+        return "The document discusses overfitting in machine learning. [1]"
+
+    resources._generator.answer.side_effect = summarize
+    response = ask(client, headers, chat, "what this pdf is about")
+    assert response.status_code == 201, response.text
+    assert response.json()["citations"]
+    assert {c["document_id"] for c in response.json()["citations"]} == {chosen}
+    assert response.json()["citations"][0]["page"] == 1
+    assert "earlier statement" not in response.json()["content"]
+    both = new_conversation(client, headers, [chosen, unselected])
+    ambiguous = ask(client, headers, both, "What is this PDF about?")
+    assert ambiguous.status_code == 201
+    assert "Which selected document" in ambiguous.json()["content"]
+    assert not ambiguous.json()["citations"]
+    assert resources._generator.answer.call_count == 1
+
+
 @pytest.mark.parametrize("references, status", [("[1, 2]", 201), ("[1, 999]", 502)])
 def test_grouped_citations_validate_every_source_before_persisting(stack, pdf, references, status):
     client, factory, resources = stack

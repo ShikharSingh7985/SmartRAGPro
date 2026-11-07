@@ -1,5 +1,13 @@
 # Persistent conversational RAG
 
+Explicit references such as “this PDF” bind to the authorized selected document
+scope, rather than requiring an earlier conversational topic. General overview
+requests sample bounded chunks from the opening, middle and final pages, with the
+same tenant, active-run, content-policy and citation validation as ordinary search.
+Responses identify this as an overview of selected excerpts, not an exhaustive
+review. Specific-topic and chapter questions retain normal retrieval; an ambiguous
+singular reference with multiple selected documents requests a document name.
+
 Phase 3 extends the existing API, worker-independent chat service and Streamlit client.
 There is no separate demo and no autonomous tool agent.
 

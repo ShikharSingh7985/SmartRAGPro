@@ -22,6 +22,59 @@ from backend.app.security.content import inspect_content, record_inspection
 from backend.app.services.resources import Resources
 
 
+def overview_points(resources: Resources, user_id: UUID, documents: list[Document]) -> list[Any]:
+    points: dict[str, Any] = {}
+    with operation("retrieval.overview"):
+        for doc in documents:
+            owned = tenant_filter(user_id, [doc.id])
+            if doc.active_run:
+                owned = qm.Filter(
+                    must=[
+                        owned,
+                        qm.FieldCondition(
+                            key="run_token",
+                            match=qm.MatchValue(value=doc.active_run),
+                        ),
+                    ]
+                )
+            for page in sorted({1, max(1, (doc.page_count + 1) // 2), doc.page_count}):
+                records, _ = resources.qdrant.scroll(
+                    resources.settings.qdrant_collection,
+                    scroll_filter=qm.Filter(
+                        must=[
+                            owned,
+                            qm.FieldCondition(
+                                key="page",
+                                match=qm.MatchValue(value=page),
+                            ),
+                        ]
+                    ),
+                    limit=2,
+                    with_payload=True,
+                    with_vectors=False,
+                )
+                points.update((str(point.id), point) for point in records)
+            if not any(
+                str((p.payload or {}).get("document_id")) == str(doc.id) for p in points.values()
+            ):
+                records, _ = resources.qdrant.scroll(
+                    resources.settings.qdrant_collection,
+                    scroll_filter=owned,
+                    limit=2,
+                    with_payload=True,
+                    with_vectors=False,
+                )
+                points.update((str(point.id), point) for point in records)
+    return sorted(
+        points.values(),
+        key=lambda p: (
+            str((p.payload or {}).get("document_id")),
+            (p.payload or {}).get("page") if type((p.payload or {}).get("page")) is int else 0,
+            str(p.id),
+        ),
+    )
+
+
 @observed("retrieval.plan")
 def retrieve(
     resources: Resources,
@@ -45,7 +98,8 @@ def retrieve(
         ):
             raise HTTPException(409, "Selected documents need reindexing for the configured index")
     vector = None
-    mode = settings.retrieval_mode
+    overview = bool(plan.get("overview"))
+    mode = "overview" if overview else settings.retrieval_mode
     metrics: dict[str, Any] = {
         "mode": mode,
         "lexical_ms": 0.0,
@@ -54,7 +108,7 @@ def retrieve(
         "rerank_ms": 0.0,
         "embedding_cache_hit": False,
     }
-    if mode != "bm25":
+    if mode not in {"bm25", "overview"}:
         start = perf_counter()
         vector, hit = embed_query(resources, str(user_id), embedding_fingerprint(settings), query)
         metrics["embedding_ms"], metrics["embedding_cache_hit"] = (
@@ -77,7 +131,7 @@ def retrieve(
             for doc in group
         ]
         lexical: list[dict[str, Any]] = []
-        if mode != "dense" and db is not None:
+        if mode not in {"dense", "overview"} and db is not None:
             start = perf_counter()
             lexical, complete = search(
                 db, user_id, group, query, settings.retrieval_candidates, plan.get("chapter")
@@ -86,7 +140,9 @@ def retrieve(
             if not complete:
                 metrics["fallback"] = "lexical_index_incomplete"
                 lexical = []
-        if mode == "bm25" and not metrics.get("fallback"):
+        if overview:
+            points = overview_points(resources, user_id, group)
+        elif mode == "bm25" and not metrics.get("fallback"):
             points = []
         else:
             if vector is None:
