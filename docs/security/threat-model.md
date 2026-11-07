@@ -1,5 +1,15 @@
 # SmartRAG Pro threat model
 
+Phase 6 extends the boundary to OTel collectors, local monitoring and optional hosted
+Langfuse. Operational metadata is sensitive even when source text is omitted.
+
+| Attack | Component | Risk | Mitigation | Verification |
+|---|---|---|---|---|
+| Telemetry leaks prompts, SQL parameters or credentials | Logs / tracing | High | Manual attribute allowlist, omitted messages/exception strings, disabled external export by default | Privacy/export-failure tests and local OTLP acceptance |
+| Unapproved hosted export | Langfuse | High | Explicit consent flag plus enable flag and local SecretStr credentials; metadata-only spans | Configuration rejection test; hosted delivery NOT VERIFIED |
+| Metrics label exhaustion / operational data disclosure | Prometheus / Grafana | Medium | Route templates and fixed labels; private ports, loopback dashboards and production ingress restrictions | Cardinality regression, scrape/dashboard probes |
+| Exporter outage blocks chat | OTLP boundary | Medium | Bounded async queues, short export timeout, core-path isolation | Throwing-exporter regression |
+
 Scope: the existing modular monolith, Streamlit server, SQL outbox/Redis worker,
 PostgreSQL/checkpoints, Qdrant, private S3 storage and outbound Gemini calls. Private
 source text, images, embeddings, account identifiers, message history, passwords,

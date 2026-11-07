@@ -1,20 +1,20 @@
 {
-  "generated_at": "2026-11-07T04:32:39.499948+00:00",
+  "generated_at": "2026-11-07T05:05:44.764305+00:00",
   "native_tests": {
-    "tests": 148,
+    "tests": 152,
     "failures": 0,
     "errors": 0,
     "skipped": 8,
-    "passed": 140,
-    "seconds": 295.258
+    "passed": 144,
+    "seconds": 219.199
   },
   "service_tests": {
-    "tests": 148,
+    "tests": 152,
     "failures": 0,
     "errors": 0,
     "skipped": 0,
-    "passed": 148,
-    "seconds": 578.496
+    "passed": 152,
+    "seconds": 575.169
   },
   "load_tests": {
     "tests": 4,
@@ -1144,7 +1144,7 @@
     }
   ],
   "monitoring": {
-    "executed_at": "2026-11-07T04:29:33.104047+00:00",
+    "executed_at": "2026-11-07T04:56:11.066106+00:00",
     "checks": [
       {
         "check": "scrape_api",
@@ -1169,11 +1169,11 @@
     ],
     "sampled_trace_count": 20,
     "metrics_snapshot": {
-      "input_tokens_since_api_start": 1776.0,
-      "output_tokens_since_api_start": 155.0,
-      "api_process_rss_bytes": 322158592.0,
-      "api_process_cpu_seconds": 20.35,
-      "query_embedding_cache_hit_rate": 0.2
+      "input_tokens_since_api_start": 1088.0,
+      "output_tokens_since_api_start": 80.0,
+      "api_process_rss_bytes": 327086080.0,
+      "api_process_cpu_seconds": 12.27,
+      "query_embedding_cache_hit_rate": null
     },
     "metrics_scope": "last Prometheus scrape; counters since API start, not isolated UAT billing",
     "hosted_langfuse": "NOT VERIFIED: no hosted credentials/export consent configured"
@@ -1188,13 +1188,19 @@
   },
   "conversation_restart": {
     "status": "passed",
+    "runtime": {
+      "status": "alive",
+      "version": "0.6.0",
+      "source_sha256": "91e3977385ddf79d5b7c1daf7843d5f29c532ff06b4e643a7262b65f2c9fd60a"
+    },
     "last_stage": "Gemini conversational turn 4",
     "synthetic": true,
     "api_restart_requested": true,
+    "account_cleanup_queued": true,
     "observations": [
       {
         "stage": "full_ingestion",
-        "seconds": 57.546999999991385,
+        "seconds": 48.437999999994645,
         "pages": 4,
         "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication"
       },
@@ -1207,7 +1213,7 @@
       {
         "stage": "whole_turn",
         "turn": 1,
-        "seconds": 4.125,
+        "seconds": 3.4839999999967404,
         "source_pages": [
           1
         ]
@@ -1215,13 +1221,13 @@
       {
         "stage": "synthetic_reply",
         "turn": 2,
-        "content": "To overcome overfitting, the following techniques can be used:\n\n1. Cross-validation (estimates generalization using held-out folds) [2]\n2. Regularization (reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) [3]\n3. Early stopping (ends training when validation loss rises) [3]",
+        "content": "Based on the provided documents, overfitting can be prevented or reduced using the following techniques:\n\n1. Cross-validation (which estimates generalization using held-out folds) [2]\n2. Regularization (which reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) [3]\n3. Early stopping (which ends training when validation loss rises) [3]",
         "citation_count": 2
       },
       {
         "stage": "whole_turn",
         "turn": 2,
-        "seconds": 5.312999999994645,
+        "seconds": 3.98499999998603,
         "source_pages": [
           2,
           3
@@ -1230,13 +1236,13 @@
       {
         "stage": "synthetic_reply",
         "turn": 3,
-        "content": "Based on Chapter 5, the techniques explained are regularization (which reduces overfitting by penalizing large weights, such as L2 regularization adding a squared-weight penalty) and early stopping (which ends training when validation loss rises) [1].",
+        "content": "Based on chapter 5, the techniques explained are **Regularization** (which reduces overfitting by penalizing large weights, such as L2 regularization adding a squared-weight penalty to the training loss) and **Early stopping** (which ends training when validation loss rises) [1].",
         "citation_count": 1
       },
       {
         "stage": "whole_turn",
         "turn": 3,
-        "seconds": 2.875,
+        "seconds": 4.2189999999827705,
         "source_pages": [
           3
         ]
@@ -1244,13 +1250,14 @@
       {
         "stage": "synthetic_reply",
         "turn": 4,
-        "content": "Regularization reduces overfitting by penalizing large weights [1]. An example is L2 regularization, which adds a squared-weight penalty to the training loss [1].",
-        "citation_count": 1
+        "content": "Early stopping ends training when validation loss rises [1]. The provided documents do not contain an example of early stopping.",
+        "citation_count": 1,
+        "expected_method": "early stopping"
       },
       {
         "stage": "whole_turn",
         "turn": 4,
-        "seconds": 1.812000000005355,
+        "seconds": 4.1560000000172295,
         "source_pages": [
           3
         ]

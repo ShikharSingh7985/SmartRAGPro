@@ -31,10 +31,17 @@ provider evidence. The readiness checklist remains the release gate. No producti
 deployment or `v1.0.0` release is claimed while required operational checks are open.
 Git commit/push details are recorded in the roadmap after independent verification.
 
-Executed local gate: frozen install, Ruff lint/format, mypy, 140 native passes with
-eight expected skips, 148 real-service passes, four load cases, 14 live acceptance
+Executed local gate: frozen install, Ruff lint/format, mypy, complete native and
+real-service suites (counts in the generated report), four load cases, 14 live acceptance
 checks, four live conversation turns across an API restart, eight live security
 checks and 32 deterministic policy cases. Installed and full optional lock audits
 found no known vulnerabilities. Local OTLP/Prometheus/Grafana and a disposable
 PostgreSQL restore canary passed. Earlier fourth-turn failures remain in the evidence
 directory; partial-answer policy and grouped-source validation resolved that regression.
+Further semantic review corrected stale ordinal lists when the latest answer uses
+prose or descriptive labels. The live check now verifies the intended method, not
+only that some citation exists; the final run correctly explains early stopping and
+identifies its missing source example. Those earlier failures are also retained.
+The optional production overlay and host Caddyfile have syntax validation, including
+a network-isolated CI check. They require real domains and explicit trusted proxy
+configuration before use; no public deployment or certificate issuance was performed.

@@ -1,5 +1,10 @@
 # Final architecture review
 
+Final conversation integration also handles ordinal references to known methods in
+the latest numbered or prose answer. Descriptive parentheses are separated
+conservatively while named variants remain distinct. Unrecognized answers clear
+stale lists, so ambiguous ordinals ask for a name instead of choosing an older item.
+
 The repository contains the prerequisites, rather than just roadmap entries:
 FastAPI versioned routes, Streamlit authenticated client, Argon2id/JWT/rotating
 refresh sessions, ownership-filtered SQL models, Alembic migrations, Qdrant filters,

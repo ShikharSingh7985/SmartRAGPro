@@ -122,6 +122,10 @@ Run tests/test_observability.py, tests/test_operational_recovery.py and the real
 suite after operational changes. Load experiments in tests/benchmark_load.py use
 isolated test doubles and disposable services; live-model load needs budget approval.
 Use docs/operations/recovery.md for finite cleanup retries and backup/restore drills.
+Ordinal memory must follow the latest answer's displayed method order, including
+prose and parenthetical descriptions. Preserve named variants, clear unrecognized
+stale lists and ask for clarification instead of choosing an older list item. The
+live textbook check must assert method identity, not only citation presence.
 Never restore over production automatically or create v1.0.0 with unresolved gates.
 Do not begin a later phase automatically. Keep `docs/roadmap.md`, architectural decisions
 and validation evidence accurate, including unresolved credentials and remote push status.

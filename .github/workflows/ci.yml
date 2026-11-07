@@ -56,6 +56,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: docker/setup-buildx-action@v3
+      - name: Validate host HTTPS proxy example without network access
+        run: >-
+          docker run --rm --network none
+          -v "$PWD/ops/deployment/Caddyfile:/etc/caddy/Caddyfile:ro"
+          -e PUBLIC_DOMAIN=app.example.invalid -e API_DOMAIN=api.example.invalid
+          caddy:2.11.9 caddy adapt --config /etc/caddy/Caddyfile --validate > /dev/null
       - name: Build API, frontend and OCR worker
         run: |
           docker build --target runtime -t smartrag-api .

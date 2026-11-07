@@ -11,7 +11,7 @@ failures remain in `evaluation/security/` rather than being deleted.
 | Ownership, JWT and refresh lifecycle | PASS | Native + real-service security tests; live security rerun recorded separately |
 | PostgreSQL migrations and schema drift | PASS | Full service suite, migration round trip |
 | Persistent checkpoint/history restoration | PASS | PostgreSQL deterministic tests; live API restart restores history |
-| Four live contextual turns after restart | PASS | All four live turns pass after partial-answer policy fix; earlier failed runs preserved |
+| Four live contextual turns after restart | PASS | Expected method and page verified for all four turns; prose/description/stale-list fixes; earlier failures preserved |
 | Text/scans/tables/figure assets | PASS | Synthetic mixed PDF: table and figure-label questions with real citations |
 | Advanced image interpretation/OCR accuracy on real research corpus | NOT VERIFIED | OCR-visible synthetic labels do not prove advanced vision |
 | Scoped dense/BM25/hybrid/reranking evaluated | PASS | Fixed synthetic corpus and held-out labels; dense retained |
@@ -29,9 +29,10 @@ failures remain in `evaluation/security/` rather than being deleted.
 | Real-provider concurrent capacity / quota validation | NOT VERIFIED | No budget-approved Gemini load performed |
 | Formatting/static/type checks | PASS | Ruff and mypy; final commands recorded in release notes |
 | Dependency/secret scanning | PASS | Installed advisory scan and staged-source review; no universal absence guarantee |
-| Expanded GitHub Actions execution | NOT VERIFIED | Workflow implemented; remote result must be checked after push |
+| Expanded GitHub Actions execution | NOT VERIFIED | Initial d24545e run passed both jobs; final ordinal-reference follow-up awaits its own run |
 | Final source pushed and verified | NOT VERIFIED | Record actual remote/commit after successful push |
 | Public HTTPS deployment | NOT VERIFIED | No hosting destination/domain/budget configured |
+| Host proxy / production Compose syntax | PASS | Caddy 2.11.9 network-isolated validation and Compose config check; no certificate issued |
 | Browser-driven Streamlit interaction | NOT VERIFIED | Frontend container health verified; acceptance exercises its authenticated REST backend |
 | Production alert notifications | NOT VERIFIED | Prometheus rules supplied; receiver/on-call setup pending |
 | v1.0.0 tag | NOT VERIFIED | Withheld while release gates remain open |

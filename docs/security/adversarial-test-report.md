@@ -132,8 +132,9 @@ records these source milestones. No release tag was created while live acceptanc
 
 ## Remaining gates and priorities
 
-1. Rebuild/restart the final source and rerun the HTTP acceptance workflow; the declined
-   rebuild blocks verification of the educational false-positive fix in deployment.
+1. Phase 6 closes the earlier declined-rebuild gate: the rebuilt application passed
+   all eight live security workflow checks, including the educational false-positive
+   regression. Evidence is in `evaluation/release/security-acceptance.json`.
    Commands and the secure configuration flow are in [local hardening](local-hardening.md).
 2. Before Internet deployment, provision TLS/trusted proxy settings, external secret
    management, least-privilege S3 IAM, native image/OS/CPU-wheel scanning, encrypted
@@ -145,4 +146,7 @@ records these source milestones. No release tag was created while live acceptanc
    exploits and compromised operators/workers remain risks. RLS is not enabled; current
    explicit authorization and role separation do not contain a compromised API host.
 
-Phase 5 deployment acceptance remains open. No Phase 6 work is authorized or started.
+The local Phase 5 deployment regression is now verified in explicitly authorized
+Phase 6 work. Public production deployment remains gated by the
+[final readiness checklist](../release/readiness.md). This update supersedes the
+historical declined-rebuild status; it does not erase earlier failures or residual risks.

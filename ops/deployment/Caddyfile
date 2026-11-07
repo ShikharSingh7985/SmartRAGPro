@@ -1,0 +1,14 @@
+# Run as the host's managed Caddy service, not inside the application network.
+# PUBLIC_DOMAIN and API_DOMAIN are required environment variables for that service.
+{$PUBLIC_DOMAIN} {
+	encode zstd gzip
+	header Strict-Transport-Security "max-age=31536000"
+	reverse_proxy 127.0.0.1:8501
+}
+
+{$API_DOMAIN} {
+	header Strict-Transport-Security "max-age=31536000"
+	@private path /metrics /docs* /redoc* /openapi.json /health/ready
+	respond @private 404
+	reverse_proxy 127.0.0.1:8000
+}

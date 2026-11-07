@@ -21,6 +21,12 @@ asks for the supported explanation while stating which details are absent; it do
 not authorize invented examples. Grouped numeric citations are normalized before
 verification so every listed source is checked, and all source markers are removed
 from ordinal-reference memory. Unknown grouped source IDs fail before persistence.
+Review of real outputs also exposed stale ordinal references when a later answer
+used prose. Memory now reorders previously known names by their occurrence in the
+latest answer, handles parenthetical descriptions and clears unidentified stale lists.
+It preserves named method variants instead of silently generalizing them. Unknown
+references ask for clarification. Live acceptance checks the expected method as well
+as citation presence, and preserves the earlier false-positive test result for review.
 
 Provider-reported token counts are recorded when available. Cost is unavailable
 unless both operator-verified per-million prices are configured. Token estimates

@@ -12,6 +12,6 @@ groups:
         labels: {severity: warning}
         annotations: {summary: "Worker process heartbeat stale"}
       - alert: IngestionFailures
-        expr: increase(smartrag_events_total{operation="ingestion.job",outcome="failed"}[5m]) > 0
+        expr: increase(smartrag_events_total{operation="ingestion.job",outcome=~"failed|exhausted"}[5m]) > 0
         labels: {severity: warning}
         annotations: {summary: "One or more ingestion jobs failed"}

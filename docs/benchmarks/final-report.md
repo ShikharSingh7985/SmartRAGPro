@@ -7,8 +7,8 @@ synthetic measurements. Missing measurements are unavailable, never zero.
 
 | Run | Passed | Failed/errors | Skipped | Seconds |
 |---|---:|---:|---:|---:|
-| Native | 140 | 0 | 8 | 295.26 |
-| Real disposable services | 148 | 0 | 0 | 578.50 |
+| Native | 144 | 0 | 8 | 219.20 |
+| Real disposable services | 152 | 0 | 0 | 575.17 |
 | Isolated load | 4 | 0 | 0 | 59.11 |
 
 ## Retrieval comparison (historical Phase 4 evidence)
@@ -105,8 +105,30 @@ billing ledger or peak-memory measurement. Missing values remain unavailable.
 
 | Metric | Measured value |
 |---|---:|
-| input_tokens_since_api_start | 1776.0 |
-| output_tokens_since_api_start | 155.0 |
-| api_process_rss_bytes | 322158592.0 |
-| api_process_cpu_seconds | 20.35 |
-| query_embedding_cache_hit_rate | 0.2 |
+| input_tokens_since_api_start | 1088.0 |
+| output_tokens_since_api_start | 80.0 |
+| api_process_rss_bytes | 327086080.0 |
+| api_process_cpu_seconds | 12.27 |
+| query_embedding_cache_hit_rate | unavailable |
+
+## Persistent conversational acceptance
+
+Recorded result: **passed**. Actual API restart requested: True.
+The strengthened check verifies the fourth answer's method identity against
+the preceding answer's order, as well as citation ownership/page. The current
+run correctly explains early stopping and states that no example is supplied
+by the fixture. Earlier citation-only checks missed a stale ordinal list;
+that failed semantic review and subsequent label-extraction failure are preserved.
+Numbered lists, prose and descriptive labels now have deterministic regressions.
+
+| Turn | HTTP whole-turn seconds | Cited pages |
+|---|---:|---|
+| 1 | 3.484 | [1] |
+| 2 | 3.985 | [2, 3] |
+| 3 | 4.219 | [3] |
+| 4 | 4.156 | [3] |
+
+Each live artifact records its candidate snapshot. The general 14-check
+acceptance preceded the ordinal-memory correction; this dedicated four-turn
+test ran against the corrected source fingerprint. Full deterministic and
+real-service regressions cover the remaining integration paths.

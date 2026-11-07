@@ -26,8 +26,10 @@ def main() -> None:
     }
     document_id = conversation_id = None
     account_cleanup_queued = False
+    expected_method = None
     stage = "registration"
     client = httpx.Client(base_url="http://localhost:8000", timeout=240)
+    runtime = client.get("/health/live").json()
     try:
         client.post("/api/v1/auth/register", json=credentials).raise_for_status()
         token = client.post("/api/v1/auth/login", json=credentials)
@@ -121,10 +123,22 @@ def main() -> None:
                     "citation_count": len(reply["citations"]),
                 }
             )
+            if turn == 3:
+                text = reply["content"].casefold()
+                order = sorted(
+                    (text.find(name), name) for name in ["regularization", "early stopping"]
+                )
+                assert all(index >= 0 for index, _ in order), "Expected fixture methods missing"
+                expected_method = order[1][1]
+            if turn == 4:
+                assert expected_method in reply["content"].casefold(), "Wrong ordinal reference"
+                observations[-1]["expected_method"] = expected_method
             assert reply["citations"], "No grounded source references"
             assert all(
                 c["document_id"] == document_id and 1 <= c["page"] <= 4 for c in reply["citations"]
             )
+            if turn >= 3:
+                assert {citation["page"] for citation in reply["citations"]} == {3}
             observations.append(
                 {
                     "stage": "whole_turn",
@@ -173,6 +187,7 @@ def main() -> None:
                 json.dumps(
                     {
                         "status": status,
+                        "runtime": runtime,
                         "last_stage": stage,
                         "synthetic": True,
                         "api_restart_requested": args.restart_api,

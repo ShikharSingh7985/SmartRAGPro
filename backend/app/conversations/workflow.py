@@ -307,10 +307,13 @@ def build_graph(
         )
         if not state["clarification"]:
             conversation.active_topic = state["topic"]
-            methods = answer_methods(state["generation"])
+            methods = answer_methods(
+                state["generation"], conversation.references.get("methods", [])
+            )
             if methods:
                 conversation.references = {"methods": methods, "answer_position": position + 2}
-            elif state["topic"] != state.get("references", {}).get("topic", state["topic"]):
+            else:
+                # An unrecognized latest answer cannot inherit an older ordinal list.
                 conversation.references = {}
             conversation.references = {**conversation.references, "topic": state["topic"]}
         if conversation.title == "New conversation":

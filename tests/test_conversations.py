@@ -55,6 +55,34 @@ def test_ordinal_memory_drops_grouped_source_markers():
     assert "[2" not in resolved["rewritten_question"]
 
 
+def test_latest_prose_reorders_known_methods_without_inventing_entities():
+    from backend.app.conversations.memory import answer_methods
+
+    previous = ["Cross-validation", "Regularization", "Early stopping"]
+    assert answer_methods("Early stopping and regularization are discussed [1].", previous) == [
+        "Early stopping",
+        "Regularization",
+    ]
+    assert answer_methods("Unrecognized options need clarification.", previous) == []
+
+
+def test_live_parenthetical_descriptions_do_not_hide_method_labels():
+    from backend.app.conversations.memory import answer_methods
+
+    previous = [
+        "Cross-validation (estimates generalization using held-out folds)",
+        "Regularization (reduces overfitting by penalizing large weights)",
+        "Early stopping (ends training when validation loss rises)",
+    ]
+    assert answer_methods(
+        "Chapter 5 explains regularization (which penalizes weights) and "
+        "early stopping (which ends training when validation loss rises). [1]",
+        previous,
+    ) == ["Regularization", "Early stopping"]
+    # Parenthetical method variants are not silently discarded as descriptions.
+    assert answer_methods("Regularization is discussed.", ["Regularization (L1)"]) == []
+
+
 def grounded_test_model(prompt, context):
     """Extract actual fixture sentences from evidence, never fabricate retrieval."""
     original = prompt.split("Resolved retrieval question:")[0].casefold()
@@ -80,12 +108,26 @@ def grounded_test_model(prompt, context):
     return f"Overfitting occurs when a model memorizes training noise. [{source}]"
 
 
-def test_overfitting_followups_survive_logout_and_fresh_client(stack):
+@pytest.mark.parametrize("chapter_format", ["numbered", "prose", "prose_descriptions"])
+def test_overfitting_followups_survive_logout_and_fresh_client(stack, chapter_format):
     client, factory, resources = stack
     headers = authenticate(client)
     doc = ingest(stack, textbook_pdf(), headers)
     chat = new_conversation(client, headers, [doc])
-    resources._generator.answer.side_effect = grounded_test_model
+
+    def model(prompt, context):
+        result = grounded_test_model(prompt, context)
+        original = prompt.split("Resolved retrieval question:")[0].casefold()
+        if chapter_format == "prose_descriptions" and "overcome" in original:
+            result = result.replace("Regularization", "Regularization (reduces overfitting)")
+            result = result.replace(
+                "Early stopping", "Early stopping (ends training when validation loss rises)"
+            )
+        if chapter_format.startswith("prose") and "chapter 5" in original:
+            return result.replace("1. ", "").replace("\n2. ", " and ")
+        return result
+
+    resources._generator.answer.side_effect = model
     first = ask(client, headers, chat, "What is overfitting?")
     assert first.status_code == 201, first.text
     assert first.json()["citations"][0]["page"] == 1

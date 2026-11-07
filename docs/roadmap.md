@@ -150,8 +150,8 @@ See the [final architecture review](architecture/final-review.md),
 [measured report](benchmarks/final-report.md), [release notes](release/notes.md),
 [readiness gate](release/readiness.md) and [deployment guide](deployment/cloud.md).
 
-Final native validation passed 140 tests with eight expected skips; all 148
-real-service tests passed. Machine-readable counts are in evaluation/release/summary.json.
+The complete native and real-service suites pass; final machine-readable counts
+and execution times are in evaluation/release/summary.json and the generated report.
 Live acceptance passed four contextual turns across an actual API restart, eight
 security checks (including the educational-PDF false-positive regression), local
 scraping/dashboard/OTLP checks and a disposable PostgreSQL checksum/restore canary.
@@ -165,7 +165,13 @@ The 1/5/10/25-user load experiment uses isolated model/embedding doubles and rea
 disposable infrastructure; it is not live Gemini scale. Cloud/TLS deployment,
 hosted Langfuse delivery, human-reviewed quality, full off-host recovery and alert
 notification routing remain pending. No v1.0.0 tag is justified by local checks alone.
-Final Git push status will be recorded only after verification.
+Initial operations commit `d24545ebb7737d03982b91fc89ad9800d6cd2b1b` was pushed
+to origin/main and independently verified. Both expanded GitHub Actions jobs passed
+in run `42339267657`. A subsequent semantic review exposed a stale ordinal list that
+the first live citation-only assertion missed. The correction handles prose and
+descriptive labels, preserves named variants, clears unrecognized stale lists and
+strengthens the live expected-method assertion. Failed runs remain in the evidence.
+Final follow-up push status will be recorded only after verification.
 
 Phases 1–6 have received explicit user scopes. Do not begin further work automatically.
 The project does not claim public production deployment merely from local validation.

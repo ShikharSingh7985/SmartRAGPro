@@ -1,12 +1,18 @@
 {
   "status": "passed",
+  "runtime": {
+    "status": "alive",
+    "version": "0.6.0",
+    "source_sha256": "91e3977385ddf79d5b7c1daf7843d5f29c532ff06b4e643a7262b65f2c9fd60a"
+  },
   "last_stage": "Gemini conversational turn 4",
   "synthetic": true,
   "api_restart_requested": true,
+  "account_cleanup_queued": true,
   "observations": [
     {
       "stage": "full_ingestion",
-      "seconds": 57.546999999991385,
+      "seconds": 48.437999999994645,
       "pages": 4,
       "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication"
     },
@@ -19,7 +25,7 @@
     {
       "stage": "whole_turn",
       "turn": 1,
-      "seconds": 4.125,
+      "seconds": 3.4839999999967404,
       "source_pages": [
         1
       ]
@@ -27,13 +33,13 @@
     {
       "stage": "synthetic_reply",
       "turn": 2,
-      "content": "To overcome overfitting, the following techniques can be used:\n\n1. Cross-validation (estimates generalization using held-out folds) [2]\n2. Regularization (reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) [3]\n3. Early stopping (ends training when validation loss rises) [3]",
+      "content": "Based on the provided documents, overfitting can be prevented or reduced using the following techniques:\n\n1. Cross-validation (which estimates generalization using held-out folds) [2]\n2. Regularization (which reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) [3]\n3. Early stopping (which ends training when validation loss rises) [3]",
       "citation_count": 2
     },
     {
       "stage": "whole_turn",
       "turn": 2,
-      "seconds": 5.312999999994645,
+      "seconds": 3.98499999998603,
       "source_pages": [
         2,
         3
@@ -42,13 +48,13 @@
     {
       "stage": "synthetic_reply",
       "turn": 3,
-      "content": "Based on Chapter 5, the techniques explained are regularization (which reduces overfitting by penalizing large weights, such as L2 regularization adding a squared-weight penalty) and early stopping (which ends training when validation loss rises) [1].",
+      "content": "Based on chapter 5, the techniques explained are **Regularization** (which reduces overfitting by penalizing large weights, such as L2 regularization adding a squared-weight penalty to the training loss) and **Early stopping** (which ends training when validation loss rises) [1].",
       "citation_count": 1
     },
     {
       "stage": "whole_turn",
       "turn": 3,
-      "seconds": 2.875,
+      "seconds": 4.2189999999827705,
       "source_pages": [
         3
       ]
@@ -56,13 +62,14 @@
     {
       "stage": "synthetic_reply",
       "turn": 4,
-      "content": "Regularization reduces overfitting by penalizing large weights [1]. An example is L2 regularization, which adds a squared-weight penalty to the training loss [1].",
-      "citation_count": 1
+      "content": "Early stopping ends training when validation loss rises [1]. The provided documents do not contain an example of early stopping.",
+      "citation_count": 1,
+      "expected_method": "early stopping"
     },
     {
       "stage": "whole_turn",
       "turn": 4,
-      "seconds": 1.812000000005355,
+      "seconds": 4.1560000000172295,
       "source_pages": [
         3
       ]

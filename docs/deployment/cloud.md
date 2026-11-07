@@ -53,3 +53,35 @@ not automatic. Use GitHub Secrets or workload identity for any future release jo
 Costs include VM/RAM, durable disks, backups, egress, embeddings, Gemini generation,
 optional vision and hosted tracing. Price configuration is operator-supplied; no
 unverified dollar estimate is presented. Start with low concurrency and measured quotas.
+
+## Concrete Linux VM ingress example
+
+`ops/deployment/Caddyfile` is for a host-managed Caddy service; it proxies only to
+the existing loopback-published ports, supports Streamlit WebSockets and denies
+public monitoring/docs/readiness endpoints. Install Caddy using its supported host
+package, copy the file to `/etc/caddy/Caddyfile`, and configure `PUBLIC_DOMAIN` and
+`API_DOMAIN` in its systemd service environment. Point both DNS records at the VM,
+allow only 80/443 plus restricted administrative access, validate the configuration
+and reload Caddy. Certificate issuance requires working public DNS/network access.
+
+The optional `docker-compose.production.yml` enables HTTPS enforcement, explicit
+proxy-header trust and a 240-second API drain grace. On a standard Linux Compose
+bridge, inspect its gateway with `docker network inspect smartragpro_default` to
+identify the host peer. Set `TRUSTED_PROXY_IP` to the actual proxy peer seen by API,
+never `*`; validate the topology before Internet exposure. Set `API_DOMAIN` locally
+to the same API hostname as Caddy, then start:
+
+```sh
+docker compose -f docker-compose.yml -f docker-compose.production.yml up -d --build
+```
+
+Add the observability overlay when desired. Keep generated role envs private and
+rerun configure_security after secret/settings changes. Streamlit reaches the API
+through its HTTPS hostname in this topology; do not replace that URL with an internal
+HTTP hop while `REQUIRE_HTTPS=true`. Verify API scheme enforcement, `/health/live`,
+authentication, browser chat and WebSockets on the actual domain before release.
+The example receives syntax validation only locally; public DNS, certificates and
+this Linux-host proxy topology remain NOT VERIFIED without a deployment destination.
+
+References: [Caddy reverse proxy](https://caddyserver.com/docs/caddyfile/directives/reverse_proxy),
+[Caddy environment substitution](https://caddyserver.com/docs/caddyfile/concepts#environment-variables).

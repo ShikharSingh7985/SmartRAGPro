@@ -276,6 +276,34 @@ def main() -> None:
                 for name, value in snapshot.items()
             ],
         ]
+    conversation = report["conversation_restart"]
+    if conversation:
+        lines += [
+            "",
+            "## Persistent conversational acceptance",
+            "",
+            f"Recorded result: **{conversation['status']}**. "
+            f"Actual API restart requested: {conversation.get('api_restart_requested', False)}.",
+            "The strengthened check verifies the fourth answer's method identity against",
+            "the preceding answer's order, as well as citation ownership/page. The current",
+            "run correctly explains early stopping and states that no example is supplied",
+            "by the fixture. Earlier citation-only checks missed a stale ordinal list;",
+            "that failed semantic review and subsequent label-extraction failure are preserved.",
+            "Numbered lists, prose and descriptive labels now have deterministic regressions.",
+            "",
+            "| Turn | HTTP whole-turn seconds | Cited pages |",
+            "|---|---:|---|",
+            *[
+                f"| {o['turn']} | {o['seconds']:.3f} | {o['source_pages']} |"
+                for o in conversation["observations"]
+                if o["stage"] == "whole_turn"
+            ],
+            "",
+            "Each live artifact records its candidate snapshot. The general 14-check",
+            "acceptance preceded the ordinal-memory correction; this dedicated four-turn",
+            "test ran against the corrected source fingerprint. Full deterministic and",
+            "real-service regressions cover the remaining integration paths.",
+        ]
     (DOCS / "final-report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
     print("Generated public release summary and measured report/chart")
 

@@ -154,9 +154,28 @@ def reconstruct(
     }
 
 
-def answer_methods(text: str) -> list[str]:
+def answer_methods(text: str, previous: list[str] | None = None) -> list[str]:
     lines = re.findall(r"(?m)^\s*(?:\d+[.)]|[-*])\s+(.+)", text)
-    return [strip_citations(line).strip()[:600] for line in lines[:12]]
+    if lines:
+        return [strip_citations(line).strip()[:600] for line in lines[:12]]
+    # Models sometimes ignore list-format requests. Reconstruct only previously
+    # named methods actually present in the latest prose, in their displayed order.
+    prose = " ".join(re.sub(r"[*_`]", "", strip_citations(text)).split())
+    mentions: dict[str, tuple[int, str]] = {}
+    for method in (previous or [])[:12]:
+        label = re.split(
+            r":|\s[–—]\s|\s\((?=(?:which|that|uses?|reduces?|estimates?|ends?|"
+            r"stops?|helps?|penalizes?|adds?|is|are|by)\b)",
+            re.sub(r"[*_`]", "", method),
+            maxsplit=1,
+            flags=re.I,
+        )[0].strip()
+        if not 4 <= len(label) <= 120:
+            continue
+        match = re.search(r"(?<!\w)" + re.escape(label) + r"(?!\w)", prose, re.I)
+        if match:
+            mentions.setdefault(label.casefold(), (match.start(), label))
+    return [label for _, label in sorted(mentions.values())]
 
 
 def resolve(

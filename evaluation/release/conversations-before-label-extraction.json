@@ -1,0 +1,69 @@
+{
+  "status": "failed",
+  "runtime": {
+    "status": "alive",
+    "version": "0.6.0",
+    "source_sha256": "f70ecd8e41fff6e0dd57f16a4ac98c7c62af3eca959f1e91175f7446e8479d16"
+  },
+  "last_stage": "Gemini conversational turn 4",
+  "synthetic": true,
+  "api_restart_requested": true,
+  "account_cleanup_queued": true,
+  "observations": [
+    {
+      "stage": "full_ingestion",
+      "seconds": 103.65600000001723,
+      "pages": 4,
+      "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication"
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 1,
+      "content": "Overfitting occurs when a model memorizes training noise and performs poorly on unseen examples [1].",
+      "citation_count": 1
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 1,
+      "seconds": 2.7809999999881256,
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 2,
+      "content": "To overcome overfitting, the following techniques can be used:\n\n1. Cross-validation (estimates generalization using held-out folds) [2]\n2. Regularization (reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) [3]\n3. Early stopping (ends training when validation loss rises) [3]",
+      "citation_count": 2
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 2,
+      "seconds": 4.922000000020489,
+      "source_pages": [
+        2,
+        3
+      ]
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 3,
+      "content": "Based on Chapter 5, the techniques explained are regularization (which reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) and early stopping (which ends training when validation loss rises) [1].",
+      "citation_count": 1
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 3,
+      "seconds": 2.5160000000032596,
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 4,
+      "content": "Which method do you mean? Please name it or specify an earlier answer.",
+      "citation_count": 0
+    }
+  ]
+}

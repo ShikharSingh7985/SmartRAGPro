@@ -1,0 +1,12 @@
+# Linux VM example with Caddy on the HOST, forwarding to loopback-only published ports.
+# Do not apply before configuring actual domains, certificates and the trusted peer.
+services:
+  api:
+    command: [uvicorn, backend.app.main:app, --host, 0.0.0.0, --port, "8000", --no-access-log, --proxy-headers, --forwarded-allow-ips, "${TRUSTED_PROXY_IP:?Set the exact host proxy peer IP}"]
+    environment:
+      REQUIRE_HTTPS: "true"
+      ALLOWED_HOSTS: '["${API_DOMAIN:?Set API_DOMAIN}","localhost","127.0.0.1","api"]'
+    stop_grace_period: 240s
+  frontend:
+    environment:
+      API_BASE_URL: "https://${API_DOMAIN:?Set API_DOMAIN}"
