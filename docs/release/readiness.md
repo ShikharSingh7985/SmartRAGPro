@@ -29,8 +29,8 @@ failures remain in `evaluation/security/` rather than being deleted.
 | Real-provider concurrent capacity / quota validation | NOT VERIFIED | No budget-approved Gemini load performed |
 | Formatting/static/type checks | PASS | Ruff and mypy; final commands recorded in release notes |
 | Dependency/secret scanning | PASS | Installed advisory scan and staged-source review; no universal absence guarantee |
-| Expanded GitHub Actions execution | NOT VERIFIED | Initial d24545e run passed both jobs; final ordinal-reference follow-up awaits its own run |
-| Final source pushed and verified | NOT VERIFIED | Record actual remote/commit after successful push |
+| Expanded GitHub Actions execution | PASS | Source 88f43de passed both jobs in run 42342857874, including container integration and proxy validation |
+| Final source pushed and verified | PASS | origin/main independently matched 88f43dec3e5d46b38d957e81e502678d3f6f9d11; subsequent documentation records this milestone |
 | Public HTTPS deployment | NOT VERIFIED | No hosting destination/domain/budget configured |
 | Host proxy / production Compose syntax | PASS | Caddy 2.11.9 network-isolated validation and Compose config check; no certificate issued |
 | Browser-driven Streamlit interaction | NOT VERIFIED | Frontend container health verified; acceptance exercises its authenticated REST backend |

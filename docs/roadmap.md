@@ -137,7 +137,7 @@ origin/main and independently verified on 2026-11-06. This following documentati
 commit records those verified source milestones; deployment acceptance remains open.
 Staged-byte scanning passed for 70 implementation files and ten follow-up files; the
 initial complete tracked-source scan passed for 177 files. No secrets or private PDFs
-were committed. Do not start Phase 6. See
+were committed. This milestone preceded explicit Phase 6 authorization. See
 [secure setup and final acceptance commands](security/local-hardening.md).
 
 ## Phase 6 — Production operations (explicitly authorized)
@@ -171,7 +171,14 @@ in run `42339267657`. A subsequent semantic review exposed a stale ordinal list 
 the first live citation-only assertion missed. The correction handles prose and
 descriptive labels, preserves named variants, clears unrecognized stale lists and
 strengthens the live expected-method assertion. Failed runs remain in the evidence.
-Final follow-up push status will be recorded only after verification.
+Correction commit `88f43dec3e5d46b38d957e81e502678d3f6f9d11` was pushed to
+the same origin/main and independently verified with `git ls-remote` on 2026-11-07.
+Both GitHub Actions jobs passed in run `42342857874`. Its local final gate passed
+144 native tests with eight expected skips and all 152 real-service tests. The
+strengthened live four-turn test matched the current source fingerprint, selected
+early stopping correctly, cited page 3 and identified the missing source example.
+This subsequent documentation-only milestone records those verified source results.
+No v1.0.0 tag or public deployment is claimed while the remaining gates are open.
 
 Phases 1–6 have received explicit user scopes. Do not begin further work automatically.
 The project does not claim public production deployment merely from local validation.

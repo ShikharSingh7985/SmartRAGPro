@@ -45,3 +45,9 @@ identifies its missing source example. Those earlier failures are also retained.
 The optional production overlay and host Caddyfile have syntax validation, including
 a network-isolated CI check. They require real domains and explicit trusted proxy
 configuration before use; no public deployment or certificate issuance was performed.
+
+Verified source: `88f43dec3e5d46b38d957e81e502678d3f6f9d11`, origin/main,
+2026-11-07. Both jobs passed in
+[GitHub Actions run 42342857874](https://github.com/ShikharSingh7985/SmartRAGPro/actions/runs/42342857874).
+The following documentation-only commit records this result without changing the
+validated application source. No production version tag was created.
