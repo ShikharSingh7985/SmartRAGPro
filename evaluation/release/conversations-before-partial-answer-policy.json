@@ -1,0 +1,62 @@
+{
+  "status": "failed",
+  "last_stage": "Gemini conversational turn 4",
+  "synthetic": true,
+  "api_restart_requested": true,
+  "observations": [
+    {
+      "stage": "full_ingestion",
+      "seconds": 70.13999999998487,
+      "pages": 4,
+      "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication"
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 1,
+      "content": "Overfitting occurs when a model memorizes training noise and performs poorly on unseen examples [1].",
+      "citation_count": 1
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 1,
+      "seconds": 3.2189999999827705,
+      "source_pages": [
+        1
+      ]
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 2,
+      "content": "Based on the provided documents, techniques for reducing or overcoming overfitting include:\n\n1. Cross-validation [2]\n2. Regularization [2, 3]\n3. Early stopping [2, 3]",
+      "citation_count": 1
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 2,
+      "seconds": 2.687000000005355,
+      "source_pages": [
+        2
+      ]
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 3,
+      "content": "Based on the provided document, the techniques explained in chapter 5 are:\n\n1. Regularization [1]\n2. Early stopping [1]",
+      "citation_count": 1
+    },
+    {
+      "stage": "whole_turn",
+      "turn": 3,
+      "seconds": 2.812000000005355,
+      "source_pages": [
+        3
+      ]
+    },
+    {
+      "stage": "synthetic_reply",
+      "turn": 4,
+      "content": "I don't know based on the selected documents.",
+      "citation_count": 0
+    }
+  ]
+}

@@ -113,5 +113,15 @@ require real configured providers and must preserve failures separately. Generat
 runtime envs with python -m scripts.configure_security after editing .env; never commit
 those generated files. Keep threat model and residual-risk reports accurate.
 Phase 6: production operations. Later scopes may be revised by user specifications.
+Phase 6 is explicitly authorized in the current project. Preserve content-free
+OTel instrumentation, bounded exporter queues and metric labels. Never add automatic
+prompt/body/header/SQL capture. Hosted Langfuse needs explicit export consent and
+credentials. Keep metrics/dashboards private. Provider token usage is not an estimate;
+cost requires verified prices. Do not claim TTFT while responses are not streamed.
+Run tests/test_observability.py, tests/test_operational_recovery.py and the real-service
+suite after operational changes. Load experiments in tests/benchmark_load.py use
+isolated test doubles and disposable services; live-model load needs budget approval.
+Use docs/operations/recovery.md for finite cleanup retries and backup/restore drills.
+Never restore over production automatically or create v1.0.0 with unresolved gates.
 Do not begin a later phase automatically. Keep `docs/roadmap.md`, architectural decisions
 and validation evidence accurate, including unresolved credentials and remote push status.

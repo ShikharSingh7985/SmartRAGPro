@@ -1,5 +1,14 @@
 # Data flow and state transitions
 
+Phase 6 instruments these same paths with content-free operation spans, generated
+request IDs and route-template HTTP metrics. API upload traces persist their W3C
+parent in the SQL job; the worker restores it when claiming work. Prometheus scrapes
+the API, worker and dispatcher. Bounded asynchronous exporters send metadata to the
+local collector/Tempo and, only with explicit consent, Langfuse. Export failure never
+changes SQL job/message outcomes. Grouped source markers are normalized and every
+source index is verified before answer persistence. Unsupported requested examples
+remain explicitly unavailable even when the supported portion can be answered.
+
 Phase 4 retrieval: authorize owned ready active scope -> tenant/model-keyed query
 embedding cache -> scoped Qdrant dense / scoped SQL BM25 -> optional weighted RRF ->
 bounded optional reranking/deduplication -> page/run/owner provenance checks -> existing

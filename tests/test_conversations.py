@@ -29,6 +29,32 @@ def ask(client, headers, chat, content, request_id=None):
     )
 
 
+@pytest.mark.parametrize("references, status", [("[1, 2]", 201), ("[1, 999]", 502)])
+def test_grouped_citations_validate_every_source_before_persisting(stack, pdf, references, status):
+    client, factory, resources = stack
+    headers = authenticate(client)
+    doc = ingest(stack, pdf, headers)
+    chat = new_conversation(client, headers, [doc])
+    resources._generator.answer.return_value = "Source evidence. " + references
+    response = ask(client, headers, chat, "What is Alpha revenue and leave policy?")
+    assert response.status_code == status
+    if status == 201:
+        assert {citation["page"] for citation in response.json()["citations"]} == {1, 2}
+        assert response.json()["content"].endswith("[1][2]")
+    else:
+        assert client.get(f"/api/v1/conversations/{chat}/messages", headers=headers).json() == []
+
+
+def test_ordinal_memory_drops_grouped_source_markers():
+    from backend.app.conversations.memory import answer_methods
+
+    methods = answer_methods("1. Validation [1]\n2. Early stopping [2, 3]")
+    assert methods == ["Validation", "Early stopping"]
+    resolved = resolve("Explain the second method", "overfitting", {"methods": methods}, [], [])
+    assert "Early stopping" in resolved["rewritten_question"]
+    assert "[2" not in resolved["rewritten_question"]
+
+
 def grounded_test_model(prompt, context):
     """Extract actual fixture sentences from evidence, never fabricate retrieval."""
     original = prompt.split("Resolved retrieval question:")[0].casefold()

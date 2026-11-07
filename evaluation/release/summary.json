@@ -1,0 +1,1313 @@
+{
+  "generated_at": "2026-11-07T04:32:39.499948+00:00",
+  "native_tests": {
+    "tests": 148,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 8,
+    "passed": 140,
+    "seconds": 295.258
+  },
+  "service_tests": {
+    "tests": 148,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 148,
+    "seconds": 578.496
+  },
+  "load_tests": {
+    "tests": 4,
+    "failures": 0,
+    "errors": 0,
+    "skipped": 0,
+    "passed": 4,
+    "seconds": 59.11
+  },
+  "runtime": {
+    "status": "alive",
+    "version": "0.6.0",
+    "source_sha256": "a8b08a9f524a6a5c5e58b5f344a7edf254028582c0eb4de1ad001b64d94cd724"
+  },
+  "retrieval": {
+    "scope": "historical real Google embeddings, cached; synthetic unreviewed page-chunk labels",
+    "corpus": {
+      "documents": 10,
+      "chunks": 60,
+      "queries": 108
+    },
+    "embedding": {
+      "provider": "google",
+      "model": "models/gemini-embedding-001",
+      "dimensions": 768,
+      "index_version": "v1"
+    },
+    "heldout": [
+      {
+        "variant": "bm25",
+        "split": "test",
+        "n": 53,
+        "recall@1": 0.6981132075471698,
+        "precision@1": 0.9056603773584906,
+        "hit_rate@1": 0.9056603773584906,
+        "ndcg@1": 0.9056603773584906,
+        "recall@3": 0.8773584905660378,
+        "precision@3": 0.3962264150943396,
+        "hit_rate@3": 1.0,
+        "ndcg@3": 0.8729875119755824,
+        "recall@5": 0.9905660377358491,
+        "precision@5": 0.2830188679245283,
+        "hit_rate@5": 1.0,
+        "ndcg@5": 0.9302415765388772,
+        "recall@10": 1.0,
+        "precision@10": 0.14339622641509434,
+        "hit_rate@10": 1.0,
+        "ndcg@10": 0.9340978481914901,
+        "mrr": 0.9528301886792453,
+        "coverage": 1.0,
+        "recall5_ci95": [
+          0.9716981132075472,
+          1.0
+        ]
+      },
+      {
+        "variant": "dense",
+        "split": "test",
+        "n": 53,
+        "recall@1": 0.7735849056603774,
+        "precision@1": 0.9811320754716981,
+        "hit_rate@1": 0.9811320754716981,
+        "ndcg@1": 0.9811320754716981,
+        "recall@3": 0.9716981132075472,
+        "precision@3": 0.45911949685534587,
+        "hit_rate@3": 1.0,
+        "ndcg@3": 0.9677741575350606,
+        "recall@5": 1.0,
+        "precision@5": 0.28679245283018867,
+        "hit_rate@5": 1.0,
+        "ndcg@5": 0.9822144208919374,
+        "recall@10": 1.0,
+        "precision@10": 0.14339622641509434,
+        "hit_rate@10": 1.0,
+        "ndcg@10": 0.9822144208919374,
+        "mrr": 0.9905660377358491,
+        "coverage": 1.0,
+        "recall5_ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "variant": "rrf_0.5",
+        "split": "test",
+        "n": 53,
+        "recall@1": 0.7169811320754716,
+        "precision@1": 0.9245283018867925,
+        "hit_rate@1": 0.9245283018867925,
+        "ndcg@1": 0.9245283018867925,
+        "recall@3": 0.9811320754716981,
+        "precision@3": 0.4654088050314465,
+        "hit_rate@3": 1.0,
+        "ndcg@3": 0.9556972005313007,
+        "recall@5": 1.0,
+        "precision@5": 0.28679245283018867,
+        "hit_rate@5": 1.0,
+        "ndcg@5": 0.9656620353453607,
+        "recall@10": 1.0,
+        "precision@10": 0.14339622641509434,
+        "hit_rate@10": 1.0,
+        "ndcg@10": 0.9656620353453607,
+        "mrr": 0.9622641509433962,
+        "coverage": 1.0,
+        "recall5_ci95": [
+          1.0,
+          1.0
+        ]
+      },
+      {
+        "variant": "rrf_0.5_rerank",
+        "split": "test",
+        "n": 53,
+        "recall@1": 0.7452830188679245,
+        "precision@1": 0.9433962264150944,
+        "hit_rate@1": 0.9433962264150944,
+        "ndcg@1": 0.9433962264150944,
+        "recall@3": 0.8962264150943396,
+        "precision@3": 0.40880503144654085,
+        "hit_rate@3": 1.0,
+        "ndcg@3": 0.9011773902118121,
+        "recall@5": 0.9528301886792453,
+        "precision@5": 0.2679245283018868,
+        "hit_rate@5": 1.0,
+        "ndcg@5": 0.9305649057897791,
+        "recall@10": 1.0,
+        "precision@10": 0.14339622641509434,
+        "hit_rate@10": 1.0,
+        "ndcg@10": 0.9498462640528438,
+        "mrr": 0.9716981132075472,
+        "coverage": 1.0,
+        "recall5_ci95": [
+          0.9150943396226415,
+          0.9905660377358491
+        ]
+      },
+      {
+        "variant": "tfidf",
+        "split": "test",
+        "n": 53,
+        "recall@1": 0.6415094339622641,
+        "precision@1": 0.8490566037735849,
+        "hit_rate@1": 0.8490566037735849,
+        "ndcg@1": 0.8490566037735849,
+        "recall@3": 0.9245283018867925,
+        "precision@3": 0.42767295597484273,
+        "hit_rate@3": 1.0,
+        "ndcg@3": 0.8755190038124303,
+        "recall@5": 0.9905660377358491,
+        "precision@5": 0.2830188679245283,
+        "hit_rate@5": 1.0,
+        "ndcg@5": 0.9078609813405749,
+        "recall@10": 1.0,
+        "precision@10": 0.14339622641509434,
+        "hit_rate@10": 1.0,
+        "ndcg@10": 0.9119818763748799,
+        "mrr": 0.9213836477987422,
+        "coverage": 1.0,
+        "recall5_ci95": [
+          0.9716981132075472,
+          1.0
+        ]
+      }
+    ]
+  },
+  "historical_answer_proxies": {
+    "dense": {
+      "n": 12,
+      "citation_label_precision": 0.9,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.7361111111111112,
+      "context_precision": 0.23333333333333334,
+      "context_recall": 1.0,
+      "expected_phrase_recall_proxy": 0.7916666666666666,
+      "unsupported_number_rate_proxy": 0.016666666666666666,
+      "unanswerable_abstention_heuristic": 0.5
+    },
+    "rrf_0.5_rerank": {
+      "n": 12,
+      "citation_label_precision": 0.9090909090909091,
+      "citation_index_validity": 1.0,
+      "citation_sentence_coverage_proxy": 0.7777777777777778,
+      "context_precision": 0.21666666666666667,
+      "context_recall": 0.95,
+      "expected_phrase_recall_proxy": 0.7083333333333334,
+      "unsupported_number_rate_proxy": 0.013888888888888888,
+      "unanswerable_abstention_heuristic": 1
+    }
+  },
+  "historical_token_usage": {
+    "input_tokens": 9066,
+    "output_tokens": 904,
+    "total_tokens": 9970
+  },
+  "historical_vectorizer_memory": {
+    "tfidf": {
+      "peak_rss_mib_mean": 195.81901041666666,
+      "peak_rss_mib_stdev": 0.8682279559704617,
+      "seconds_mean": 2.911115199996857
+    },
+    "hashing": {
+      "peak_rss_mib_mean": 168.76432291666666,
+      "peak_rss_mib_stdev": 0.8984148547870763,
+      "seconds_mean": 3.900093966648759
+    }
+  },
+  "live_acceptance": {
+    "ingestion": [
+      {
+        "stage": "ingestion",
+        "source": "alpha-book.pdf",
+        "status": "ready",
+        "seconds": 71.18952829999034,
+        "pages": 1,
+        "chunks": 1,
+        "tables": 0,
+        "figures": 0
+      },
+      {
+        "stage": "ingestion",
+        "source": "other-owner.pdf",
+        "status": "ready",
+        "seconds": 8.309536899992963,
+        "pages": 1,
+        "chunks": 1,
+        "tables": 0,
+        "figures": 0
+      },
+      {
+        "stage": "ingestion",
+        "source": "beta-book.pdf",
+        "status": "ready",
+        "seconds": 10.280206099996576,
+        "pages": 1,
+        "chunks": 1,
+        "tables": 0,
+        "figures": 0
+      },
+      {
+        "stage": "ingestion",
+        "source": "synthetic-research.pdf",
+        "status": "ready",
+        "seconds": 40.42288160001044,
+        "pages": 3,
+        "chunks": 6,
+        "tables": 1,
+        "figures": 2
+      },
+      {
+        "stage": "ingestion",
+        "source": "mixed-poison.pdf",
+        "status": "ready",
+        "seconds": 10.987664399988716,
+        "pages": 2,
+        "chunks": 1,
+        "tables": 0,
+        "figures": 0
+      }
+    ],
+    "questions": [
+      {
+        "stage": "question",
+        "question": "What is Alpha revenue?",
+        "status": 201,
+        "passed": true,
+        "seconds": 5.171339100023033,
+        "citations": [
+          {
+            "page": 1,
+            "filename": "alpha-book.pdf",
+            "content_type": "text"
+          }
+        ],
+        "attributed_documents": 1
+      },
+      {
+        "stage": "question",
+        "question": "Compare the overfitting techniques recommended by alpha-book.pdf and beta-book.pdf.",
+        "status": 201,
+        "passed": true,
+        "seconds": 3.1152597999898717,
+        "citations": [
+          {
+            "page": 1,
+            "filename": "alpha-book.pdf",
+            "content_type": "text"
+          },
+          {
+            "page": 1,
+            "filename": "beta-book.pdf",
+            "content_type": "text"
+          }
+        ],
+        "attributed_documents": 2
+      },
+      {
+        "stage": "question",
+        "question": "What is the accuracy of Model B in Table 3?",
+        "status": 201,
+        "passed": true,
+        "seconds": 8.690863399999216,
+        "citations": [
+          {
+            "page": 1,
+            "filename": "synthetic-research.pdf",
+            "content_type": "table"
+          }
+        ],
+        "attributed_documents": 1
+      },
+      {
+        "stage": "question",
+        "question": "What numeric values are printed as labels for A and B in Figure 1?",
+        "status": 201,
+        "passed": true,
+        "seconds": 5.460874199983664,
+        "citations": [
+          {
+            "page": 2,
+            "filename": "synthetic-research.pdf",
+            "content_type": "figure"
+          }
+        ],
+        "attributed_documents": 1
+      },
+      {
+        "stage": "question",
+        "question": "What is Alpha revenue?",
+        "status": 201,
+        "passed": true,
+        "seconds": 1.4768935999891255,
+        "citations": [
+          {
+            "page": 1,
+            "filename": "mixed-poison.pdf",
+            "content_type": "text"
+          }
+        ],
+        "attributed_documents": 1
+      }
+    ]
+  },
+  "load": [
+    {
+      "concurrency": 1,
+      "requests": 4,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "throughput_rps": 6.784729635576653,
+      "wall_seconds": 0.5895592329907231,
+      "mean_seconds": 0.14703592874866445,
+      "p50_seconds": 0.13142301299376413,
+      "p95_seconds": null,
+      "p99_seconds": null,
+      "peak_process_rss_bytes": 472514560,
+      "cpu_seconds": 0.3300000000000005,
+      "setup_and_ingestion_seconds": 1.0081990110047627,
+      "pages": 2,
+      "points": [
+        {
+          "seconds": 0.215228727000067,
+          "status": 201
+        },
+        {
+          "seconds": 0.11437397199915722,
+          "status": 201
+        },
+        {
+          "seconds": 0.12711800300166942,
+          "status": 201
+        },
+        {
+          "seconds": 0.13142301299376413,
+          "status": 201
+        }
+      ],
+      "configuration": {
+        "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+        "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+        "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+        "ttft": null,
+        "provider_throttling": null,
+        "billing_cost": null
+      },
+      "hardware": {
+        "os": "Linux",
+        "machine": "x86_64",
+        "logical_cpu": 16,
+        "ram_bytes": 8162299904
+      }
+    },
+    {
+      "concurrency": 5,
+      "requests": 20,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "throughput_rps": 16.48521428401855,
+      "wall_seconds": 1.213208372995723,
+      "mean_seconds": 0.2893167890011682,
+      "p50_seconds": 0.30046097000013106,
+      "p95_seconds": 0.44813714901101775,
+      "p99_seconds": null,
+      "peak_process_rss_bytes": 476368896,
+      "cpu_seconds": 1.3400000000000003,
+      "setup_and_ingestion_seconds": 2.985235169006046,
+      "pages": 10,
+      "points": [
+        {
+          "seconds": 0.34649999300017953,
+          "status": 201
+        },
+        {
+          "seconds": 0.300948343006894,
+          "status": 201
+        },
+        {
+          "seconds": 0.30046097000013106,
+          "status": 201
+        },
+        {
+          "seconds": 0.20358781499089673,
+          "status": 201
+        },
+        {
+          "seconds": 0.2689744950039312,
+          "status": 201
+        },
+        {
+          "seconds": 0.2703450259868987,
+          "status": 201
+        },
+        {
+          "seconds": 0.3090803239902016,
+          "status": 201
+        },
+        {
+          "seconds": 0.2642996200011112,
+          "status": 201
+        },
+        {
+          "seconds": 0.44813714901101775,
+          "status": 201
+        },
+        {
+          "seconds": 0.26846580000710674,
+          "status": 201
+        },
+        {
+          "seconds": 0.3117166290176101,
+          "status": 201
+        },
+        {
+          "seconds": 0.1473000289988704,
+          "status": 201
+        },
+        {
+          "seconds": 0.3525306489900686,
+          "status": 201
+        },
+        {
+          "seconds": 0.3057455119851511,
+          "status": 201
+        },
+        {
+          "seconds": 0.28919241300900467,
+          "status": 201
+        },
+        {
+          "seconds": 0.1906039830064401,
+          "status": 201
+        },
+        {
+          "seconds": 0.4534316129866056,
+          "status": 201
+        },
+        {
+          "seconds": 0.300798003008822,
+          "status": 201
+        },
+        {
+          "seconds": 0.2769287850242108,
+          "status": 201
+        },
+        {
+          "seconds": 0.17728862899821252,
+          "status": 201
+        }
+      ],
+      "configuration": {
+        "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+        "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+        "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+        "ttft": null,
+        "provider_throttling": null,
+        "billing_cost": null
+      },
+      "hardware": {
+        "os": "Linux",
+        "machine": "x86_64",
+        "logical_cpu": 16,
+        "ram_bytes": 8162299904
+      }
+    },
+    {
+      "concurrency": 10,
+      "requests": 40,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "throughput_rps": 18.080008920281273,
+      "wall_seconds": 2.2123882889864035,
+      "mean_seconds": 0.5296478434778692,
+      "p50_seconds": 0.5327004620048683,
+      "p95_seconds": 0.6979178879992105,
+      "p99_seconds": null,
+      "peak_process_rss_bytes": 484986880,
+      "cpu_seconds": 2.6299999999999977,
+      "setup_and_ingestion_seconds": 5.552909689024091,
+      "pages": 20,
+      "points": [
+        {
+          "seconds": 0.5522576619987376,
+          "status": 201
+        },
+        {
+          "seconds": 0.5503355999826454,
+          "status": 201
+        },
+        {
+          "seconds": 0.5479995679925196,
+          "status": 201
+        },
+        {
+          "seconds": 0.4886424060096033,
+          "status": 201
+        },
+        {
+          "seconds": 0.5207092180207837,
+          "status": 201
+        },
+        {
+          "seconds": 0.4988987359974999,
+          "status": 201
+        },
+        {
+          "seconds": 0.5101669660070911,
+          "status": 201
+        },
+        {
+          "seconds": 0.49469924802542664,
+          "status": 201
+        },
+        {
+          "seconds": 0.5358476059918758,
+          "status": 201
+        },
+        {
+          "seconds": 0.5089109480031766,
+          "status": 201
+        },
+        {
+          "seconds": 0.4907135640096385,
+          "status": 201
+        },
+        {
+          "seconds": 0.4892769340076484,
+          "status": 201
+        },
+        {
+          "seconds": 0.7131429790169932,
+          "status": 201
+        },
+        {
+          "seconds": 0.6334719019941986,
+          "status": 201
+        },
+        {
+          "seconds": 0.5492724179930519,
+          "status": 201
+        },
+        {
+          "seconds": 0.29008985502878204,
+          "status": 201
+        },
+        {
+          "seconds": 0.7188182749960106,
+          "status": 201
+        },
+        {
+          "seconds": 0.6027681409905199,
+          "status": 201
+        },
+        {
+          "seconds": 0.529687483998714,
+          "status": 201
+        },
+        {
+          "seconds": 0.3262028759927489,
+          "status": 201
+        },
+        {
+          "seconds": 0.6979178879992105,
+          "status": 201
+        },
+        {
+          "seconds": 0.6381166850042064,
+          "status": 201
+        },
+        {
+          "seconds": 0.5274651590152644,
+          "status": 201
+        },
+        {
+          "seconds": 0.3247287530102767,
+          "status": 201
+        },
+        {
+          "seconds": 0.5600311570160557,
+          "status": 201
+        },
+        {
+          "seconds": 0.5404327530122828,
+          "status": 201
+        },
+        {
+          "seconds": 0.460419406008441,
+          "status": 201
+        },
+        {
+          "seconds": 0.5428262490022462,
+          "status": 201
+        },
+        {
+          "seconds": 0.5419111379887909,
+          "status": 201
+        },
+        {
+          "seconds": 0.5290076580131426,
+          "status": 201
+        },
+        {
+          "seconds": 0.5499543779878877,
+          "status": 201
+        },
+        {
+          "seconds": 0.4954755039943848,
+          "status": 201
+        },
+        {
+          "seconds": 0.6580904610163998,
+          "status": 201
+        },
+        {
+          "seconds": 0.6523294849903323,
+          "status": 201
+        },
+        {
+          "seconds": 0.49402737099444494,
+          "status": 201
+        },
+        {
+          "seconds": 0.31854970098356716,
+          "status": 201
+        },
+        {
+          "seconds": 0.5434311440039892,
+          "status": 201
+        },
+        {
+          "seconds": 0.5268282470060512,
+          "status": 201
+        },
+        {
+          "seconds": 0.4997577540052589,
+          "status": 201
+        },
+        {
+          "seconds": 0.5327004620048683,
+          "status": 201
+        }
+      ],
+      "configuration": {
+        "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+        "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+        "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+        "ttft": null,
+        "provider_throttling": null,
+        "billing_cost": null
+      },
+      "hardware": {
+        "os": "Linux",
+        "machine": "x86_64",
+        "logical_cpu": 16,
+        "ram_bytes": 8162299904
+      }
+    },
+    {
+      "concurrency": 25,
+      "requests": 100,
+      "failures": 0,
+      "failure_rate": 0.0,
+      "throughput_rps": 16.227493706774275,
+      "wall_seconds": 6.162381068017567,
+      "mean_seconds": 1.4362901844803126,
+      "p50_seconds": 1.400142288999632,
+      "p95_seconds": 2.1161300559761003,
+      "p99_seconds": 2.865490302006947,
+      "peak_process_rss_bytes": 497418240,
+      "cpu_seconds": 6.990000000000004,
+      "setup_and_ingestion_seconds": 13.375874222023413,
+      "pages": 50,
+      "points": [
+        {
+          "seconds": 0.8911602489824872,
+          "status": 201
+        },
+        {
+          "seconds": 1.0577889470150694,
+          "status": 201
+        },
+        {
+          "seconds": 1.6053777349879965,
+          "status": 201
+        },
+        {
+          "seconds": 1.398746635997668,
+          "status": 201
+        },
+        {
+          "seconds": 1.0481830280041322,
+          "status": 201
+        },
+        {
+          "seconds": 1.2253329209925141,
+          "status": 201
+        },
+        {
+          "seconds": 1.3147847569780424,
+          "status": 201
+        },
+        {
+          "seconds": 1.8394550089724362,
+          "status": 201
+        },
+        {
+          "seconds": 0.8665764290199149,
+          "status": 201
+        },
+        {
+          "seconds": 1.4370422000065446,
+          "status": 201
+        },
+        {
+          "seconds": 1.1626965540053789,
+          "status": 201
+        },
+        {
+          "seconds": 1.4154675529862288,
+          "status": 201
+        },
+        {
+          "seconds": 0.9342443439818453,
+          "status": 201
+        },
+        {
+          "seconds": 1.7847338119754568,
+          "status": 201
+        },
+        {
+          "seconds": 0.8574411090230569,
+          "status": 201
+        },
+        {
+          "seconds": 1.4489826729986817,
+          "status": 201
+        },
+        {
+          "seconds": 1.4746903970080893,
+          "status": 201
+        },
+        {
+          "seconds": 1.400142288999632,
+          "status": 201
+        },
+        {
+          "seconds": 0.8111244570172857,
+          "status": 201
+        },
+        {
+          "seconds": 2.208756178006297,
+          "status": 201
+        },
+        {
+          "seconds": 1.0771409709996078,
+          "status": 201
+        },
+        {
+          "seconds": 1.2192380930064246,
+          "status": 201
+        },
+        {
+          "seconds": 1.3323857419891283,
+          "status": 201
+        },
+        {
+          "seconds": 2.1161300559761003,
+          "status": 201
+        },
+        {
+          "seconds": 0.8816122150165029,
+          "status": 201
+        },
+        {
+          "seconds": 1.1482073319784831,
+          "status": 201
+        },
+        {
+          "seconds": 1.5307465000078082,
+          "status": 201
+        },
+        {
+          "seconds": 1.3857670900179073,
+          "status": 201
+        },
+        {
+          "seconds": 1.2500233309983741,
+          "status": 201
+        },
+        {
+          "seconds": 1.6071041859977413,
+          "status": 201
+        },
+        {
+          "seconds": 0.7257576979754958,
+          "status": 201
+        },
+        {
+          "seconds": 2.2402762490091845,
+          "status": 201
+        },
+        {
+          "seconds": 1.0302279829920735,
+          "status": 201
+        },
+        {
+          "seconds": 1.8779644290043507,
+          "status": 201
+        },
+        {
+          "seconds": 1.9301351579779293,
+          "status": 201
+        },
+        {
+          "seconds": 1.2158622480055783,
+          "status": 201
+        },
+        {
+          "seconds": 1.0312097230053041,
+          "status": 201
+        },
+        {
+          "seconds": 1.159928706008941,
+          "status": 201
+        },
+        {
+          "seconds": 1.4167346550093498,
+          "status": 201
+        },
+        {
+          "seconds": 1.8551554570149165,
+          "status": 201
+        },
+        {
+          "seconds": 1.5389794080110732,
+          "status": 201
+        },
+        {
+          "seconds": 2.0669296749983914,
+          "status": 201
+        },
+        {
+          "seconds": 2.0526250160182826,
+          "status": 201
+        },
+        {
+          "seconds": 0.4659747480181977,
+          "status": 201
+        },
+        {
+          "seconds": 1.3893238099990413,
+          "status": 201
+        },
+        {
+          "seconds": 1.502751599997282,
+          "status": 201
+        },
+        {
+          "seconds": 1.7242045199964195,
+          "status": 201
+        },
+        {
+          "seconds": 1.1574524180032313,
+          "status": 201
+        },
+        {
+          "seconds": 1.2710018919897266,
+          "status": 201
+        },
+        {
+          "seconds": 1.6219865219900385,
+          "status": 201
+        },
+        {
+          "seconds": 1.7395352390012704,
+          "status": 201
+        },
+        {
+          "seconds": 1.2011069770087488,
+          "status": 201
+        },
+        {
+          "seconds": 2.865490302006947,
+          "status": 201
+        },
+        {
+          "seconds": 0.6968001109780744,
+          "status": 201
+        },
+        {
+          "seconds": 1.3427751359995455,
+          "status": 201
+        },
+        {
+          "seconds": 1.1934861890040338,
+          "status": 201
+        },
+        {
+          "seconds": 1.9653363020042889,
+          "status": 201
+        },
+        {
+          "seconds": 1.6277146030042786,
+          "status": 201
+        },
+        {
+          "seconds": 2.3186934950063005,
+          "status": 201
+        },
+        {
+          "seconds": 0.22507749299984425,
+          "status": 201
+        },
+        {
+          "seconds": 1.8168300770048518,
+          "status": 201
+        },
+        {
+          "seconds": 1.0473494519828819,
+          "status": 201
+        },
+        {
+          "seconds": 2.0269817860098556,
+          "status": 201
+        },
+        {
+          "seconds": 1.215621213981649,
+          "status": 201
+        },
+        {
+          "seconds": 1.4708207449875772,
+          "status": 201
+        },
+        {
+          "seconds": 1.4597046409908216,
+          "status": 201
+        },
+        {
+          "seconds": 2.0363450670265593,
+          "status": 201
+        },
+        {
+          "seconds": 1.1090964750037529,
+          "status": 201
+        },
+        {
+          "seconds": 2.0894260670174845,
+          "status": 201
+        },
+        {
+          "seconds": 1.5083083999925293,
+          "status": 201
+        },
+        {
+          "seconds": 1.9052707999944687,
+          "status": 201
+        },
+        {
+          "seconds": 0.5987302110006567,
+          "status": 201
+        },
+        {
+          "seconds": 1.9619385380065069,
+          "status": 201
+        },
+        {
+          "seconds": 0.992320406017825,
+          "status": 201
+        },
+        {
+          "seconds": 2.0031817510025576,
+          "status": 201
+        },
+        {
+          "seconds": 1.1429284180048853,
+          "status": 201
+        },
+        {
+          "seconds": 2.8969745820213575,
+          "status": 201
+        },
+        {
+          "seconds": 1.813965092995204,
+          "status": 201
+        },
+        {
+          "seconds": 1.0718754450208507,
+          "status": 201
+        },
+        {
+          "seconds": 0.34853159499471076,
+          "status": 201
+        },
+        {
+          "seconds": 1.936837958986871,
+          "status": 201
+        },
+        {
+          "seconds": 0.9199986080056988,
+          "status": 201
+        },
+        {
+          "seconds": 2.0279763419821393,
+          "status": 201
+        },
+        {
+          "seconds": 1.0991553209896665,
+          "status": 201
+        },
+        {
+          "seconds": 1.5627015060163103,
+          "status": 201
+        },
+        {
+          "seconds": 1.391179640981136,
+          "status": 201
+        },
+        {
+          "seconds": 1.8775292630016338,
+          "status": 201
+        },
+        {
+          "seconds": 1.1190494110051077,
+          "status": 201
+        },
+        {
+          "seconds": 1.9543106039927807,
+          "status": 201
+        },
+        {
+          "seconds": 0.8973438540124334,
+          "status": 201
+        },
+        {
+          "seconds": 0.8498679930053186,
+          "status": 201
+        },
+        {
+          "seconds": 1.905309830995975,
+          "status": 201
+        },
+        {
+          "seconds": 1.7848202319873963,
+          "status": 201
+        },
+        {
+          "seconds": 1.0690169899899047,
+          "status": 201
+        },
+        {
+          "seconds": 0.7094909970182925,
+          "status": 201
+        },
+        {
+          "seconds": 2.080638015002478,
+          "status": 201
+        },
+        {
+          "seconds": 1.769002379005542,
+          "status": 201
+        },
+        {
+          "seconds": 1.0830063300090842,
+          "status": 201
+        },
+        {
+          "seconds": 1.6006213260116056,
+          "status": 201
+        },
+        {
+          "seconds": 1.2933805279899389,
+          "status": 201
+        }
+      ],
+      "configuration": {
+        "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+        "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+        "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+        "ttft": null,
+        "provider_throttling": null,
+        "billing_cost": null
+      },
+      "hardware": {
+        "os": "Linux",
+        "machine": "x86_64",
+        "logical_cpu": 16,
+        "ram_bytes": 8162299904
+      }
+    }
+  ],
+  "monitoring": {
+    "executed_at": "2026-11-07T04:29:33.104047+00:00",
+    "checks": [
+      {
+        "check": "scrape_api",
+        "passed": true
+      },
+      {
+        "check": "scrape_dispatcher",
+        "passed": true
+      },
+      {
+        "check": "scrape_worker",
+        "passed": true
+      },
+      {
+        "check": "grafana_dashboard",
+        "passed": true
+      },
+      {
+        "check": "otlp_traces_reach_tempo",
+        "passed": true
+      }
+    ],
+    "sampled_trace_count": 20,
+    "metrics_snapshot": {
+      "input_tokens_since_api_start": 1776.0,
+      "output_tokens_since_api_start": 155.0,
+      "api_process_rss_bytes": 322158592.0,
+      "api_process_cpu_seconds": 20.35,
+      "query_embedding_cache_hit_rate": 0.2
+    },
+    "metrics_scope": "last Prometheus scrape; counters since API start, not isolated UAT billing",
+    "hosted_langfuse": "NOT VERIFIED: no hosted credentials/export consent configured"
+  },
+  "restore": {
+    "executed_at": "2026-11-06T22:57:06.997345+00:00",
+    "database": "smartrag_test",
+    "backup_checksum_verified": true,
+    "restored_canary": true,
+    "seconds": 6.373335000011139,
+    "scope": "local PostgreSQL schema/data only; not S3/Qdrant or hosted disaster recovery"
+  },
+  "conversation_restart": {
+    "status": "passed",
+    "last_stage": "Gemini conversational turn 4",
+    "synthetic": true,
+    "api_restart_requested": true,
+    "observations": [
+      {
+        "stage": "full_ingestion",
+        "seconds": 57.546999999991385,
+        "pages": 4,
+        "scope": "HTTP upload, storage, worker, embeddings, SQL/vector publication"
+      },
+      {
+        "stage": "synthetic_reply",
+        "turn": 1,
+        "content": "Overfitting occurs when a model memorizes training noise and performs poorly on unseen examples [1].",
+        "citation_count": 1
+      },
+      {
+        "stage": "whole_turn",
+        "turn": 1,
+        "seconds": 4.125,
+        "source_pages": [
+          1
+        ]
+      },
+      {
+        "stage": "synthetic_reply",
+        "turn": 2,
+        "content": "To overcome overfitting, the following techniques can be used:\n\n1. Cross-validation (estimates generalization using held-out folds) [2]\n2. Regularization (reduces overfitting by penalizing large weights, such as L2 regularization which adds a squared-weight penalty to the training loss) [3]\n3. Early stopping (ends training when validation loss rises) [3]",
+        "citation_count": 2
+      },
+      {
+        "stage": "whole_turn",
+        "turn": 2,
+        "seconds": 5.312999999994645,
+        "source_pages": [
+          2,
+          3
+        ]
+      },
+      {
+        "stage": "synthetic_reply",
+        "turn": 3,
+        "content": "Based on Chapter 5, the techniques explained are regularization (which reduces overfitting by penalizing large weights, such as L2 regularization adding a squared-weight penalty) and early stopping (which ends training when validation loss rises) [1].",
+        "citation_count": 1
+      },
+      {
+        "stage": "whole_turn",
+        "turn": 3,
+        "seconds": 2.875,
+        "source_pages": [
+          3
+        ]
+      },
+      {
+        "stage": "synthetic_reply",
+        "turn": 4,
+        "content": "Regularization reduces overfitting by penalizing large weights [1]. An example is L2 regularization, which adds a squared-weight penalty to the training loss [1].",
+        "citation_count": 1
+      },
+      {
+        "stage": "whole_turn",
+        "turn": 4,
+        "seconds": 1.812000000005355,
+        "source_pages": [
+          3
+        ]
+      }
+    ]
+  },
+  "security_acceptance": {
+    "execution_date": "2026-11-07T03:51:21.161374+00:00",
+    "services": "real PostgreSQL, Qdrant, Redis, S3, worker and Gemini",
+    "checks": [
+      {
+        "check": "refresh_rotation",
+        "passed": true
+      },
+      {
+        "check": "benign.pdf",
+        "expected": "ready",
+        "actual": "ready",
+        "passed": true
+      },
+      {
+        "check": "worker_preview",
+        "passed": true
+      },
+      {
+        "check": "real_grounded_answer",
+        "status": 201,
+        "passed": true
+      },
+      {
+        "check": "malicious.pdf",
+        "expected": "failed",
+        "actual": "failed",
+        "passed": true
+      },
+      {
+        "check": "education.pdf",
+        "expected": "ready",
+        "actual": "ready",
+        "passed": true
+      },
+      {
+        "check": "refresh_reuse_revokes_access",
+        "passed": true
+      },
+      {
+        "check": "account_cleanup_queued",
+        "passed": true
+      }
+    ]
+  },
+  "unavailable": [
+    "Independent human semantic correctness/faithfulness assessment",
+    "Production network throughput and live-model concurrent load",
+    "Time to first streamed token (no token streaming)",
+    "Current acceptance per-call billing costs and provider-throttle load",
+    "Hosted Langfuse delivery, public cloud/TLS deployment",
+    "S3/Qdrant off-host restore and production RPO/RTO"
+  ]
+}

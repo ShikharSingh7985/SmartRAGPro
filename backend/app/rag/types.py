@@ -6,6 +6,7 @@ from typing import Any
 import tiktoken
 
 from backend.app.core.config import Settings
+from backend.app.core.telemetry import observed
 
 
 @dataclass
@@ -47,6 +48,7 @@ def embedding_fingerprint(settings: Settings) -> str:
     return hashlib.sha256(value.encode()).hexdigest()
 
 
+@observed("ingestion.chunk")
 def structured_chunks(elements: list[Element], settings: Settings) -> list[KnowledgeChunk]:
     """Keep tables as header-repeated row groups; retain bounded parent context and provenance."""
     encoder = tiktoken.get_encoding("cl100k_base")

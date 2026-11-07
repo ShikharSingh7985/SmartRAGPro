@@ -1,6 +1,6 @@
 {
   "policy": "content-2026-11-v3",
-  "execution_date": "2026-11-06T16:05:18.505559+00:00",
+  "execution_date": "2026-11-06T18:07:24.441564+00:00",
   "deterministic": [
     {
       "id": "attack-01",
@@ -20,7 +20,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -43,7 +43,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -66,7 +66,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -88,7 +88,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -110,7 +110,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -133,7 +133,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -155,7 +155,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -177,7 +177,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -199,7 +199,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -221,7 +221,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -242,7 +242,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -263,7 +263,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -284,7 +284,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -305,7 +305,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -328,7 +328,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -350,7 +350,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -372,7 +372,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -394,7 +394,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -418,7 +418,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -442,7 +442,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -466,7 +466,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -489,7 +489,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -512,7 +512,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -535,7 +535,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -554,7 +554,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -577,7 +577,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -601,7 +601,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -622,7 +622,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -641,7 +641,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -660,7 +660,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -679,7 +679,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."
@@ -698,7 +698,7 @@
         "policy_version": "content-2026-11-v3"
       },
       "passed": true,
-      "execution_date": "2026-11-06T16:05:18.505559+00:00",
+      "execution_date": "2026-11-06T18:07:24.441564+00:00",
       "model_configuration": "none; deterministic application policy",
       "evidence": "backend.app.security.content.inspect_content",
       "limitations": "Synthetic rule classification; does not establish model behavior or security."

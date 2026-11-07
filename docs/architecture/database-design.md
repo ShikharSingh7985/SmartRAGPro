@@ -1,5 +1,11 @@
 # Database design
 
+Phase 6 migration `20261108_operations` adds nullable `ingestion_jobs.trace_parent`
+(W3C traceparent, 55 characters). This is operational correlation, not user content
+or authorization. Old jobs without it remain valid. Job deletion follows the existing
+document foreign-key lifecycle; checkpoints and messages retain their existing
+transactional ownership boundary. No automatic table creation replaces migrations.
+
 Migration `20261106_retrieval` adds search_chunks (UUID point identity, owner/document
 cascading foreign keys, active run, page/text/length/provenance) and search_terms
 (chunk/term composite primary key, term frequency and inverted lookup index).

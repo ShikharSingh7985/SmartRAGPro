@@ -54,6 +54,8 @@ def main() -> None:
     values.update(additions)
     root = Path(".docker-local")
     root.mkdir(exist_ok=True)
+    if not (root / "grafana-password").exists():
+        (root / "grafana-password").write_text(secrets.token_urlsafe(32), encoding="utf-8")
     privileged = {
         "MIGRATION_DATABASE_URL",
         "RUNTIME_DATABASE_PASSWORD",
@@ -65,6 +67,10 @@ def main() -> None:
     for role in ("api", "worker", "dispatcher", "bootstrap"):
         env = {key: value for key, value in values.items() if key not in privileged}
         env["SERVICE_ROLE"] = role
+        if role not in {"api", "worker"}:
+            env["LANGFUSE_ENABLED"] = "false"
+            env.pop("LANGFUSE_SECRET_KEY", None)
+            env.pop("LANGFUSE_PUBLIC_KEY", None)
         if role != "api":
             env.pop("JWT_SECRET", None)
         if role == "bootstrap":

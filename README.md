@@ -9,6 +9,7 @@ FastAPI + Streamlit · PostgreSQL / SQLAlchemy / Alembic · Qdrant · Redis · S
 ## Quick start
 
 Requires Python 3.12, [uv](https://docs.astral.sh/uv/), Git, and Docker Desktop.
+For an existing `.env`, preserve it and skip `configure_local`.
 
 ```powershell
 uv sync --frozen --python 3.12
@@ -90,7 +91,7 @@ internal telemetry. Never change embedding model/dimensions in the same vector i
 
 Citation metadata validates provenance, not factual entailment. Persistent bounded-context
 follow-ups are implemented. Public hosting still requires the deployment gates in the
-security report. Phase 6 has not started.
+security report and final release checklist.
 
 ## Security hardening (Phase 5)
 
@@ -108,3 +109,38 @@ inspection can quarantine suspicious pages; owner-authorized reasons are availab
 See [local hardening and validation](docs/security/local-hardening.md),
 [threat model](docs/security/threat-model.md), [authentication](docs/security/authentication.md),
 [authorization](docs/security/authorization.md) and [adversarial results](docs/security/adversarial-test-report.md).
+
+## Operations and release validation (Phase 6)
+
+The integrated application adds content-free OpenTelemetry spans, correlated JSON
+logs, Prometheus metrics, a provisioned Grafana dashboard and local Tempo tracing.
+SQL job trace context survives the API/worker boundary. Bounded model retries,
+worker heartbeats, finite cleanup retries and an operator recovery command improve
+outage handling. `/health/live` includes a package version and source fingerprint.
+
+```powershell
+uv run python -m scripts.configure_security
+docker compose -f docker-compose.yml -f docker-compose.observability.yml up -d --build
+```
+
+Grafana: http://localhost:3000 (`admin`; generated password in ignored
+`.docker-local/grafana-password`). Prometheus: http://localhost:9090. Monitoring and
+infrastructure endpoints must stay private in hosted deployments. External Langfuse
+export is disabled by default and requires explicit consent plus locally configured
+credentials. No prompt/PDF content capture is enabled. Token counts come from the
+provider; estimated cost is unavailable until operator-verified prices are supplied.
+
+See [final architecture](docs/architecture/final-review.md),
+[monitoring](docs/operations/observability.md), [recovery/backups](docs/operations/recovery.md),
+[cloud deployment guide](docs/deployment/cloud.md),
+[reproducible acceptance/load commands](evaluation/release/README.md),
+[final engineering report](docs/benchmarks/final-report.md),
+[release checklist](docs/release/readiness.md) and
+[resume description](docs/resume/project-description.md).
+
+The final report distinguishes native tests, disposable real-service tests,
+synthetic concurrent clients and live Gemini acceptance. Historical retrieval
+metrics use synthetic unreviewed relevance labels; they are not production accuracy.
+Responses are published only after citation verification, so token streaming and
+time-to-first-token metrics remain unavailable. Public cloud deployment, hosted
+tracing and production-scale certification are not claimed.

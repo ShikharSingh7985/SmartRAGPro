@@ -1,5 +1,10 @@
 # System design
 
+Phase 6 adds [content-free operational telemetry](adr/0008-private-observability.md)
+without changing authorization or message/checkpoint transactions. See the
+[final architecture review](final-review.md), [monitoring guide](../operations/observability.md)
+and [recovery runbook](../operations/recovery.md).
+
 The user-revised Phase 4 introduces [measured retrieval alternatives](adr/0007-measured-retrieval.md):
 Qdrant dense candidates plus a PostgreSQL inverted BM25 index, optional rank fusion/
 reranking and a bounded tenant/model-keyed query-vector cache. Dense remains default

@@ -15,6 +15,8 @@ from sqlalchemy import (
 )
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
+from backend.app.core.telemetry import trace_parent
+
 
 def now() -> datetime:
     return datetime.now(UTC)
@@ -88,6 +90,7 @@ class IngestionJob(Identity, Base):
     dispatched_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
     retryable: Mapped[bool] = mapped_column(default=True)
     vector_collection: Mapped[str | None] = mapped_column(String(255))
+    trace_parent: Mapped[str | None] = mapped_column(String(55), default=trace_parent)
     __table_args__ = (
         Index("ix_jobs_claim", "status", "available_at"),
         CheckConstraint(

@@ -6,6 +6,8 @@ from threading import Lock
 from time import monotonic
 from typing import Any
 
+from backend.app.core.telemetry import EVENTS
+
 
 class VectorCache:
     def __init__(self, capacity: int, ttl: int) -> None:
@@ -41,7 +43,9 @@ def embed_query(
     key = cache.key(owner, fingerprint, query)
     vector = cache.get(key)
     if vector is not None:
+        EVENTS.labels("embedding.cache", "hit").inc()
         return vector, True
+    EVENTS.labels("embedding.cache", "miss").inc()
     vector = resources.embedding.embed_query(query)
     cache.put(key, vector)
     return vector, False

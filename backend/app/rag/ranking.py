@@ -5,6 +5,8 @@ import re
 from collections import Counter
 from typing import Any
 
+from backend.app.core.telemetry import observed
+
 STOP = frozenset(
     (
         "a an the is are was were what which how why when where who of to in on for "
@@ -48,6 +50,7 @@ def rrf(lexical: list[str], dense: list[str], weight: float = 0.5, k: int = 60) 
     return sorted(scores, key=lambda identifier: (-scores[identifier], identifier))
 
 
+@observed("retrieval.rerank")
 def rerank(query: str, candidates: list[dict[str, Any]], limit: int) -> list[dict[str, Any]]:
     """Documented non-neural alternative: query coverage, bigram proximity, fused prior.
 

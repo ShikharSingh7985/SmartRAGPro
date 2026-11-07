@@ -10,6 +10,7 @@ from langgraph.graph import END, START, StateGraph
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
 
+from backend.app.conversations.citations import normalize_citations
 from backend.app.conversations.evidence import retrieve, select_evidence
 from backend.app.conversations.memory import (
     answer_methods,
@@ -19,6 +20,7 @@ from backend.app.conversations.memory import (
     truncate,
 )
 from backend.app.conversations.rewriting import rewrite_followup
+from backend.app.core.telemetry import EVENTS, VALUES, observed
 from backend.app.models.entities import Conversation, Document, Message
 from backend.app.schemas.api import Question
 from backend.app.security.content import inspect_content, safe_memory, unsafe_output
@@ -221,7 +223,7 @@ def build_graph(
         if token_count(prompt + context) + 200 > settings.chat_context_tokens:
             raise HTTPException(422, "Question exceeds the configured context budget; shorten it")
         start = perf_counter()
-        result = resources.generator.answer(prompt, context)
+        result = normalize_citations(resources.generator.answer(prompt, context))
         timings["generation"] = (perf_counter() - start) * 1000
         if token_count(result) > 6000:
             raise HTTPException(502, "Answer exceeds the response limit; ask a narrower question")
@@ -247,10 +249,22 @@ def build_graph(
             return {"citations": []}
         cited = {int(number) for number in re.findall(r"\[(\d+)\]", state["generation"])}
         if not cited or not cited.issubset({e["source"] for e in state["evidence"]}):
+            EVENTS.labels("citation.validation", "failed").inc()
             raise HTTPException(502, "Model returned an answer without valid source references")
         return {"citations": [e for e in state["evidence"] if e["source"] in cited]}
 
     def persist(state: ConversationState) -> dict[str, Any]:
+        EVENTS.labels(
+            "chat.continuity",
+            "clarification"
+            if state["clarification"] and state["is_followup"]
+            else "resolved"
+            if state["is_followup"]
+            else "standalone",
+        ).inc()
+        VALUES.labels("evidence_count").observe(len(state["citations"]))
+        for category in state["errors"]:
+            EVENTS.labels("chat.signal", category).inc()
         position = (
             db.scalar(
                 select(func.coalesce(func.max(Message.position), 0)).where(
@@ -332,7 +346,7 @@ def build_graph(
         "persist": persist,
     }
     for name, node in nodes.items():
-        graph.add_node(name, node)
+        graph.add_node(name, observed("graph." + name)(node))
     graph.add_edge(START, "validate")
     for first, second in [
         ("validate", "context"),

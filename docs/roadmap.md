@@ -140,10 +140,32 @@ initial complete tracked-source scan passed for 177 files. No secrets or private
 were committed. Do not start Phase 6. See
 [secure setup and final acceptance commands](security/local-hardening.md).
 
-## Phase 6 — Production operations
+## Phase 6 — Production operations (explicitly authorized)
 
-Deployment, TLS, monitoring/alerts, backups and restore drills, disaster recovery,
-retention policies, dependency/security scanning and production acceptance gates.
+Implemented content-free OpenTelemetry with durable job trace context, consent-gated
+Langfuse export, Prometheus/Grafana/Tempo, safe JSON logs/errors, bounded provider and
+cleanup recovery, pool limits, worker health, source fingerprints, backup/restore
+tooling, expanded container/integration CI, synthetic load and real-provider acceptance.
+See the [final architecture review](architecture/final-review.md),
+[measured report](benchmarks/final-report.md), [release notes](release/notes.md),
+[readiness gate](release/readiness.md) and [deployment guide](deployment/cloud.md).
 
-Phases 3–6 are proposed scopes, subject to future user specifications. Do not start
-them automatically. Phase 1 does not claim public production deployment readiness.
+Final native validation passed 140 tests with eight expected skips; all 148
+real-service tests passed. Machine-readable counts are in evaluation/release/summary.json.
+Live acceptance passed four contextual turns across an actual API restart, eight
+security checks (including the educational-PDF false-positive regression), local
+scraping/dashboard/OTLP checks and a disposable PostgreSQL checksum/restore canary.
+Initial fourth-turn abstentions are preserved; prompt v3 now answers supported parts
+and explicitly identifies absent details. Unknown grouped citations cannot persist.
+Cached-embedding retrieval regression reproduced every historical quality metric.
+All 32 deterministic policy cases passed; installed and optional locked dependency
+audits found no known vulnerabilities. These are scoped checks, not security immunity.
+
+The 1/5/10/25-user load experiment uses isolated model/embedding doubles and real
+disposable infrastructure; it is not live Gemini scale. Cloud/TLS deployment,
+hosted Langfuse delivery, human-reviewed quality, full off-host recovery and alert
+notification routing remain pending. No v1.0.0 tag is justified by local checks alone.
+Final Git push status will be recorded only after verification.
+
+Phases 1–6 have received explicit user scopes. Do not begin further work automatically.
+The project does not claim public production deployment merely from local validation.

@@ -1,0 +1,8 @@
+{
+  "executed_at": "2026-11-06T22:57:06.997345+00:00",
+  "database": "smartrag_test",
+  "backup_checksum_verified": true,
+  "restored_canary": true,
+  "seconds": 6.373335000011139,
+  "scope": "local PostgreSQL schema/data only; not S3/Qdrant or hosted disaster recovery"
+}

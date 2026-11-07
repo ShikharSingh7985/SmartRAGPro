@@ -27,7 +27,16 @@ def main() -> None:
         path = Path(name)
         if path.name.startswith(".env") and path.name != ".env.example":
             failures.append(f"{name}: environment secrets file")
-        if path.suffix.lower() in {".pdf", ".db", ".sqlite", ".pem", ".key", ".exe", ".zip"}:
+        if path.suffix.lower() in {
+            ".pdf",
+            ".db",
+            ".sqlite",
+            ".pem",
+            ".key",
+            ".exe",
+            ".zip",
+            ".dump",
+        }:
             failures.append(f"{name}: forbidden private/generated artifact")
         data = (
             path.read_bytes() if all_files else subprocess.check_output(["git", "show", f":{name}"])

@@ -8,6 +8,7 @@ from sqlalchemy.orm import Session
 
 from backend.app.conversations import checkpoints
 from backend.app.conversations.workflow import build_graph, initial_state
+from backend.app.core.telemetry import observed
 from backend.app.models.entities import Conversation, ConversationDocument, Document, Message
 from backend.app.schemas.api import Question
 from backend.app.services.resources import Resources
@@ -35,6 +36,7 @@ def owned_conversation(
     return conversation
 
 
+@observed("chat.end_to_end")
 def answer(
     db: Session, resources: Resources, conversation_id: UUID, user_id: UUID, question: Question
 ) -> Message:

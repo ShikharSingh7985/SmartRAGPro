@@ -36,4 +36,8 @@ COPY scripts ./scripts
 COPY alembic.ini ./
 USER app
 
+FROM base AS frontend
+EXPOSE 8501
+CMD ["streamlit", "run", "frontend/app.py", "--server.address=0.0.0.0", "--server.port=8501", "--browser.gatherUsageStats=false"]
+
 FROM base AS runtime

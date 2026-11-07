@@ -1,0 +1,17 @@
+groups:
+  - name: smartrag
+    rules:
+      - alert: ServiceUnavailable
+        expr: up == 0
+        for: 1m
+        labels: {severity: critical}
+        annotations: {summary: "Scrape target unavailable"}
+      - alert: WorkerHeartbeatStale
+        expr: time() - smartrag_heartbeat_timestamp{service="worker"} > 90
+        for: 1m
+        labels: {severity: warning}
+        annotations: {summary: "Worker process heartbeat stale"}
+      - alert: IngestionFailures
+        expr: increase(smartrag_events_total{operation="ingestion.job",outcome="failed"}[5m]) > 0
+        labels: {severity: warning}
+        annotations: {summary: "One or more ingestion jobs failed"}

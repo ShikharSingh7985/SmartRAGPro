@@ -19,6 +19,7 @@ from PIL import Image
 from pypdf import PdfReader
 
 from backend.app.core.config import Settings
+from backend.app.core.telemetry import observed, operation
 from backend.app.rag.types import Element
 from backend.app.security.content import inspect_content
 
@@ -67,6 +68,7 @@ def render_page(page: Any, settings: Settings, clip: Any = None) -> bytes:
     return bytes(pixmap.tobytes("png"))
 
 
+@observed("ingestion.ocr")
 def ocr_image(data: bytes, settings: Settings) -> tuple[str, dict[str, Any]]:
     if settings.ocr_backend == "disabled":
         raise ProcessingDependencyError("OCR is disabled; enable Tesseract for scanned pages")
@@ -255,6 +257,7 @@ AssetSink = Callable[[int, str, bytes, str, dict[str, Any]], str]
 Vision = Callable[[bytes, str], str]
 
 
+@observed("ingestion.inspect")
 def inspect_pdf(source: Path, settings: Settings) -> int:
     try:
         # Reject malformed cross references before MuPDF's repair path can retain an
@@ -312,7 +315,7 @@ def inspect_pdf(source: Path, settings: Settings) -> int:
         raise InvalidDocument("Malformed or unsupported PDF") from exc
 
 
-def extract_pages(
+def _extract_pages(
     source: Path,
     settings: Settings,
     mode: str,
@@ -498,3 +501,15 @@ def extract_pages(
             if not elements:
                 warnings.append("No readable content found on this page")
             yield PageResult(number, elements, quality, strategy, warnings)
+
+
+def extract_pages(
+    source: Path,
+    settings: Settings,
+    mode: str,
+    asset_sink: AssetSink | None = None,
+    vision: Vision | None = None,
+    checkpoint: Callable[[], None] | None = None,
+) -> Iterator[PageResult]:
+    with operation("ingestion.extract"):
+        yield from _extract_pages(source, settings, mode, asset_sink, vision, checkpoint)

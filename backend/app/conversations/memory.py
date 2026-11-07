@@ -7,6 +7,7 @@ import tiktoken
 from sqlalchemy import func, or_, select
 from sqlalchemy.orm import Session
 
+from backend.app.conversations.citations import strip_citations
 from backend.app.core.config import Settings
 from backend.app.models.entities import Conversation, ConversationSummary, Message
 from backend.app.security.content import safe_memory
@@ -155,7 +156,7 @@ def reconstruct(
 
 def answer_methods(text: str) -> list[str]:
     lines = re.findall(r"(?m)^\s*(?:\d+[.)]|[-*])\s+(.+)", text)
-    return [re.sub(r"\[\d+\]", "", line).strip()[:600] for line in lines[:12]]
+    return [strip_citations(line).strip()[:600] for line in lines[:12]]
 
 
 def resolve(

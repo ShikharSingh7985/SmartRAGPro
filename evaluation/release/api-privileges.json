@@ -1,0 +1,24 @@
+{
+  "execution_date": "2026-11-07T03:56:40.673965+00:00",
+  "role": "api",
+  "checks": [
+    {
+      "check": "runtime_not_admin",
+      "passed": true
+    },
+    {
+      "check": "qdrant_requires_auth",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "redis_requires_auth",
+      "passed": true
+    },
+    {
+      "check": "api_qdrant_readonly",
+      "status": 403,
+      "passed": true
+    }
+  ]
+}

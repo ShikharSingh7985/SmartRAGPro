@@ -1,0 +1,192 @@
+{
+  "concurrency": 10,
+  "requests": 40,
+  "failures": 0,
+  "failure_rate": 0.0,
+  "throughput_rps": 18.080008920281273,
+  "wall_seconds": 2.2123882889864035,
+  "mean_seconds": 0.5296478434778692,
+  "p50_seconds": 0.5327004620048683,
+  "p95_seconds": 0.6979178879992105,
+  "p99_seconds": null,
+  "peak_process_rss_bytes": 484986880,
+  "cpu_seconds": 2.6299999999999977,
+  "setup_and_ingestion_seconds": 5.552909689024091,
+  "pages": 20,
+  "points": [
+    {
+      "seconds": 0.5522576619987376,
+      "status": 201
+    },
+    {
+      "seconds": 0.5503355999826454,
+      "status": 201
+    },
+    {
+      "seconds": 0.5479995679925196,
+      "status": 201
+    },
+    {
+      "seconds": 0.4886424060096033,
+      "status": 201
+    },
+    {
+      "seconds": 0.5207092180207837,
+      "status": 201
+    },
+    {
+      "seconds": 0.4988987359974999,
+      "status": 201
+    },
+    {
+      "seconds": 0.5101669660070911,
+      "status": 201
+    },
+    {
+      "seconds": 0.49469924802542664,
+      "status": 201
+    },
+    {
+      "seconds": 0.5358476059918758,
+      "status": 201
+    },
+    {
+      "seconds": 0.5089109480031766,
+      "status": 201
+    },
+    {
+      "seconds": 0.4907135640096385,
+      "status": 201
+    },
+    {
+      "seconds": 0.4892769340076484,
+      "status": 201
+    },
+    {
+      "seconds": 0.7131429790169932,
+      "status": 201
+    },
+    {
+      "seconds": 0.6334719019941986,
+      "status": 201
+    },
+    {
+      "seconds": 0.5492724179930519,
+      "status": 201
+    },
+    {
+      "seconds": 0.29008985502878204,
+      "status": 201
+    },
+    {
+      "seconds": 0.7188182749960106,
+      "status": 201
+    },
+    {
+      "seconds": 0.6027681409905199,
+      "status": 201
+    },
+    {
+      "seconds": 0.529687483998714,
+      "status": 201
+    },
+    {
+      "seconds": 0.3262028759927489,
+      "status": 201
+    },
+    {
+      "seconds": 0.6979178879992105,
+      "status": 201
+    },
+    {
+      "seconds": 0.6381166850042064,
+      "status": 201
+    },
+    {
+      "seconds": 0.5274651590152644,
+      "status": 201
+    },
+    {
+      "seconds": 0.3247287530102767,
+      "status": 201
+    },
+    {
+      "seconds": 0.5600311570160557,
+      "status": 201
+    },
+    {
+      "seconds": 0.5404327530122828,
+      "status": 201
+    },
+    {
+      "seconds": 0.460419406008441,
+      "status": 201
+    },
+    {
+      "seconds": 0.5428262490022462,
+      "status": 201
+    },
+    {
+      "seconds": 0.5419111379887909,
+      "status": 201
+    },
+    {
+      "seconds": 0.5290076580131426,
+      "status": 201
+    },
+    {
+      "seconds": 0.5499543779878877,
+      "status": 201
+    },
+    {
+      "seconds": 0.4954755039943848,
+      "status": 201
+    },
+    {
+      "seconds": 0.6580904610163998,
+      "status": 201
+    },
+    {
+      "seconds": 0.6523294849903323,
+      "status": 201
+    },
+    {
+      "seconds": 0.49402737099444494,
+      "status": 201
+    },
+    {
+      "seconds": 0.31854970098356716,
+      "status": 201
+    },
+    {
+      "seconds": 0.5434311440039892,
+      "status": 201
+    },
+    {
+      "seconds": 0.5268282470060512,
+      "status": 201
+    },
+    {
+      "seconds": 0.4997577540052589,
+      "status": 201
+    },
+    {
+      "seconds": 0.5327004620048683,
+      "status": 201
+    }
+  ],
+  "configuration": {
+    "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+    "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+    "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+    "ttft": null,
+    "provider_throttling": null,
+    "billing_cost": null
+  },
+  "hardware": {
+    "os": "Linux",
+    "machine": "x86_64",
+    "logical_cpu": 16,
+    "ram_bytes": 8162299904
+  }
+}

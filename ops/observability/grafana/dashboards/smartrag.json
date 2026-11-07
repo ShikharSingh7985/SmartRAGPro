@@ -1,0 +1,500 @@
+{
+  "uid": "smartrag-operations",
+  "title": "SmartRAG Pro operations",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "tags": [
+    "smartrag"
+  ],
+  "panels": [
+    {
+      "id": 1,
+      "title": "API requests / second",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(smartrag_http_requests_total[5m]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "API error rate",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(smartrag_http_requests_total{status=~\"5..\"}[5m]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "API p50",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 7
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50,sum by(le)(rate(smartrag_http_seconds_bucket[5m])))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "API p95",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 7
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95,sum by(le)(rate(smartrag_http_seconds_bucket[5m])))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "API p99",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 14
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.99,sum by(le)(rate(smartrag_http_seconds_bucket[5m])))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Authentication failures / rate limits",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 14
+      },
+      "targets": [
+        {
+          "expr": "sum by(status)(increase(smartrag_http_requests_total{status=~\"401|429\"}[5m]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Active requests",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 21
+      },
+      "targets": [
+        {
+          "expr": "smartrag_http_active",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 8,
+      "title": "RAG stage p95",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 21
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95,sum by(le,operation)(rate(smartrag_operation_seconds_bucket[5m])))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "title": "Provider tokens",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "sum by(direction)(increase(smartrag_llm_tokens_total[1h]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 10,
+      "title": "Estimated model cost (configured prices)",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 28
+      },
+      "targets": [
+        {
+          "expr": "increase(smartrag_llm_estimated_usd_total[1h]) and on() (smartrag_cost_configured == 1)",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 11,
+      "title": "Embedding cache hit ratio",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 35
+      },
+      "targets": [
+        {
+          "expr": "sum(rate(smartrag_events_total{operation=\"embedding.cache\",outcome=\"hit\"}[5m])) / sum(rate(smartrag_events_total{operation=\"embedding.cache\"}[5m]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 12,
+      "title": "Guardrail decisions",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 35
+      },
+      "targets": [
+        {
+          "expr": "sum by(outcome)(increase(smartrag_events_total{operation=\"guardrail.inspection\"}[1h]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 13,
+      "title": "Jobs by durable status",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "targets": [
+        {
+          "expr": "sum by(status)(smartrag_jobs)",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 14,
+      "title": "Ingestion outcomes",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "targets": [
+        {
+          "expr": "sum by(outcome)(increase(smartrag_events_total{operation=\"ingestion.job\"}[1h]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 15,
+      "title": "Pages by extraction method",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 49
+      },
+      "targets": [
+        {
+          "expr": "sum by(method)(increase(smartrag_pages_total[1h]))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 16,
+      "title": "Recorded storage bytes",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 49
+      },
+      "targets": [
+        {
+          "expr": "sum by(kind)(smartrag_storage_bytes)",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 17,
+      "title": "Process resident memory",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "process_resident_memory_bytes",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 18,
+      "title": "Process CPU cores used",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 56
+      },
+      "targets": [
+        {
+          "expr": "rate(process_cpu_seconds_total[5m])",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 19,
+      "title": "Process start time / restart signal",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 63
+      },
+      "targets": [
+        {
+          "expr": "process_start_time_seconds",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 20,
+      "title": "Connectivity",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 63
+      },
+      "targets": [
+        {
+          "expr": "smartrag_dependency_up",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "title": "Heartbeat age",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 0,
+        "y": 70
+      },
+      "targets": [
+        {
+          "expr": "time() - smartrag_heartbeat_timestamp",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    },
+    {
+      "id": 22,
+      "title": "Source evidence count",
+      "type": "timeseries",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "prometheus"
+      },
+      "gridPos": {
+        "h": 7,
+        "w": 12,
+        "x": 12,
+        "y": 70
+      },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.50,sum by(le)(rate(smartrag_rag_values_bucket{kind=\"evidence_count\"}[5m])))",
+          "refId": "A",
+          "legendFormat": "{{operation}}{{outcome}}{{job}}{{status}}{{method}}{{direction}}{{kind}}{{service}}{{dependency}}"
+        }
+      ]
+    }
+  ]
+}

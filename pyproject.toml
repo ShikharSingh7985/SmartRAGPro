@@ -4,20 +4,39 @@ build-backend = "hatchling.build"
 
 [project]
 name = "smartrag-pro"
-version = "0.4.0"
+version = "0.6.0"
 description = "Multi-user document-grounded assistant"
 requires-python = ">=3.12,<3.14"
 dependencies = [
-  "fastapi>=0.115,<1", "uvicorn[standard]>=0.34,<1", "streamlit>=1.45,<2",
-  "sqlalchemy>=2.0,<2.1", "psycopg[binary]>=3.2,<4", "alembic>=1.15,<2",
-  "pydantic-settings>=2.8,<3", "email-validator>=2.2,<3", "PyJWT>=2.10,<3",
-  "argon2-cffi>=23.1,<26", "python-multipart>=0.0.20,<1", "pypdf>=5.4,<7",
-  "langchain-google-genai>=2.1,<5", "langchain-openai>=0.3,<2",
-  "langchain-text-splitters>=0.3,<2", "qdrant-client>=1.14,<2",
-  "redis>=5.2,<8", "boto3>=1.37,<2", "httpx>=0.28,<1",
-  "pymupdf>=1.26,<2", "pytesseract>=0.3.13,<1", "dramatiq[redis]>=2.0,<3",
-  "psutil>=7,<8", "tiktoken>=0.9,<1",
-  "langgraph>=1.0,<2", "langgraph-checkpoint-postgres>=3,<4",
+  "fastapi>=0.115,<1",
+  "uvicorn[standard]>=0.34,<1",
+  "streamlit>=1.45,<2",
+  "sqlalchemy>=2.0,<2.1",
+  "psycopg[binary]>=3.2,<4",
+  "alembic>=1.15,<2",
+  "pydantic-settings>=2.8,<3",
+  "email-validator>=2.2,<3",
+  "PyJWT>=2.10,<3",
+  "argon2-cffi>=23.1,<26",
+  "python-multipart>=0.0.20,<1",
+  "pypdf>=5.4,<7",
+  "langchain-google-genai>=2.1,<5",
+  "langchain-openai>=0.3,<2",
+  "langchain-text-splitters>=0.3,<2",
+  "qdrant-client>=1.14,<2",
+  "redis>=5.2,<8",
+  "boto3>=1.37,<2",
+  "httpx>=0.28,<1",
+  "pymupdf>=1.26,<2",
+  "pytesseract>=0.3.13,<1",
+  "dramatiq[redis]>=2.0,<3",
+  "psutil>=7,<8",
+  "tiktoken>=0.9,<1",
+  "langgraph>=1.0,<2",
+  "langgraph-checkpoint-postgres>=3,<4",
+  "opentelemetry-sdk>=1.39,<2",
+  "opentelemetry-exporter-otlp-proto-http>=1.39,<2",
+  "prometheus-client>=0.23,<1",
 ]
 
 [project.optional-dependencies]

@@ -56,6 +56,10 @@ services:
       timeout: 5s
       retries: 3
     restart: unless-stopped
+    mem_limit: 1g
+    cpus: 1.0
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
   worker:
     build:
       context: .
@@ -74,6 +78,12 @@ services:
     cpus: 1.0
     stop_grace_period: 120s
     volumes: [model_cache:/tmp/model-cache]
+    healthcheck:
+      test: [CMD, python, -m, scripts.worker_health]
+      interval: 30s
+      timeout: 5s
+      start_period: 60s
+      retries: 3
   dispatcher:
     build: .
     env_file: .docker-local/dispatcher.env
@@ -86,8 +96,18 @@ services:
     depends_on:
       bootstrap: {condition: service_completed_successfully}
     restart: unless-stopped
+    mem_limit: 384m
+    cpus: 0.5
+    healthcheck:
+      test: [CMD, python, -m, scripts.worker_health]
+      interval: 30s
+      timeout: 5s
+      start_period: 30s
+      retries: 3
   frontend:
-    build: .
+    build:
+      context: .
+      target: frontend
     environment:
       API_BASE_URL: http://api:8000
     command: [streamlit, run, frontend/app.py, --server.address=0.0.0.0, --server.port=8501, --browser.gatherUsageStats=false, --server.maxUploadSize=20]
@@ -95,6 +115,13 @@ services:
     depends_on:
       api: {condition: service_started}
     restart: unless-stopped
+    mem_limit: 512m
+    cpus: 1.0
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
 volumes:
   postgres_data:
   qdrant_data:

@@ -1,0 +1,27 @@
+{
+  "execution_date": "2026-11-07T03:56:51.243256+00:00",
+  "role": "worker",
+  "checks": [
+    {
+      "check": "runtime_not_admin",
+      "passed": true
+    },
+    {
+      "check": "worker_no_auth_or_checkpoint_access",
+      "passed": true
+    },
+    {
+      "check": "qdrant_requires_auth",
+      "status": 401,
+      "passed": true
+    },
+    {
+      "check": "redis_requires_auth",
+      "passed": true
+    },
+    {
+      "check": "worker_unprivileged_process",
+      "passed": true
+    }
+  ]
+}

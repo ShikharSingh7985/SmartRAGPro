@@ -23,6 +23,9 @@ build/
 *.egg-info/
 .uv-cache/
 .docker-local/
+.backups/
+evaluation/release/*.xml
+*.dump
 .integration-tmp/
 .integration-cache/
 .coverage.*

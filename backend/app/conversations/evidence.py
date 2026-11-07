@@ -10,6 +10,7 @@ from qdrant_client import models as qm
 from sqlalchemy.orm import Session
 
 from backend.app.conversations.memory import token_count, truncate
+from backend.app.core.telemetry import observed, operation
 from backend.app.models.entities import Document
 from backend.app.rag.cache import embed_query
 from backend.app.rag.lexical import search
@@ -21,6 +22,7 @@ from backend.app.security.content import inspect_content, record_inspection
 from backend.app.services.resources import Resources
 
 
+@observed("retrieval.plan")
 def retrieve(
     resources: Resources,
     user_id: UUID,
@@ -92,14 +94,15 @@ def retrieve(
                     resources, str(user_id), embedding_fingerprint(settings), query
                 )
             start = perf_counter()
-            points = resources.qdrant.query_points(
-                settings.qdrant_collection,
-                query=vector,
-                query_filter=scoped,
-                limit=settings.retrieval_candidates,
-                with_payload=True,
-                score_threshold=0.25,
-            ).points
+            with operation("retrieval.vector"):
+                points = resources.qdrant.query_points(
+                    settings.qdrant_collection,
+                    query=vector,
+                    query_filter=scoped,
+                    limit=settings.retrieval_candidates,
+                    with_payload=True,
+                    score_threshold=0.25,
+                ).points
             metrics["dense_ms"] += (perf_counter() - start) * 1000
         dense = [{**(point.payload or {}), "id": str(point.id)} for point in points]
         start = perf_counter()

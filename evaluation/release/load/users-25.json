@@ -1,0 +1,432 @@
+{
+  "concurrency": 25,
+  "requests": 100,
+  "failures": 0,
+  "failure_rate": 0.0,
+  "throughput_rps": 16.227493706774275,
+  "wall_seconds": 6.162381068017567,
+  "mean_seconds": 1.4362901844803126,
+  "p50_seconds": 1.400142288999632,
+  "p95_seconds": 2.1161300559761003,
+  "p99_seconds": 2.865490302006947,
+  "peak_process_rss_bytes": 497418240,
+  "cpu_seconds": 6.990000000000004,
+  "setup_and_ingestion_seconds": 13.375874222023413,
+  "pages": 50,
+  "points": [
+    {
+      "seconds": 0.8911602489824872,
+      "status": 201
+    },
+    {
+      "seconds": 1.0577889470150694,
+      "status": 201
+    },
+    {
+      "seconds": 1.6053777349879965,
+      "status": 201
+    },
+    {
+      "seconds": 1.398746635997668,
+      "status": 201
+    },
+    {
+      "seconds": 1.0481830280041322,
+      "status": 201
+    },
+    {
+      "seconds": 1.2253329209925141,
+      "status": 201
+    },
+    {
+      "seconds": 1.3147847569780424,
+      "status": 201
+    },
+    {
+      "seconds": 1.8394550089724362,
+      "status": 201
+    },
+    {
+      "seconds": 0.8665764290199149,
+      "status": 201
+    },
+    {
+      "seconds": 1.4370422000065446,
+      "status": 201
+    },
+    {
+      "seconds": 1.1626965540053789,
+      "status": 201
+    },
+    {
+      "seconds": 1.4154675529862288,
+      "status": 201
+    },
+    {
+      "seconds": 0.9342443439818453,
+      "status": 201
+    },
+    {
+      "seconds": 1.7847338119754568,
+      "status": 201
+    },
+    {
+      "seconds": 0.8574411090230569,
+      "status": 201
+    },
+    {
+      "seconds": 1.4489826729986817,
+      "status": 201
+    },
+    {
+      "seconds": 1.4746903970080893,
+      "status": 201
+    },
+    {
+      "seconds": 1.400142288999632,
+      "status": 201
+    },
+    {
+      "seconds": 0.8111244570172857,
+      "status": 201
+    },
+    {
+      "seconds": 2.208756178006297,
+      "status": 201
+    },
+    {
+      "seconds": 1.0771409709996078,
+      "status": 201
+    },
+    {
+      "seconds": 1.2192380930064246,
+      "status": 201
+    },
+    {
+      "seconds": 1.3323857419891283,
+      "status": 201
+    },
+    {
+      "seconds": 2.1161300559761003,
+      "status": 201
+    },
+    {
+      "seconds": 0.8816122150165029,
+      "status": 201
+    },
+    {
+      "seconds": 1.1482073319784831,
+      "status": 201
+    },
+    {
+      "seconds": 1.5307465000078082,
+      "status": 201
+    },
+    {
+      "seconds": 1.3857670900179073,
+      "status": 201
+    },
+    {
+      "seconds": 1.2500233309983741,
+      "status": 201
+    },
+    {
+      "seconds": 1.6071041859977413,
+      "status": 201
+    },
+    {
+      "seconds": 0.7257576979754958,
+      "status": 201
+    },
+    {
+      "seconds": 2.2402762490091845,
+      "status": 201
+    },
+    {
+      "seconds": 1.0302279829920735,
+      "status": 201
+    },
+    {
+      "seconds": 1.8779644290043507,
+      "status": 201
+    },
+    {
+      "seconds": 1.9301351579779293,
+      "status": 201
+    },
+    {
+      "seconds": 1.2158622480055783,
+      "status": 201
+    },
+    {
+      "seconds": 1.0312097230053041,
+      "status": 201
+    },
+    {
+      "seconds": 1.159928706008941,
+      "status": 201
+    },
+    {
+      "seconds": 1.4167346550093498,
+      "status": 201
+    },
+    {
+      "seconds": 1.8551554570149165,
+      "status": 201
+    },
+    {
+      "seconds": 1.5389794080110732,
+      "status": 201
+    },
+    {
+      "seconds": 2.0669296749983914,
+      "status": 201
+    },
+    {
+      "seconds": 2.0526250160182826,
+      "status": 201
+    },
+    {
+      "seconds": 0.4659747480181977,
+      "status": 201
+    },
+    {
+      "seconds": 1.3893238099990413,
+      "status": 201
+    },
+    {
+      "seconds": 1.502751599997282,
+      "status": 201
+    },
+    {
+      "seconds": 1.7242045199964195,
+      "status": 201
+    },
+    {
+      "seconds": 1.1574524180032313,
+      "status": 201
+    },
+    {
+      "seconds": 1.2710018919897266,
+      "status": 201
+    },
+    {
+      "seconds": 1.6219865219900385,
+      "status": 201
+    },
+    {
+      "seconds": 1.7395352390012704,
+      "status": 201
+    },
+    {
+      "seconds": 1.2011069770087488,
+      "status": 201
+    },
+    {
+      "seconds": 2.865490302006947,
+      "status": 201
+    },
+    {
+      "seconds": 0.6968001109780744,
+      "status": 201
+    },
+    {
+      "seconds": 1.3427751359995455,
+      "status": 201
+    },
+    {
+      "seconds": 1.1934861890040338,
+      "status": 201
+    },
+    {
+      "seconds": 1.9653363020042889,
+      "status": 201
+    },
+    {
+      "seconds": 1.6277146030042786,
+      "status": 201
+    },
+    {
+      "seconds": 2.3186934950063005,
+      "status": 201
+    },
+    {
+      "seconds": 0.22507749299984425,
+      "status": 201
+    },
+    {
+      "seconds": 1.8168300770048518,
+      "status": 201
+    },
+    {
+      "seconds": 1.0473494519828819,
+      "status": 201
+    },
+    {
+      "seconds": 2.0269817860098556,
+      "status": 201
+    },
+    {
+      "seconds": 1.215621213981649,
+      "status": 201
+    },
+    {
+      "seconds": 1.4708207449875772,
+      "status": 201
+    },
+    {
+      "seconds": 1.4597046409908216,
+      "status": 201
+    },
+    {
+      "seconds": 2.0363450670265593,
+      "status": 201
+    },
+    {
+      "seconds": 1.1090964750037529,
+      "status": 201
+    },
+    {
+      "seconds": 2.0894260670174845,
+      "status": 201
+    },
+    {
+      "seconds": 1.5083083999925293,
+      "status": 201
+    },
+    {
+      "seconds": 1.9052707999944687,
+      "status": 201
+    },
+    {
+      "seconds": 0.5987302110006567,
+      "status": 201
+    },
+    {
+      "seconds": 1.9619385380065069,
+      "status": 201
+    },
+    {
+      "seconds": 0.992320406017825,
+      "status": 201
+    },
+    {
+      "seconds": 2.0031817510025576,
+      "status": 201
+    },
+    {
+      "seconds": 1.1429284180048853,
+      "status": 201
+    },
+    {
+      "seconds": 2.8969745820213575,
+      "status": 201
+    },
+    {
+      "seconds": 1.813965092995204,
+      "status": 201
+    },
+    {
+      "seconds": 1.0718754450208507,
+      "status": 201
+    },
+    {
+      "seconds": 0.34853159499471076,
+      "status": 201
+    },
+    {
+      "seconds": 1.936837958986871,
+      "status": 201
+    },
+    {
+      "seconds": 0.9199986080056988,
+      "status": 201
+    },
+    {
+      "seconds": 2.0279763419821393,
+      "status": 201
+    },
+    {
+      "seconds": 1.0991553209896665,
+      "status": 201
+    },
+    {
+      "seconds": 1.5627015060163103,
+      "status": 201
+    },
+    {
+      "seconds": 1.391179640981136,
+      "status": 201
+    },
+    {
+      "seconds": 1.8775292630016338,
+      "status": 201
+    },
+    {
+      "seconds": 1.1190494110051077,
+      "status": 201
+    },
+    {
+      "seconds": 1.9543106039927807,
+      "status": 201
+    },
+    {
+      "seconds": 0.8973438540124334,
+      "status": 201
+    },
+    {
+      "seconds": 0.8498679930053186,
+      "status": 201
+    },
+    {
+      "seconds": 1.905309830995975,
+      "status": 201
+    },
+    {
+      "seconds": 1.7848202319873963,
+      "status": 201
+    },
+    {
+      "seconds": 1.0690169899899047,
+      "status": 201
+    },
+    {
+      "seconds": 0.7094909970182925,
+      "status": 201
+    },
+    {
+      "seconds": 2.080638015002478,
+      "status": 201
+    },
+    {
+      "seconds": 1.769002379005542,
+      "status": 201
+    },
+    {
+      "seconds": 1.0830063300090842,
+      "status": 201
+    },
+    {
+      "seconds": 1.6006213260116056,
+      "status": 201
+    },
+    {
+      "seconds": 1.2933805279899389,
+      "status": 201
+    }
+  ],
+  "configuration": {
+    "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+    "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+    "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+    "ttft": null,
+    "provider_throttling": null,
+    "billing_cost": null
+  },
+  "hardware": {
+    "os": "Linux",
+    "machine": "x86_64",
+    "logical_cpu": 16,
+    "ram_bytes": 8162299904
+  }
+}

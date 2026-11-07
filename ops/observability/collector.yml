@@ -1,0 +1,27 @@
+receivers:
+  otlp:
+    protocols:
+      http:
+        endpoint: 0.0.0.0:4318
+processors:
+  memory_limiter:
+    check_interval: 1s
+    limit_mib: 128
+    spike_limit_mib: 32
+  batch:
+    send_batch_size: 128
+    timeout: 1s
+exporters:
+  otlp_http/tempo:
+    endpoint: http://tempo:4318
+    retry_on_failure:
+      enabled: true
+      max_elapsed_time: 30s
+    sending_queue:
+      queue_size: 256
+service:
+  pipelines:
+    traces:
+      receivers: [otlp]
+      processors: [memory_limiter, batch]
+      exporters: [otlp_http/tempo]

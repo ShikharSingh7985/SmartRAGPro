@@ -1,12 +1,18 @@
 from functools import lru_cache
-from typing import Literal
+from typing import Any, Literal
 
-from pydantic import Field, SecretStr, model_validator
+from pydantic import Field, SecretStr, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore", hide_input_in_errors=True)
+
+    @field_validator("llm_input_price_per_million", "llm_output_price_per_million", mode="before")
+    @classmethod
+    def optional_price(cls, value: Any) -> Any:
+        return None if value == "" else value
+
     database_url: str
     service_role: Literal["api", "worker", "dispatcher", "bootstrap"] = "api"
     jwt_secret: SecretStr = SecretStr("")
@@ -91,6 +97,20 @@ class Settings(BaseSettings):
     retrieval_deduplicate: bool = False
     query_embedding_cache_size: int = Field(default=128, ge=0, le=1000)
     query_embedding_cache_ttl: int = Field(default=300, ge=1, le=3600)
+    telemetry_enabled: bool = False
+    telemetry_endpoint: str = "http://otel-collector:4318/v1/traces"
+    telemetry_sample_ratio: float = Field(default=0.1, ge=0, le=1)
+    langfuse_enabled: bool = False
+    langfuse_export_consent: bool = False
+    langfuse_endpoint: str = "https://cloud.langfuse.com/api/public/otel/v1/traces"
+    langfuse_public_key: SecretStr = SecretStr("")
+    langfuse_secret_key: SecretStr = SecretStr("")
+    metrics_enabled: bool = True
+    metrics_port: int = Field(default=9101, ge=1024, le=65535)
+    llm_input_price_per_million: float | None = Field(default=None, ge=0)
+    llm_output_price_per_million: float | None = Field(default=None, ge=0)
+    database_pool_size: int = Field(default=5, ge=1, le=30)
+    database_max_overflow: int = Field(default=5, ge=0, le=30)
 
     @model_validator(mode="after")
     def secure_configuration(self) -> "Settings":
@@ -99,6 +119,14 @@ class Settings(BaseSettings):
             raise ValueError("JWT_SECRET must be a unique random secret of at least 32 characters")
         if "CHANGE_ME" in self.s3_secret_key.get_secret_value():
             raise ValueError("Configure S3_SECRET_KEY")
+        if self.langfuse_enabled and (
+            not self.langfuse_export_consent
+            or not self.langfuse_public_key.get_secret_value()
+            or not self.langfuse_secret_key.get_secret_value()
+        ):
+            raise ValueError(
+                "Langfuse requires explicit metadata export consent and configured keys"
+            )
         if self.environment == "production" and (
             "*" in self.allowed_hosts or "*" in self.cors_origins
         ):

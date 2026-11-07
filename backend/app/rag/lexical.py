@@ -8,6 +8,7 @@ from uuid import UUID
 from sqlalchemy import case, delete, func, or_, select
 from sqlalchemy.orm import Session
 
+from backend.app.core.telemetry import observed
 from backend.app.models.entities import Document, SearchChunk, SearchTerm
 from backend.app.rag.ranking import terms
 
@@ -35,6 +36,7 @@ def store_chunk(db: Session, identifier: str, payload: dict[str, Any]) -> None:
     )
 
 
+@observed("retrieval.lexical")
 def search(
     db: Session,
     user_id: UUID,

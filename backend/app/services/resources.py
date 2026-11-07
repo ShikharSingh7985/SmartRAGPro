@@ -1,5 +1,8 @@
 import base64
+import json
 import mimetypes
+import random
+import time
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Protocol
@@ -13,6 +16,8 @@ from qdrant_client import QdrantClient
 from redis import Redis
 
 from backend.app.core.config import Settings, get_settings
+from backend.app.core.errors import ProviderUnavailable, retryable_provider_error
+from backend.app.core.telemetry import COST, EVENTS, TOKENS, observed, operation
 
 ABSTENTION = "I don't know based on the selected documents."
 
@@ -40,6 +45,7 @@ class S3Store:
             config=Config(connect_timeout=5, read_timeout=30, retries={"max_attempts": 2}),
         )
 
+    @observed("storage.put")
     def put(self, key: str, data: bytes) -> None:
         self.client.put_object(
             Bucket=self.bucket,
@@ -48,6 +54,7 @@ class S3Store:
             ContentType=mimetypes.guess_type(key)[0] or "application/octet-stream",
         )
 
+    @observed("storage.get")
     def get(self, key: str) -> bytes:
         response = self.client.get_object(Bucket=self.bucket, Key=key)
         with response["Body"] as stream:
@@ -59,6 +66,7 @@ class S3Store:
                 raise ValueError("Stored asset exceeds response size limit")
             return data
 
+    @observed("storage.delete")
     def delete(self, key: str) -> None:
         self.client.delete_object(Bucket=self.bucket, Key=key)
 
@@ -70,26 +78,81 @@ class S3Store:
             str(source), self.bucket, key, ExtraArgs={"ContentType": "application/pdf"}
         )
 
+    @observed("storage.ping")
     def ping(self) -> None:
         self.client.head_bucket(Bucket=self.bucket)
 
 
 class GeminiGenerator:
     def __init__(self, settings: Settings) -> None:
+        self.settings = settings
         if not settings.gemini_api_key.get_secret_value():
             raise RuntimeError("GEMINI_API_KEY is required for generation")
         self.model = ChatGoogleGenerativeAI(
             model=settings.gemini_model,
             api_key=settings.gemini_api_key,
             temperature=0,
-            timeout=60,
-            max_retries=2,
+            timeout=45,
+            max_retries=0,
             max_output_tokens=2048,
             vertexai=False,
         )
 
+    def invoke(self, messages: Any) -> Any:
+        with operation(
+            "llm.gemini",
+            details={
+                "gen_ai.request.model": self.settings.gemini_model,
+                "gen_ai.provider.name": "google",
+                "prompt.version": "grounded-v3",
+                "langfuse.observation.type": "generation",
+                "langfuse.observation.model": self.settings.gemini_model,
+            },
+        ) as span:
+            for attempt in range(3):
+                try:
+                    result = self.model.invoke(messages)
+                    break
+                except Exception as exc:
+                    if not retryable_provider_error(exc):
+                        raise
+                    if attempt == 2:
+                        raise ProviderUnavailable(
+                            "Provider unavailable after bounded retries"
+                        ) from None
+                    EVENTS.labels("llm.retry", "transient").inc()
+                    span.set_attribute("retry.attempt", attempt + 1)
+                    time.sleep(random.uniform(0.75, 1.25) * 2**attempt)
+            usage = getattr(result, "usage_metadata", None) or {}
+            if not usage:
+                EVENTS.labels("llm.usage", "unavailable").inc()
+                return result
+            incoming, outgoing = (
+                int(usage.get("input_tokens", 0)),
+                int(usage.get("output_tokens", 0)),
+            )
+            TOKENS.labels("input").inc(incoming)
+            TOKENS.labels("output").inc(outgoing)
+            span.set_attribute("gen_ai.usage.input_tokens", incoming)
+            span.set_attribute("gen_ai.usage.output_tokens", outgoing)
+            span.set_attribute(
+                "langfuse.observation.usage_details",
+                json.dumps({"input": incoming, "output": outgoing}),
+            )
+            if (
+                self.settings.llm_input_price_per_million is not None
+                and self.settings.llm_output_price_per_million is not None
+            ):
+                cost = (
+                    incoming * self.settings.llm_input_price_per_million
+                    + outgoing * self.settings.llm_output_price_per_million
+                ) / 1_000_000
+                COST.inc(cost)
+                span.set_attribute("langfuse.observation.cost_details", json.dumps({"total": cost}))
+            return result
+
     def answer(self, question: str, context: str) -> str:
-        result = self.model.invoke(
+        result = self.invoke(
             [
                 (
                     "system",
@@ -98,6 +161,9 @@ class GeminiGenerator:
                     "answer the question, say you do not know. Cite every factual statement "
                     "with [source number]. "
                     "Do not invent sources. Keep the answer concise. "
+                    "For multipart questions, answer supported parts with citations and state "
+                    "which requested details or examples are absent from the evidence. "
+                    "Do not invent an example. Abstain entirely only when no part is supported. "
                     f"If the evidence is insufficient, return exactly: {ABSTENTION}",
                 ),
                 ("human", f"DOCUMENT EVIDENCE:\n{context}\n\nQUESTION:\n{question}"),
@@ -109,7 +175,7 @@ class GeminiGenerator:
         return content
 
     def describe(self, image: bytes, caption: str) -> str:
-        result = self.model.invoke(
+        result = self.invoke(
             [
                 (
                     "system",
@@ -135,6 +201,19 @@ class GeminiGenerator:
         if not result.text.strip():
             raise RuntimeError("Vision provider returned no description")
         return result.text
+
+
+class MeasuredEmbeddings(Embeddings):
+    def __init__(self, inner: Embeddings) -> None:
+        self.inner = inner
+
+    def embed_documents(self, texts: list[str]) -> list[list[float]]:
+        with operation("embedding.documents", details={"count": len(texts)}):
+            return self.inner.embed_documents(texts)
+
+    def embed_query(self, text: str) -> list[float]:
+        with operation("embedding.query"):
+            return self.inner.embed_query(text)
 
 
 class Resources:
@@ -184,6 +263,7 @@ class Resources:
                 from backend.app.rag.local_embeddings import LocalEmbeddings
 
                 self._embedding = LocalEmbeddings(self.settings)
+            self._embedding = MeasuredEmbeddings(self._embedding)
         return self._embedding
 
     @property
@@ -204,6 +284,7 @@ def get_resources() -> Resources:
     return Resources(get_settings())
 
 
+@observed("storage.download")
 def download_object(
     store: ObjectStore, key: str, destination: Path, max_bytes: int | None = None
 ) -> None:

@@ -2,6 +2,7 @@
 
 import hashlib
 import logging
+import random
 import tempfile
 import time
 from datetime import timedelta
@@ -14,6 +15,7 @@ from qdrant_client import models as qm
 from sqlalchemy import Engine, delete, select, text
 from sqlalchemy.orm import Session
 
+from backend.app.core.telemetry import EVENTS, PAGES, operation
 from backend.app.models.entities import (
     Document,
     DocumentAsset,
@@ -72,6 +74,16 @@ def _remove_content(db: Session, resources: Resources, document: Document) -> No
 
 
 def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -> bool:
+    parent = (
+        db.scalar(select(IngestionJob.trace_parent).where(IngestionJob.id == job_id))
+        if job_id
+        else None
+    )
+    with operation("ingestion.job", parent=parent):
+        return _process_one(db, resources, job_id)
+
+
+def _process_one(db: Session, resources: Resources, job_id: UUID | None = None) -> bool:
     statement = select(IngestionJob).where(
         IngestionJob.status.in_(["queued", "running"]), IngestionJob.available_at <= now()
     )
@@ -83,6 +95,19 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
     if not job:
         db.rollback()
         return False
+    if job.attempts >= resources.settings.ingestion_max_attempts:
+        job.status, job.stage, job.error = (
+            "failed",
+            "failed",
+            "Retry budget exhausted; operator recovery required",
+        )
+        exhausted = db.get(Document, job.document_id)
+        if exhausted and exhausted.status != "deleting":
+            exhausted.status = "failed"
+            exhausted.error = job.error
+        db.commit()
+        EVENTS.labels("ingestion.job", "exhausted").inc()
+        return True
     lock_connection = None
     lock_number = int.from_bytes(job.document_id.bytes[:8], signed=True)
     bind = db.get_bind()
@@ -123,6 +148,7 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
             raise ProcessingDependencyError("Ingestion deadline exceeded")
         if stage:
             current.stage = stage
+            EVENTS.labels("ingestion.stage", stage).inc()
         if page is not None:
             current.pages_processed = page
         current.available_at = now() + timedelta(minutes=10)
@@ -224,6 +250,7 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
                     record = PageExtraction(document_id=document_id, page=result.page)
                     db.add(record)
                 record.strategy, record.quality = result.strategy, result.quality
+                PAGES.labels(result.strategy).inc()
                 record.content = [element.to_dict() for element in result.elements]
                 page_inspection = inspect_content(
                     inspection_text(record.content),
@@ -321,6 +348,7 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
         document.index_fingerprint = embedding_fingerprint(resources.settings)
         document.index_collection = resources.settings.qdrant_collection
         job.status, job.stage, job.error = "succeeded", "completed", None
+        EVENTS.labels("ingestion.job", "completed").inc()
         db.commit()
     except Exception as error:
         db.rollback()
@@ -329,9 +357,7 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
         if document and job and job.run_token == token:
             cancelled = isinstance(error, ProcessingCancelled)
             retryable = not isinstance(error, (InvalidDocument, ProcessingCancelled, ValueError))
-            retry = (
-                retryable and job.attempts < resources.settings.ingestion_max_attempts
-            ) or document.status == "deleting"
+            retry = retryable and job.attempts < resources.settings.ingestion_max_attempts
             job.status = "queued" if retry else "failed"
             job.stage = "retry-wait" if retry else ("cancelled" if cancelled else "failed")
             job.retryable = retryable
@@ -342,9 +368,12 @@ def process_one(db: Session, resources: Resources, job_id: UUID | None = None) -
                 if not retryable
                 else "Processing dependency failed or timed out; check OCR, model and storage"
             )
-            job.available_at = now() + timedelta(seconds=min(300, 10 * 2 ** min(job.attempts, 5)))
+            job.available_at = now() + timedelta(
+                seconds=random.uniform(0.75, 1.25) * min(300, 10 * 2 ** min(job.attempts, 5))
+            )
+            EVENTS.labels("ingestion.job", "retry" if retry else "failed").inc()
             if job.kind == "cleanup":
-                document.status, job.status = "deleting", "queued"
+                document.status = "deleting"
             elif document.status != "deleting":
                 document.status = "queued" if retry else "failed"
             document.error = job.error

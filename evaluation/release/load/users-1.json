@@ -1,0 +1,48 @@
+{
+  "concurrency": 1,
+  "requests": 4,
+  "failures": 0,
+  "failure_rate": 0.0,
+  "throughput_rps": 6.784729635576653,
+  "wall_seconds": 0.5895592329907231,
+  "mean_seconds": 0.14703592874866445,
+  "p50_seconds": 0.13142301299376413,
+  "p95_seconds": null,
+  "p99_seconds": null,
+  "peak_process_rss_bytes": 472514560,
+  "cpu_seconds": 0.3300000000000005,
+  "setup_and_ingestion_seconds": 1.0081990110047627,
+  "pages": 2,
+  "points": [
+    {
+      "seconds": 0.215228727000067,
+      "status": 201
+    },
+    {
+      "seconds": 0.11437397199915722,
+      "status": 201
+    },
+    {
+      "seconds": 0.12711800300166942,
+      "status": 201
+    },
+    {
+      "seconds": 0.13142301299376413,
+      "status": 201
+    }
+  ],
+  "configuration": {
+    "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+    "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+    "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+    "ttft": null,
+    "provider_throttling": null,
+    "billing_cost": null
+  },
+  "hardware": {
+    "os": "Linux",
+    "machine": "x86_64",
+    "logical_cpu": 16,
+    "ram_bytes": 8162299904
+  }
+}

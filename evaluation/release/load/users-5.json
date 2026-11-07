@@ -1,0 +1,112 @@
+{
+  "concurrency": 5,
+  "requests": 20,
+  "failures": 0,
+  "failure_rate": 0.0,
+  "throughput_rps": 16.48521428401855,
+  "wall_seconds": 1.213208372995723,
+  "mean_seconds": 0.2893167890011682,
+  "p50_seconds": 0.30046097000013106,
+  "p95_seconds": 0.44813714901101775,
+  "p99_seconds": null,
+  "peak_process_rss_bytes": 476368896,
+  "cpu_seconds": 1.3400000000000003,
+  "setup_and_ingestion_seconds": 2.985235169006046,
+  "pages": 10,
+  "points": [
+    {
+      "seconds": 0.34649999300017953,
+      "status": 201
+    },
+    {
+      "seconds": 0.300948343006894,
+      "status": 201
+    },
+    {
+      "seconds": 0.30046097000013106,
+      "status": 201
+    },
+    {
+      "seconds": 0.20358781499089673,
+      "status": 201
+    },
+    {
+      "seconds": 0.2689744950039312,
+      "status": 201
+    },
+    {
+      "seconds": 0.2703450259868987,
+      "status": 201
+    },
+    {
+      "seconds": 0.3090803239902016,
+      "status": 201
+    },
+    {
+      "seconds": 0.2642996200011112,
+      "status": 201
+    },
+    {
+      "seconds": 0.44813714901101775,
+      "status": 201
+    },
+    {
+      "seconds": 0.26846580000710674,
+      "status": 201
+    },
+    {
+      "seconds": 0.3117166290176101,
+      "status": 201
+    },
+    {
+      "seconds": 0.1473000289988704,
+      "status": 201
+    },
+    {
+      "seconds": 0.3525306489900686,
+      "status": 201
+    },
+    {
+      "seconds": 0.3057455119851511,
+      "status": 201
+    },
+    {
+      "seconds": 0.28919241300900467,
+      "status": 201
+    },
+    {
+      "seconds": 0.1906039830064401,
+      "status": 201
+    },
+    {
+      "seconds": 0.4534316129866056,
+      "status": 201
+    },
+    {
+      "seconds": 0.300798003008822,
+      "status": 201
+    },
+    {
+      "seconds": 0.2769287850242108,
+      "status": 201
+    },
+    {
+      "seconds": 0.17728862899821252,
+      "status": 201
+    }
+  ],
+  "configuration": {
+    "provider": "isolated test doubles, simulated 30ms model; 8-dimensional test embeddings",
+    "transport": "in-process FastAPI ASGI; real PostgreSQL/Qdrant/Redis/S3 when TEST_* configured",
+    "context": "warm selected PDFs; 4 sequential turns per distinct user; tracing disabled",
+    "ttft": null,
+    "provider_throttling": null,
+    "billing_cost": null
+  },
+  "hardware": {
+    "os": "Linux",
+    "machine": "x86_64",
+    "logical_cpu": 16,
+    "ram_bytes": 8162299904
+  }
+}

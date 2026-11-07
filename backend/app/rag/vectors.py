@@ -3,6 +3,7 @@ from uuid import NAMESPACE_URL, UUID, uuid5
 from qdrant_client import models as qm
 from sqlalchemy.orm import Session
 
+from backend.app.core.telemetry import observed
 from backend.app.rag.pdf import Chunk
 from backend.app.rag.types import KnowledgeChunk, embedding_fingerprint
 from backend.app.services.resources import Resources
@@ -87,6 +88,7 @@ def delete_vectors(resources: Resources, user_id: UUID, document_id: UUID) -> No
         )
 
 
+@observed("ingestion.index")
 def index_knowledge(
     resources: Resources,
     user_id: UUID,

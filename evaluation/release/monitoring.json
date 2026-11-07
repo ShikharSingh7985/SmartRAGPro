@@ -1,0 +1,35 @@
+{
+  "executed_at": "2026-11-07T04:29:33.104047+00:00",
+  "checks": [
+    {
+      "check": "scrape_api",
+      "passed": true
+    },
+    {
+      "check": "scrape_dispatcher",
+      "passed": true
+    },
+    {
+      "check": "scrape_worker",
+      "passed": true
+    },
+    {
+      "check": "grafana_dashboard",
+      "passed": true
+    },
+    {
+      "check": "otlp_traces_reach_tempo",
+      "passed": true
+    }
+  ],
+  "sampled_trace_count": 20,
+  "metrics_snapshot": {
+    "input_tokens_since_api_start": 1776.0,
+    "output_tokens_since_api_start": 155.0,
+    "api_process_rss_bytes": 322158592.0,
+    "api_process_cpu_seconds": 20.35,
+    "query_embedding_cache_hit_rate": 0.2
+  },
+  "metrics_scope": "last Prometheus scrape; counters since API start, not isolated UAT billing",
+  "hosted_langfuse": "NOT VERIFIED: no hosted credentials/export consent configured"
+}

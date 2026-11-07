@@ -3,6 +3,7 @@
 import argparse
 import json
 import secrets
+import subprocess
 import time
 from pathlib import Path
 from uuid import uuid4
@@ -15,6 +16,7 @@ from scripts.textbook_fixture import textbook_pdf
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", type=Path)
+    parser.add_argument("--restart-api", action="store_true")
     args = parser.parse_args()
     observations = []
     status = "failed"
@@ -23,6 +25,7 @@ def main() -> None:
         "password": secrets.token_urlsafe(36),
     }
     document_id = conversation_id = None
+    account_cleanup_queued = False
     stage = "registration"
     client = httpx.Client(base_url="http://localhost:8000", timeout=240)
     try:
@@ -72,6 +75,27 @@ def main() -> None:
                 stage = "fresh-client login and history restoration"
                 client.post("/api/v1/auth/logout").raise_for_status()
                 client.close()
+                if args.restart_api:
+                    restarted = subprocess.run(
+                        ["docker", "compose", "restart", "api"], capture_output=True
+                    )
+                    if restarted.returncode:
+                        raise RuntimeError("API restart failed")
+                    deadline = time.monotonic() + 90
+                    while time.monotonic() < deadline:
+                        try:
+                            if (
+                                httpx.get(
+                                    "http://localhost:8000/health/ready", timeout=5
+                                ).status_code
+                                == 200
+                            ):
+                                break
+                        except httpx.HTTPError:
+                            pass
+                        time.sleep(2)
+                    else:
+                        raise RuntimeError("API readiness after restart timed out")
                 client = httpx.Client(base_url="http://localhost:8000", timeout=240)
                 login = client.post("/api/v1/auth/login", json=credentials)
                 login.raise_for_status()
@@ -87,6 +111,16 @@ def main() -> None:
             )
             response.raise_for_status()
             reply = response.json()
+            # This script creates only public synthetic text; retain outputs for honest
+            # regression diagnosis, never reuse this export path for private documents.
+            observations.append(
+                {
+                    "stage": "synthetic_reply",
+                    "turn": turn,
+                    "content": reply["content"],
+                    "citation_count": len(reply["citations"]),
+                }
+            )
             assert reply["citations"], "No grounded source references"
             assert all(
                 c["document_id"] == document_id and 1 <= c["page"] <= 4 for c in reply["citations"]
@@ -126,7 +160,10 @@ def main() -> None:
                 except httpx.HTTPError:
                     pass
         try:
-            client.post("/api/v1/auth/logout")
+            cleanup = client.request(
+                "DELETE", "/api/v1/auth/account", json={"password": credentials["password"]}
+            )
+            account_cleanup_queued = cleanup.status_code == 202
         except httpx.HTTPError:
             pass
         client.close()
@@ -138,12 +175,14 @@ def main() -> None:
                         "status": status,
                         "last_stage": stage,
                         "synthetic": True,
+                        "api_restart_requested": args.restart_api,
+                        "account_cleanup_queued": account_cleanup_queued,
                         "observations": observations,
                     },
                     indent=2,
                 )
             )
-        print("Synthetic source cleanup requested; synthetic account metadata remains.")
+        print("Synthetic source cleanup requested; account cleanup queued:", account_cleanup_queued)
 
 
 if __name__ == "__main__":

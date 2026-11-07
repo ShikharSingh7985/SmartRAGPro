@@ -12,6 +12,7 @@ from sqlalchemy.dialects.postgresql import insert as pg_insert
 from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.orm import Session
 
+from backend.app.core.telemetry import EVENTS
 from backend.app.models.entities import SecurityInspection, now
 
 VERSION = "content-2026-11-v3"
@@ -127,6 +128,9 @@ def inspect_content(text: str, threshold: int = 80) -> Inspection:
         reasons.append("educational_quotation")
         score = min(score, threshold - 1)
     score = min(100, score)
+    EVENTS.labels(
+        "guardrail.inspection", "block" if score >= threshold else "review" if score else "allow"
+    ).inc()
     return Inspection(
         score, "block" if score >= threshold else "review" if score else "allow", reasons
     )

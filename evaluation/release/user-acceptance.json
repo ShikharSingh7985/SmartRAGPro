@@ -1,0 +1,188 @@
+{
+  "runtime": {
+    "status": "alive",
+    "version": "0.6.0",
+    "source_sha256": "a8b08a9f524a6a5c5e58b5f344a7edf254028582c0eb4de1ad001b64d94cd724"
+  },
+  "executed_at": "2026-11-07T04:25:58.788616+00:00",
+  "scope": "real services and Gemini; public synthetic fixtures; deterministic answer/citation proxies, no independent semantic review",
+  "observations": [
+    {
+      "stage": "ingestion",
+      "source": "alpha-book.pdf",
+      "status": "ready",
+      "seconds": 71.18952829999034,
+      "pages": 1,
+      "chunks": 1,
+      "tables": 0,
+      "figures": 0
+    },
+    {
+      "stage": "question",
+      "question": "What is Alpha revenue?",
+      "status": 201,
+      "passed": true,
+      "seconds": 5.171339100023033,
+      "citations": [
+        {
+          "page": 1,
+          "filename": "alpha-book.pdf",
+          "content_type": "text"
+        }
+      ],
+      "attributed_documents": 1
+    },
+    {
+      "stage": "ingestion",
+      "source": "other-owner.pdf",
+      "status": "ready",
+      "seconds": 8.309536899992963,
+      "pages": 1,
+      "chunks": 1,
+      "tables": 0,
+      "figures": 0
+    },
+    {
+      "stage": "isolation",
+      "check": "both owners have private books",
+      "passed": true
+    },
+    {
+      "stage": "isolation",
+      "path_template": "/documents/{doc}",
+      "passed": true
+    },
+    {
+      "stage": "isolation",
+      "path_template": "/documents/{doc}/jobs",
+      "passed": true
+    },
+    {
+      "stage": "isolation",
+      "path_template": "/documents/{doc}/pages/1",
+      "passed": true
+    },
+    {
+      "stage": "isolation",
+      "path_template": "/documents/{doc}/assets",
+      "passed": true
+    },
+    {
+      "stage": "isolation",
+      "path_template": "/documents/{doc}/preview/1",
+      "passed": true
+    },
+    {
+      "stage": "isolation",
+      "path_template": "/conversations/{chat}/messages",
+      "passed": true
+    },
+    {
+      "stage": "ingestion",
+      "source": "beta-book.pdf",
+      "status": "ready",
+      "seconds": 10.280206099996576,
+      "pages": 1,
+      "chunks": 1,
+      "tables": 0,
+      "figures": 0
+    },
+    {
+      "stage": "question",
+      "question": "Compare the overfitting techniques recommended by alpha-book.pdf and beta-book.pdf.",
+      "status": 201,
+      "passed": true,
+      "seconds": 3.1152597999898717,
+      "citations": [
+        {
+          "page": 1,
+          "filename": "alpha-book.pdf",
+          "content_type": "text"
+        },
+        {
+          "page": 1,
+          "filename": "beta-book.pdf",
+          "content_type": "text"
+        }
+      ],
+      "attributed_documents": 2
+    },
+    {
+      "stage": "ingestion",
+      "source": "synthetic-research.pdf",
+      "status": "ready",
+      "seconds": 40.42288160001044,
+      "pages": 3,
+      "chunks": 6,
+      "tables": 1,
+      "figures": 2
+    },
+    {
+      "stage": "question",
+      "question": "What is the accuracy of Model B in Table 3?",
+      "status": 201,
+      "passed": true,
+      "seconds": 8.690863399999216,
+      "citations": [
+        {
+          "page": 1,
+          "filename": "synthetic-research.pdf",
+          "content_type": "table"
+        }
+      ],
+      "attributed_documents": 1
+    },
+    {
+      "stage": "question",
+      "question": "What numeric values are printed as labels for A and B in Figure 1?",
+      "status": 201,
+      "passed": true,
+      "seconds": 5.460874199983664,
+      "citations": [
+        {
+          "page": 2,
+          "filename": "synthetic-research.pdf",
+          "content_type": "figure"
+        }
+      ],
+      "attributed_documents": 1
+    },
+    {
+      "stage": "limitation",
+      "vision": "No vision interpretation claimed; figure question tests OCR-visible labels only."
+    },
+    {
+      "stage": "ingestion",
+      "source": "mixed-poison.pdf",
+      "status": "ready",
+      "seconds": 10.987664399988716,
+      "pages": 2,
+      "chunks": 1,
+      "tables": 0,
+      "figures": 0
+    },
+    {
+      "stage": "question",
+      "question": "What is Alpha revenue?",
+      "status": 201,
+      "passed": true,
+      "seconds": 1.4768935999891255,
+      "citations": [
+        {
+          "page": 1,
+          "filename": "mixed-poison.pdf",
+          "content_type": "text"
+        }
+      ],
+      "attributed_documents": 1
+    },
+    {
+      "stage": "cleanup_queued",
+      "passed": true
+    },
+    {
+      "stage": "cleanup_queued",
+      "passed": true
+    }
+  ]
+}
